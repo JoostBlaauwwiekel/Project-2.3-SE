@@ -21,7 +21,7 @@ public interface CommunicationChannel {
     public HashSet<String> getGameSet();
 
     /**
-     * THis method should return the player set, containing all players currently online.
+     * This method should return the player set, containing all players currently online.
      *
      * @return a HashSet which contains Strings, each item represents currently logged onto the server.
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
