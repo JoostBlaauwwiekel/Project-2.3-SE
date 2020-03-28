@@ -7,7 +7,7 @@
  * @version     1.0
  */
 
-package TicTacToe;
+package TicTacToe_Joost;
 
 public class Move {
     int row, col;
