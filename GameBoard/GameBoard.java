@@ -19,7 +19,7 @@ public abstract class GameBoard implements WinBehaviour{
     }
 
     public boolean isFinished(char[][] board) {
-        return WinBehaviour.isFinished(board);
+        return ticTacToeFinished.isFinished(board);
     }
 
 }
