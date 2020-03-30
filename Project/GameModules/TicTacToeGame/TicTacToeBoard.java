@@ -1,6 +1,6 @@
-package TicTacToeGame;
+package Project.GameModules.TicTacToeGame;
 
-import GameFramework.GameBoard;
+import Project.GameFramework.GameBoard;
 
 public class TicTacToeBoard extends GameBoard {
 

@@ -1,4 +1,4 @@
-package GameFramework;
+package Project.GameFramework;
 
 import java.io.IOException;
 import java.util.HashSet;

@@ -1,4 +1,6 @@
-package GameFramework;
+package Project.GameModules;
+
+import Project.GameFramework.CommunicationChannel;
 
 import java.io.*;
 import java.net.Socket;

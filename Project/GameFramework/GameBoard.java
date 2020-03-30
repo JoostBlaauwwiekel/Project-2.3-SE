@@ -1,4 +1,4 @@
-package GameFramework;
+package Project.GameFramework;
 
 public abstract class GameBoard {
 

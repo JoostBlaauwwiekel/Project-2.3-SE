@@ -1,4 +1,7 @@
-package GameFramework;
+package Project.GameFramework.Tests;
+
+import Project.GameFramework.CommunicationChannel;
+import Project.GameModules.GameCommunicationChannel;
 
 import java.io.IOException;
 import java.util.HashSet;
