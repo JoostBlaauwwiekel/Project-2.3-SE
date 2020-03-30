@@ -29,13 +29,12 @@ public class TicTacToeView extends BorderPane {
                 board.getChildren().add(tile);
             }
         }
-
         return board;
     }
 
 
 
-    public class Tile extends StackPane {
+    public static class Tile extends StackPane {
         public Tile() {
             Rectangle border = new Rectangle();
             border.setFill(Color.WHITE);
