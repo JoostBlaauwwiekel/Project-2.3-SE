@@ -2,18 +2,21 @@ package MainScreen;
 
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 
 public class TicTacToeView extends BorderPane {
 
-    public TicTacToeView() {
-
+    public TicTacToeView(Stage window) {
+        Scene TicTacToeScene = new Scene(createContent(), 900, 600);
+        window.setScene(TicTacToeScene);
     }
 
     public static Parent createContent() {

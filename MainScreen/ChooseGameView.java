@@ -30,11 +30,11 @@ public class ChooseGameView extends VBox {
         reversi.setMinWidth(100);
         back.setMinWidth(100);
 
-        TicTacToeView ticTacToeView = new TicTacToeView();
-        Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
+        ChooseGameModeView chooseGameModeView = new ChooseGameModeView(window);
+        Scene chooseGameModeViewScene = new Scene(chooseGameModeView, 900, 600);
 
         chooseTTT.setOnAction(e -> {
-            window.setScene(TicTacToeScene);
+            window.setScene(chooseGameModeViewScene);
             window.setTitle("Tic Tac Toe");
         });
 
