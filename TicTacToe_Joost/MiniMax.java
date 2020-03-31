@@ -152,10 +152,9 @@ public class MiniMax {
      * @param board     the board of the game
      * @return          a Move object with the row and column for the next move
      */
-    public Move getBestMove(int[] board) {
+    public int getBestMove(int[] board) {
         int bestValue = -1000;
-        Move move = new Move();
-        move.pos = -1;
+        int bestMove = -1;
 
         for(int pos = 0; pos < 9; pos++) {
             if (board[pos] == 0) {
@@ -166,11 +165,11 @@ public class MiniMax {
                 board[pos] = 0;
 
                 if (moveValue > bestValue) {
-                    move.pos = pos;
+                    bestMove = pos;
                     bestValue = moveValue;
-                    }
                 }
+            }
         }
-        return move;
+        return bestMove;
     }
 }

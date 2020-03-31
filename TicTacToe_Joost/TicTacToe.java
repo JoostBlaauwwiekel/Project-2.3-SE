@@ -31,8 +31,7 @@ public class TicTacToe {
 
             } else {
                 System.out.println("Computer's move:");
-                Move bestMove = minmax.getBestMove(board.getBoard());
-                board.makeMove(2, bestMove.pos);
+                board.makeMove(2, minmax.getBestMove(board.getBoard()));
 
             }
             board.printBoard();
