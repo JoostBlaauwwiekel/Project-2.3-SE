@@ -37,7 +37,11 @@ public class ChooseGameView extends VBox {
             window.setTitle("Tic Tac Toe");
         });
 
+//        MainView mainView = new MainView(window);
+//        Scene scene = new Scene(mainView);
+
         back.setOnAction(e -> {
+//            window.setScene(scene);
             System.out.println("Moet terug naar MainView");
         });
 

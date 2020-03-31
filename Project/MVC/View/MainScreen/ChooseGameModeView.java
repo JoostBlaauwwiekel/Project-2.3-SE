@@ -29,12 +29,23 @@ public class ChooseGameModeView extends VBox {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        TicTacToeView ticTacToeView = new TicTacToeView(window);
-        Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
 
         pva.setOnAction(e -> {
+            // Hier moet iets komen zodat de speler naar tictactoescene word gebracht met pva
+            TicTacToeView ticTacToeView = new TicTacToeView(window, "pva");
+            Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
+
             window.setScene(TicTacToeScene);
-            window.setTitle("Tic Tac Toe");
+            window.setTitle("Tic Tac Toe Player vs AI");
+        });
+
+        pvs.setOnAction(e -> {
+            // Hier moet iets komen zodat de speler naar tictactoescene word gebracht met pvs
+            TicTacToeView ticTacToeView = new TicTacToeView(window, "pvs");
+            Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
+
+            window.setScene(TicTacToeScene);
+            window.setTitle("Tic Tac Toe Player vs Server");
         });
 
         back.setOnAction(e -> {
