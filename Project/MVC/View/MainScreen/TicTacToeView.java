@@ -27,6 +27,7 @@ public class TicTacToeView extends BorderPane {
         topBar.setAlignment(Pos.CENTER);
         topBar.setStyle("-fx-background-color: #A67D2A;");
 
+        // Met de TicTacToeBoard class moet je straks dus TicTacToeBoard board = new .... kunnen doen en .setCenter(board)
         // Content (Dus hetgene in het midden)
         FlowPane centerLayout = new FlowPane();
         centerLayout.setAlignment(Pos.CENTER);
