@@ -25,9 +25,6 @@ public class ReversiGameLogic extends GameLogic {
 
     @Override
     public void doMove(int pos, int player) {
-        // when this method is called we already assume the move is valid
-        // set board pos to player
-        // check directions, if true: flipDir()
         getBoard().setBoardPos(pos, player);
         for(int dir=0; dir < 8; dir++){
             if(checkDir(dir, pos, player)){
@@ -36,8 +33,22 @@ public class ReversiGameLogic extends GameLogic {
         }
     }
 
+    /**
+     * This method checks if the game is over and then returns the winner.
+     * @return int representing the winner of the game, 3 means draw.
+     */
     @Override
-    public int gameOver() {
+    public int gameOver (){
+        ReversiBoard board = (ReversiBoard)getBoard();
+        if(board.getDiscCount(0) == 0 || getMoves(1).size() == 0 || getMoves(2).size() == 0){
+            if(board.getDiscCount(1) > board.getDiscCount(2)){
+                return 1;
+            } else if(board.getDiscCount(1) < board.getDiscCount(2)){
+                return 2;
+            } else {
+                return 3;
+            }
+        }
         return 0;
     }
 
@@ -73,9 +84,6 @@ public class ReversiGameLogic extends GameLogic {
     }
 
     private void flipDir(int pos, int dir, int player){
-        // if target != player:
-        //      flip;
-        //      flipDir but new pos is current target
         int target = getTarget(pos, dir);
         int targetState = getBoard().getBoardPos(target);
         if(targetState == 3 - player){

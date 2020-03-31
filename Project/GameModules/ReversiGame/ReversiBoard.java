@@ -93,22 +93,4 @@ public class ReversiBoard extends GameBoard {
         }
         return count;
     }
-
-    /**
-     * This method flips a disc on the gameboard.
-     * @param pos position of disc that needs to be flipped.
-     */
-    public void flipDisc(int pos){
-        int old = getBoardPos(pos);
-        switch(old){
-            case 1:
-                setBoardPos(pos, 2);
-                break;
-            case 2:
-                setBoardPos(pos, 1);
-                break;
-            default:
-                System.out.println("Tried to flip unoccupied position");
-        }
-    }
 }

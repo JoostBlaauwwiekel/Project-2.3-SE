@@ -2,7 +2,6 @@ package Project.GameFramework.Tests;
 
 import Project.GameFramework.CommunicationChannel;
 import Project.GameModules.GameCommunicationChannel;
-import javafx.scene.chart.ScatterChart;
 
 import Project.TicTacToe_Joost.*;
 

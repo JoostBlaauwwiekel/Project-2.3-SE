@@ -41,6 +41,7 @@ public abstract class GameLogic {
 
     /**
      * This method should check if the game is over, and who won the game.
+     * @param player the player that should be checked for.
      * @return integer representing the player that won the game.
      */
     public abstract int gameOver();
