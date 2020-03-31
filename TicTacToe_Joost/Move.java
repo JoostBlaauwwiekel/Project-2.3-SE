@@ -10,5 +10,5 @@
 package TicTacToe_Joost;
 
 public class Move {
-    int row, col;
+    int pos;
 }

@@ -12,11 +12,7 @@ package TicTacToe_Joost;
 
 public class Board {
     int counter = 0;
-    char[][] board = {
-            {'-', '-', '-'},
-            {'-', '-', '-'},
-            {'-', '-', '-'}
-    };
+    int[] board = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public Board() { }
 
@@ -24,12 +20,11 @@ public class Board {
      * This method checks if a position on the
      * board is occupied.
      *
-     * @param row       row of the position
-     * @param col       column of the position
+     * @param pos       position on the gameboard
      * @return          return whether a position is occupied or not
      */
-    public boolean isValid(int row, int col) {
-        return board[row][col] == '-';
+    public boolean isValid(int pos) {
+        return board[pos] == 0;
     }
 
     /**
@@ -37,12 +32,11 @@ public class Board {
      * by putting a char in the multidimensional array.
      *
      * @param player    char 'x' or 'o'
-     * @param row       row of the position
-     * @param col       column of the position
+     * @param pos       position on the gameboard
      */
-    public void makeMove(char player, int row, int col) {
-        if(isValid(row, col)) {
-            board[row][col] = player;
+    public void makeMove(int player, int pos) {
+        if(isValid(pos)) {
+            board[pos] = player;
         } else {
             System.out.println("Invalid move");
         }
@@ -60,57 +54,57 @@ public class Board {
         for (int a = 0; a < 8; a++) {
             switch (a) {
                 case 0:
-                    if(board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != '-') {
-                        String s = String.valueOf(board[0][0]);
+                    if(board[0] == board[1] && board[1] == board[2] && board[0] != 0) {
+                        String s = String.valueOf(board[0]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 1:
-                    if(board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != '-') {
-                        String s = String.valueOf(board[1][0]);
+                    if(board[3] == board[4] && board[4] == board[5] && board[4] != 0) {
+                        String s = String.valueOf(board[4]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 2:
-                    if(board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != '-') {
-                        String s = String.valueOf(board[2][0]);
+                    if(board[6] == board[7] && board[7] == board[8] && board[6] != 0) {
+                        String s = String.valueOf(board[6]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 3:
-                    if(board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != '-') {
-                        String s = String.valueOf(board[0][0]);
+                    if(board[0] == board[3] && board[3] == board[6] && board[0] != 0) {
+                        String s = String.valueOf(board[0]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 4:
-                    if(board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != '-') {
-                        String s = String.valueOf(board[0][1]);
+                    if(board[1] == board[4] && board[4] == board[7] && board[4] != 0) {
+                        String s = String.valueOf(board[4]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 5:
-                    if(board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != '-') {
-                        String s = String.valueOf(board[0][2]);
+                    if(board[2] == board[5] && board[5] == board[8] && board[2] != 0) {
+                        String s = String.valueOf(board[2]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 6:
-                    if(board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != '-') {
-                        String s = String.valueOf(board[0][0]);
+                    if(board[0] == board[4] && board[4] == board[8] && board[0] != 0) {
+                        String s = String.valueOf(board[0]);
                         System.out.println(s + " won!");
                         return true;
                     }
                     break;
                 case 7:
-                    if(board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '-') {
-                        String s = String.valueOf(board[0][2]);
+                    if(board[2] == board[4] && board[4] == board[6] && board[2] != 0) {
+                        String s = String.valueOf(board[2]);
                         System.out.println(s + " won!");
                         return true;
                     }
@@ -125,16 +119,17 @@ public class Board {
         return false;
     }
 
+
     /**
      * Method that prints a nice layout of the board.
      */
     public void printBoard() {
         System.out.println("-------------");
-        System.out.println("| " + board[0][0] + " | " + board[0][1] + " | " + board[0][2] + " |");
+        System.out.println("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
         System.out.println("-------------");
-        System.out.println("| " + board[1][0] + " | " + board[1][1] + " | " + board[1][2] + " |");
+        System.out.println("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
         System.out.println("-------------");
-        System.out.println("| " + board[2][0] + " | " + board[2][1] + " | " + board[2][2] + " |");
+        System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
         System.out.println("-------------");
     }
 
@@ -143,7 +138,7 @@ public class Board {
      *
      * @return      multidimensional array of chars
      */
-    public char[][] getBoard() {
+    public int[] getBoard() {
         return board;
     }
 }

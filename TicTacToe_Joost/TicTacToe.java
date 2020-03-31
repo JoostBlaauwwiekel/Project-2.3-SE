@@ -24,17 +24,15 @@ public class TicTacToe {
         while(!board.isFinished()) {
             if(counter % 2 == 0) {
 
-                int row, col;
-                System.out.println("Enter row:");
-                row = scanner.nextInt();
-                System.out.println("Enter column:");
-                col = scanner.nextInt();
-                board.makeMove('o', row, col);
+                int pos;
+                System.out.println("Enter position:");
+                pos = scanner.nextInt();
+                board.makeMove(1, pos);
 
             } else {
                 System.out.println("Computer's move:");
                 Move bestMove = minmax.getBestMove(board.getBoard());
-                board.makeMove('x', bestMove.row, bestMove.col);
+                board.makeMove(2, bestMove.pos);
 
             }
             board.printBoard();
