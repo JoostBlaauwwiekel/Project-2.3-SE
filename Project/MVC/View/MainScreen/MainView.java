@@ -1,4 +1,4 @@
-package MainScreen;
+package Project.MVC.View.MainScreen;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

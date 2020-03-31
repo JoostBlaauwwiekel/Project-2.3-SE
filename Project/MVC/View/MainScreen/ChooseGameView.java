@@ -1,6 +1,5 @@
-package MainScreen;
+package Project.MVC.View.MainScreen;
 
-import Project.TicTacToe_Joost.TicTacToe;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

@@ -6,18 +6,11 @@ import Project.GameModules.TicTacToeGame.TicTacToeBoard;
 
 public class GameTest {
     public static void main(String[] args){
-        // tictactoeTests();
-        reversiTests();
-    }
-
-    private static void tictactoeTests(){
         // Make tic tac toe board and print it
         System.out.println("Tic tac toe board:");
         TicTacToeBoard tictactoeBoard = new TicTacToeBoard();
         tictactoeBoard.printBoard();
-    }
 
-    private static void reversiTests(){
         // Make reversi board + gamelogic and print it
         System.out.println("Reversi board:");
         ReversiBoard reversiBoard = new ReversiBoard();
@@ -49,16 +42,9 @@ public class GameTest {
 
         // Print valid moves for test case for black player
         reversiBoard.setTestBoard2();
-        System.out.print("Current valid moves for black are: ");
         for(int move : reversiLogic.getMoves(2)){
-            System.out.print(move + " ");
-            // reversiBoard.setBoardPos(move, 3);
+            reversiBoard.setBoardPos(move, 3);
         }
-        System.out.println(".");
-        reversiBoard.printBoard();
-
-        // Make a move
-        reversiLogic.doMove(32, 2);
         reversiBoard.printBoard();
     }
 }
