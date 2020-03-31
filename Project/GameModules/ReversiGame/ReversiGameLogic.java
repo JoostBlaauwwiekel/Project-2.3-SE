@@ -5,7 +5,6 @@ import Project_SE_Periode3.Project.GameFramework.GameLogic;
 import java.util.ArrayList;
 
 public class ReversiGameLogic extends GameLogic {
-
     @Override
     public ArrayList<Integer> getMoves(int player){
         ArrayList<Integer> result = new ArrayList<>();
@@ -20,12 +19,21 @@ public class ReversiGameLogic extends GameLogic {
                 }
             }
         }
+
         return result;
     }
 
     @Override
     public void doMove(int pos, int player) {
-
+        // when this method is called we already assume the move is valid
+        // set board pos to player
+        // check directions, if true: flipDir()
+        getBoard().setBoardPos(pos, player);
+        for(int dir=0; dir < 8; dir++){
+            if(checkDir(dir, pos, player)){
+                flipDir(pos, dir, player);
+            }
+        }
     }
 
     @Override
@@ -33,26 +41,7 @@ public class ReversiGameLogic extends GameLogic {
         return 0;
     }
 
-    /**
-     * Used to call checkDir function without having to pass a boolean.
-     * See next method for more.
-     */
-    public boolean checkDir(int dir, int pos, int color){
-        return checkDir(dir, pos, color, false);
-    }
-
-    /**
-     * This is a recursive method that checks if there are any flippable discs in a specific direction of a position.
-     * This is used to determine if a move is valid.
-     * @param dir a integer representing a direction that needs to be checked.
-     * @param pos integer of the position that needs to be checked.
-     * @param color integer representing the color of the player we want to check for.
-     * @param flipped boolean indicating if a flippable disc has been found.
-     * @return a boolean, true = there is a flippable disc in this direction,
-     *                    false = there is no flippable disc in this direction.
-     */
-    private boolean checkDir(int dir, int pos, int color, boolean flipped){
-        // Calculate position of target to check.
+    private int getTarget(int pos, int dir){
         int target = 0;
         switch(dir){
             case 0:
@@ -80,7 +69,40 @@ public class ReversiGameLogic extends GameLogic {
                 target = pos - 1;
                 break;
         }
+        return target;
+    }
 
+    private void flipDir(int pos, int dir, int player){
+        // if target != player:
+        //      flip;
+        //      flipDir but new pos is current target
+        int target = getTarget(pos, dir);
+        int targetState = getBoard().getBoardPos(target);
+        if(targetState == 3 - player){
+            getBoard().setBoardPos(target, player);
+            flipDir(target, dir, player);
+        }
+    }
+
+    /**
+     * Used to call checkDir function without having to pass a boolean.
+     * See next method for more.
+     */
+    public boolean checkDir(int dir, int pos, int player){
+        return checkDir(dir, pos, player, false);
+    }
+
+    /**
+     * This is a recursive method that checks if there are any flippable discs in a specific direction of a position.
+     * This is used to determine if a move is valid.
+     * @param dir a integer representing a direction that needs to be checked.
+     * @param pos integer of the position that needs to be checked.
+     * @param player integer representing the color of the player we want to check for.
+     * @param flipped boolean indicating if a flippable disc has been found.
+     * @return a boolean, true = there is a flippable disc in this direction,
+     *                    false = there is no flippable disc in this direction.
+     */
+    private boolean checkDir(int dir, int pos, int player, boolean flipped){
         // Filtering out vertical edge cases.
         int vEdge = pos % 8;
         switch(vEdge){
@@ -110,12 +132,13 @@ public class ReversiGameLogic extends GameLogic {
         }
 
         // Recursive part that checks if there is a flippable disc in direction.
+        int target = getTarget(pos, dir);
         int targetState = getBoard().getBoardPos(target);
-        if(targetState == 3 - color){
-            if(checkDir(dir, target, color, true)){
+        if(targetState == 3 - player){
+            if(checkDir(dir, target, player, true)){
                 return true;
             }
-        } else if(targetState == color && flipped){
+        } else if(targetState == player && flipped){
             return true;
         }
 

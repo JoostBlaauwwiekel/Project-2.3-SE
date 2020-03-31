@@ -24,6 +24,7 @@ public class ReversiBoard extends GameBoard {
 
     @Override
     public void printBoard() {
+	System.out.println("---------------------");
         int i = 0;
         for(int row=0; row < 8; row++){
             // Print the position of the first spot in the gameboard, so it's easier to identify the positions
