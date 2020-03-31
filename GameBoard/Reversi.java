@@ -1,4 +1,4 @@
-package GameBoard;
+package Project_SE_Periode3.GameBoard;
 
 public class Reversi extends GameBoard {
     public Reversi() {

@@ -1,6 +1,6 @@
-package MainScreen;
+package Project_SE_Periode3.MainScreen;
 
-import TicTacToe_Joost.TicTacToe;
+import Project_SE_Periode3.TicTacToe_Joost.TicTacToe;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

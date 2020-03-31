@@ -1,4 +1,4 @@
-package Project.GameFramework;
+package Project_SE_Periode3.Project.GameFramework;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Abstract class that should be used for game logic.
  */
 public abstract class GameLogic {
+
     private GameBoard board;
 
     /**

@@ -1,6 +1,6 @@
-package Project.GameModules.ReversiGame;
+package Project_SE_Periode3.Project.GameModules.ReversiGame;
 
-import Project.GameFramework.GameBoard;
+import Project_SE_Periode3.Project.GameFramework.GameBoard;
 
 public class ReversiBoard extends GameBoard {
 

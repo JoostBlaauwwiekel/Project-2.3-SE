@@ -1,7 +1,8 @@
-package Project.GameFramework.Tests;
+package Project_SE_Periode3.Project.GameFramework.Tests;
 
-import Project.GameModules.ReversiGame.*;
-import Project.GameModules.TicTacToeGame.*;
+import Project_SE_Periode3.Project.GameModules.ReversiGame.ReversiBoard;
+import Project_SE_Periode3.Project.GameModules.ReversiGame.ReversiGameLogic;
+import Project_SE_Periode3.Project.GameModules.TicTacToeGame.TicTacToeBoard;
 
 public class GameTest {
     public static void main(String[] args){

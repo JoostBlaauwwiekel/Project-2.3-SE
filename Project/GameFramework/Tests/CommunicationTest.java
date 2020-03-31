@@ -1,7 +1,7 @@
-package Project.GameFramework.Tests;
+package Project_SE_Periode3.Project.GameFramework.Tests;
 
-import Project.GameFramework.CommunicationChannel;
-import Project.GameModules.GameCommunicationChannel;
+import Project_SE_Periode3.Project.GameFramework.CommunicationChannel;
+import Project_SE_Periode3.Project.GameModules.GameCommunicationChannel;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -10,7 +10,8 @@ import java.util.Scanner;
 public class CommunicationTest {
 
     public static void main(String[] args){
-        CommunicationChannel channel = new GameCommunicationChannel("2");
+        CommunicationChannel channel = new GameCommunicationChannel();
+        channel.setUsername("2");
         // Don't forget to start the server before running this program! Thanks.
         try {
             while(true) {

@@ -1,4 +1,4 @@
-package MainScreen;
+package Project_SE_Periode3.MainScreen;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

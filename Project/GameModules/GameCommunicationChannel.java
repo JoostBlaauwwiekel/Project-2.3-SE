@@ -1,6 +1,6 @@
-package Project.GameModules;
+package Project_SE_Periode3.Project.GameModules;
 
-import Project.GameFramework.CommunicationChannel;
+import Project_SE_Periode3.Project.GameFramework.CommunicationChannel;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,7 +13,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
 
     // Declare constants
     private final static int PORT = 7789;
-    private final static String IP_ADDRESS = "localhost";
+    private String ipAddress = "localhost";
 
     // Declare the networking variables
     private Socket socket;
@@ -28,36 +28,9 @@ public class GameCommunicationChannel implements CommunicationChannel {
     private String username;
 
     /**
-     * The constructor for the class GameCommunicationChannel, here the initial connection with the server will
-     * be created. As well as the input and output channels. The user enters a username when creating a
-     * GameCommunicationChannel object, which will serve as their login name once they log onto the server.
-     *
-     * @param username the username which will be used in the server for games and tournaments.
+     * The default constructor for the class GameCommunicationChannel.
      */
-    public GameCommunicationChannel(String username){
-        try {
-            // Create a socket with address: IP_ADDRESS and with port: PORT
-            this.username = username;
-            socket = new Socket(IP_ADDRESS, PORT);
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream(), true);
-            skipLines(2);
-            login(this.username);
-
-            // Declare all the lists. Initialize the availableLists list.
-            availableLists = new ArrayList<>();
-            gameSet = new HashSet<>();
-            playerSet = new HashSet<>();
-
-            // Acquire a game list and a player list from the server. Add the acquired data to the class' lists.
-            acquireLists();
-            acquireSet("gamelist", gameSet);
-            acquireSet("playerlist", playerSet);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
+    public GameCommunicationChannel(){}
 
     /**
      * The acquireLists() method, will query the server for all possible lists that it contains. All possible lists
@@ -136,6 +109,30 @@ public class GameCommunicationChannel implements CommunicationChannel {
             return line;
     }
 
+    public void startServerAndPrepareLists(){
+        // Declare all the lists. Initialize the availableLists list.
+        availableLists = new ArrayList<>();
+        gameSet = new HashSet<>();
+        playerSet = new HashSet<>();
+
+        try {
+            // Create a socket with address: IP_ADDRESS and with port: PORT
+            socket = new Socket(ipAddress, PORT);
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            output = new PrintWriter(socket.getOutputStream(), true);
+            skipLines(2);
+            login(this.username);
+
+            // Acquire a game list and a player list from the server. Add the acquired data to the class' lists.
+            acquireLists();
+            acquireSet("gamelist", gameSet);
+            acquireSet("playerlist", playerSet);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * The readLine() method, reads a line from the server and returns the read line in String format.
      *
@@ -166,6 +163,23 @@ public class GameCommunicationChannel implements CommunicationChannel {
         playerSet.clear();
         acquireSet("playerlist", playerSet);
         return playerSet;
+    }
+
+    /**
+     * This method lets you change the IP address of the gameServer.
+     *
+     * @param ipAddress the corresponding IP address.
+     */
+    public void setIpAddress(String ipAddress){
+        this.ipAddress = ipAddress;
+    }
+
+    /**
+     * THis method lets you change the username that will be used on the server.
+     * @param username the username which will be used on the server.
+     */
+    public void setUsername(String username){
+        this.username = username;
     }
 
     /**

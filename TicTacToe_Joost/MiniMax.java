@@ -6,7 +6,7 @@
  * @version     1.0
  */
 
-package TicTacToe_Joost;
+package Project_SE_Periode3.TicTacToe_Joost;
 
 public class MiniMax {
 
@@ -116,11 +116,11 @@ public class MiniMax {
             for(int pos = 0; pos < 9; pos++) {
                 if(board[pos] == 0) {
 
-                board[pos] = player;
+                    board[pos] = player;
 
-                best = Math.max(best, miniMax(board, depth + 1, false));
+                    best = Math.max(best, miniMax(board, depth + 1, false));
 
-                board[pos] = 0;
+                    board[pos] = 0;
 
                 }
             }

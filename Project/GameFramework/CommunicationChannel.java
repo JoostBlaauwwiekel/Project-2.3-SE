@@ -1,9 +1,15 @@
-package Project.GameFramework;
+package Project_SE_Periode3.Project.GameFramework;
 
 import java.io.IOException;
 import java.util.HashSet;
 
 public interface CommunicationChannel {
+
+    /**
+     * This method should set up a socket connection with the server. Once the connection has been established, then
+     * the necessary lists should be initialized
+     */
+    public void startServerAndPrepareLists();
 
     /**
      * This method should read a line from the server and returns it in a String format.
@@ -27,6 +33,21 @@ public interface CommunicationChannel {
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
     public HashSet<String> getPlayerSet() throws IOException;
+
+    /**
+     * This method should assign the ipAddress passed by the user to the local variable. With this method, the
+     * IP address can be changed dynamically.
+     *
+     * @param ipAddress the corresponding IP address.
+     */
+    public void setIpAddress(String ipAddress);
+
+    /**
+     * This method should assign the given username passed by the user to the corresponding local variable.
+     *
+     * @param username the username stated by the user.
+     */
+    public void setUsername(String username);
 
     /**
      * This method should be used to skip the readLine() method, x times. As indicated by the times parameter.

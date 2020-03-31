@@ -1,4 +1,4 @@
-package Project.GameFramework;
+package Project_SE_Periode3.Project.GameFramework;
 
 public abstract class GameBoard {
 

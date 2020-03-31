@@ -1,6 +1,6 @@
-package Project.GameModules.TicTacToeGame;
+package Project_SE_Periode3.Project.GameModules.TicTacToeGame;
 
-import Project.GameFramework.GameLogic;
+import Project_SE_Periode3.Project.GameFramework.GameLogic;
 
 import java.util.ArrayList;
 
