@@ -1,4 +1,4 @@
-package Project_SE_Periode3.Project.MVC.View;
+package Project.MVC.View;
 
 public interface AbstractView {
 }

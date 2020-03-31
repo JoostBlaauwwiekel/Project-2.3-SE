@@ -1,4 +1,4 @@
-package Project_SE_Periode3.Project.GameFramework;
+package Project.GameFramework;
 
 public interface GameAI {
 

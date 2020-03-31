@@ -1,6 +1,6 @@
-package Project_SE_Periode3.Project.GameModules;
+package Project.GameModules;
 
-import Project_SE_Periode3.Project.GameFramework.CommunicationChannel;
+import Project.GameFramework.CommunicationChannel;
 
 import java.io.*;
 import java.net.Socket;

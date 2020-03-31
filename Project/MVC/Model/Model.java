@@ -1,6 +1,6 @@
-package Project_SE_Periode3.Project.MVC.Model;
+package Project.MVC.Model;
 
-import Project_SE_Periode3.Project.GameModules.GameData;
+import Project.GameModules.GameData;
 
 public class Model {
 

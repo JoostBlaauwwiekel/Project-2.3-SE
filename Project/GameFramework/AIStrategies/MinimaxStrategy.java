@@ -1,6 +1,6 @@
-package Project_SE_Periode3.Project.GameFramework.AIStrategies;
+package Project.GameFramework.AIStrategies;
 
-import Project_SE_Periode3.Project.GameFramework.GameAI;
+import Project.GameFramework.GameAI;
 
 public abstract class MinimaxStrategy implements GameAI {
 
