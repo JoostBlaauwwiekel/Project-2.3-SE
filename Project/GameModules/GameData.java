@@ -6,8 +6,8 @@ import Project.GameFramework.GameLogic;
 import Project.GameModules.ReversiGame.ReversiGameLogic;
 import Project.GameModules.TicTacToeGame.TicTacToeGameLogic;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 public class GameData {
 
@@ -26,7 +26,7 @@ public class GameData {
         this.gameMap.put("Reversi", new ReversiGameLogic());
     }
 
-    public void registerToServer(String username, boolean playLocal){
+    private void registerToServer(String username, boolean playLocal){
         communicationChannel.setUsername(username);
         if(playLocal)
             communicationChannel.setIpAddress("localhost");
@@ -38,12 +38,26 @@ public class GameData {
         return gameMap.get(gameName);
     }
 
-    public void playGame(String gameName){
+    public void playGame(String username, String gameName, boolean playLocal){
         GameLogic game = gameMap.get(gameName);
         GameBoard board = game.getBoard();
 
-        //TODO implement the other features such that a game can be played
+        registerToServer(username, playLocal);
+        communicationChannel.startServerAndPrepareLists();
+
+        System.out.println("Wait for the server to respond.... (don't forgot to subscribe with a puTTy client!)");
+        System.out.println("Wait until 'move' shows up.");
+        try {
+            while (game.gameOver() < 0) {
+                if (communicationChannel.readLines().contains("YOURTURN")) {
+                    //TODO implement the game logic, ensure that the server receives a move.
+
+                    // use: communicationChannel.move();
+                }
+            }
+        }
+        catch(IOException ie){
+            ie.printStackTrace();
+        }
     }
-
-
 }
