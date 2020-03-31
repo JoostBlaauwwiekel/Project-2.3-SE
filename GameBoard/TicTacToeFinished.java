@@ -1,4 +1,4 @@
-package Project_SE_Periode3.GameBoard;
+package GameBoard;
 
 public class TicTacToeFinished implements WinBehaviour {
     int counter = 0;

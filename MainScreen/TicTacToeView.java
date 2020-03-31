@@ -1,4 +1,4 @@
-package Project_SE_Periode3.MainScreen;
+package MainScreen;
 
 import javafx.geometry.Pos;
 import javafx.scene.Parent;

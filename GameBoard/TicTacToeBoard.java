@@ -1,4 +1,4 @@
-package Project_SE_Periode3.GameBoard;
+package GameBoard;
 
 public class TicTacToeBoard extends GameBoard {
     int counter = 0;

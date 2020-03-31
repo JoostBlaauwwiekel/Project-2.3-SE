@@ -1,4 +1,4 @@
-package Project_SE_Periode3.GameBoard;
+package GameBoard;
 
 public class TicTacToe extends GameBoard {
     public TicTacToe() {
