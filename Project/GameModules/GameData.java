@@ -1,10 +1,10 @@
-package Project_SE_Periode3.Project.GameModules;
+package Project.GameModules;
 
-import Project_SE_Periode3.Project.GameFramework.CommunicationChannel;
-import Project_SE_Periode3.Project.GameFramework.GameBoard;
-import Project_SE_Periode3.Project.GameFramework.GameLogic;
-import Project_SE_Periode3.Project.GameModules.ReversiGame.ReversiGameLogic;
-import Project_SE_Periode3.Project.GameModules.TicTacToeGame.TicTacToeGameLogic;
+import Project.GameFramework.CommunicationChannel;
+import Project.GameFramework.GameBoard;
+import Project.GameFramework.GameLogic;
+import Project.GameModules.ReversiGame.ReversiGameLogic;
+import Project.GameModules.TicTacToeGame.TicTacToeGameLogic;
 
 import java.util.HashMap;
 import java.util.Map;

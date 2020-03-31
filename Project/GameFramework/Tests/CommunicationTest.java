@@ -1,7 +1,7 @@
-package Project_SE_Periode3.Project.GameFramework.Tests;
+package Project.GameFramework.Tests;
 
-import Project_SE_Periode3.Project.GameFramework.CommunicationChannel;
-import Project_SE_Periode3.Project.GameModules.GameCommunicationChannel;
+import Project.GameFramework.CommunicationChannel;
+import Project.GameModules.GameCommunicationChannel;
 
 import java.io.IOException;
 import java.util.HashSet;

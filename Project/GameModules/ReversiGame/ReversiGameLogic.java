@@ -1,6 +1,6 @@
-package Project_SE_Periode3.Project.GameModules.ReversiGame;
+package Project.GameModules.ReversiGame;
 
-import Project_SE_Periode3.Project.GameFramework.GameLogic;
+import Project.GameFramework.GameLogic;
 
 import java.util.ArrayList;
 

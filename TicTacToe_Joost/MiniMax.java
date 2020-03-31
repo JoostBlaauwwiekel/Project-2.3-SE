@@ -6,7 +6,7 @@
  * @version     1.0
  */
 
-package Project_SE_Periode3.TicTacToe_Joost;
+package TicTacToe_Joost;
 
 public class MiniMax {
 

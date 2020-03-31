@@ -9,7 +9,7 @@
  * @author      Joost Blaauwwiekel
  * @version     1.0
  */
-package Project_SE_Periode3.TicTacToe_Joost;
+package TicTacToe_Joost;
 
 import java.util.Scanner;
 
