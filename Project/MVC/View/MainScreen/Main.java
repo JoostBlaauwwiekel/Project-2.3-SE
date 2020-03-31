@@ -1,18 +1,8 @@
-package MainScreen;
+package Project.MVC.View.MainScreen;
 
-import Project.TicTacToe_Joost.TicTacToe;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
 
@@ -25,7 +15,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         window = stage;
         // Set de titel van de window
-        window.setTitle("Main screen");
+        window.setTitle("StartApp screen");
         // Wanneer er op het kruisje word gedrukt. Laat dan de closeApplication() methode
         MainView mainView = new MainView(window);
 
@@ -43,8 +33,6 @@ public class Main extends Application {
     /**
      *  Als men op deny drukt return hij false, als men op accept druk return hij true
      */
-
-
     public static void main(String[] args) {
         launch(args);
     }

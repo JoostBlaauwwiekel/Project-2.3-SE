@@ -5,6 +5,7 @@ import Project.GameFramework.GameLogic;
 import java.util.ArrayList;
 
 public class ReversiGameLogic extends GameLogic {
+
     @Override
     public ArrayList<Integer> getMoves(int player){
         ArrayList<Integer> result = new ArrayList<>();
@@ -19,7 +20,6 @@ public class ReversiGameLogic extends GameLogic {
                 }
             }
         }
-
         return result;
     }
 
@@ -52,7 +52,8 @@ public class ReversiGameLogic extends GameLogic {
         return 0;
     }
 
-    private int getTarget(int pos, int dir){
+    private int getTarget(int dir, int pos){
+        // Calculate position of target.
         int target = 0;
         switch(dir){
             case 0:
@@ -93,11 +94,11 @@ public class ReversiGameLogic extends GameLogic {
     }
 
     /**
-     * Used to call checkDir function without having to pass a boolean.
+     * Method used to call checkDir function without having to pass a boolean.
      * See next method for more.
      */
-    public boolean checkDir(int dir, int pos, int player){
-        return checkDir(dir, pos, player, false);
+    public boolean checkDir(int dir, int pos, int color){
+        return checkDir(dir, pos, color, false);
     }
 
     /**
@@ -105,12 +106,12 @@ public class ReversiGameLogic extends GameLogic {
      * This is used to determine if a move is valid.
      * @param dir a integer representing a direction that needs to be checked.
      * @param pos integer of the position that needs to be checked.
-     * @param player integer representing the color of the player we want to check for.
+     * @param color integer representing the color of the player we want to check for.
      * @param flipped boolean indicating if a flippable disc has been found.
      * @return a boolean, true = there is a flippable disc in this direction,
      *                    false = there is no flippable disc in this direction.
      */
-    private boolean checkDir(int dir, int pos, int player, boolean flipped){
+    public boolean checkDir(int dir, int pos, int player, boolean flipped){
         // Filtering out vertical edge cases.
         int vEdge = pos % 8;
         switch(vEdge){
@@ -140,7 +141,7 @@ public class ReversiGameLogic extends GameLogic {
         }
 
         // Recursive part that checks if there is a flippable disc in direction.
-        int target = getTarget(pos, dir);
+        int target = getTarget(dir, pos);
         int targetState = getBoard().getBoardPos(target);
         if(targetState == 3 - player){
             if(checkDir(dir, target, player, true)){

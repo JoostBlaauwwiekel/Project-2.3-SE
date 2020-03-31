@@ -17,6 +17,6 @@ public class TicTacToeGameLogic extends GameLogic {
 
     @Override
     public int gameOver() {
-        return 0;
+        return -1;
     }
 }

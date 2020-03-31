@@ -1,4 +1,4 @@
-package MainScreen;
+package Project.MVC.View.MainScreen;
 
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
