@@ -2,59 +2,68 @@ package Project.GameFramework.Tests;
 
 import Project.GameFramework.CommunicationChannel;
 import Project.GameModules.GameCommunicationChannel;
+import Project.GameModules.TicTacToeGame.TicTacToeBoard;
+import javafx.scene.chart.ScatterChart;
+import Project.GameFramework.GameBoard;
+
 import Project.TicTacToe_Joost.*;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class CommunicationTest {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
         channel.setUsername("2");
+        HashMap<String, String> map;
+        Scanner scanner = new Scanner(System.in);
         // Don't forget to start the server before running this program! Thanks.
+        channel.startServerAndPrepareLists();
+        //Board board = new Board();
+        TicTacToeBoard board = new TicTacToeBoard();
+        MiniMax miniMax = new MiniMax();
+
+        channel.subscribe("Tic-tac-toe");
+        channel.challenge("joost", "Tic-tac-toe");
+
+        while(true) {
+            String s = channel.readLine();
+            //System.out.println(s);
+            if(s.contains("MOVE")) {
+                map = getMap(s);
+                if (map.get("MOVE") != null) {
+                    System.out.println(map.get("MOVE"));
+                    board.setBoardPos(Integer.parseInt(map.get("MOVE")), 1);
+                }
+            }
+            
+            if(s.contains("YOURTURN")){
+                int move = miniMax.getBestMove(board.getBoard());
+                channel.move(move);
+                board.setBoardPos(move, 2);
+            }
+
+            board.printBoard();
+        }
+    }
+
+    public static HashMap<String, String> getMap(String s) {
+        HashMap<String, String> myMap = new HashMap<String, String>();
+
+            s = s.replace("\"", "");
         try {
-            while(true) {
-                Thread.sleep(3000);
-                HashSet<String> playerList = channel.getPlayerSet();
-                System.out.println("----- Testing Information -----");
-                int i = 1;
-                for (String player : playerList) {
-                    System.out.println("Player #" + i);
-                    System.out.println(player);
-                    System.out.println();
-                    i++;
-                }
+            s = s.substring(s.indexOf("{") + 1);
+            s = s.substring(0, s.indexOf("}"));
+        } catch (StringIndexOutOfBoundsException e) { }
+        s = s.replaceAll("\\s+","");
+        String[] pairs = s.split(",");
 
-                HashSet<String> gameList = channel.getGameSet();
-                int j = 1;
-                for (String game : gameList) {
-                    System.out.println("Game #" + j);
-                    System.out.println(game);
-                    System.out.println();
-                    j++;
-                }
-                break;
-            }
-
-            // Here is where the magic happens
-            channel.subscribe("Reversi");
-            Scanner scanner = new Scanner(System.in);
-            String line;
-            System.out.println("Wait for the server to respond.... (don't forgot to subscribe with a puTTy client!)");
-            System.out.println("Wait until 'move' shows up.");
-            while(true){
-                if(channel.readLines().contains("YOURTURN")){
-                    System.out.println("S: move: ");
-                    line = scanner.nextLine();
-                    channel.move(Integer.parseInt(line));
-                }
-            }
+        for (int i=0;i<pairs.length - 1;i++) {
+            String pair = pairs[i];
+            String[] keyValue = pair.split(":");
+            myMap.put(keyValue[0], keyValue[1]);
         }
-        catch(IOException ie){ }
-        catch(InterruptedException ie){
-            ie.printStackTrace();
-        }
+        return myMap;
     }
 }

@@ -3,7 +3,7 @@ package Project.GameFramework;
 public abstract class GameBoard {
 
     // This variable stores all states within the gameBoard
-    private int[] board;
+    public int[] board;
 
     /**
      * This method should initialise the gameBoard.
@@ -16,12 +16,25 @@ public abstract class GameBoard {
     public abstract void printBoard();
 
     /**
+     * This method checks if a position on the
+     * board is occupied.
+     *
+     * @param pos       position on the gameboard
+     * @return          return whether a position is occupied or not
+     */
+    public boolean isValid(int pos) {
+        return board[pos] == 0;
+    }
+
+    /**
      * This method is used to set the state of a position within the board
      * @param pos the position within the board that will be changed.
      * @param state the state it should be changed to.
      */
     public void setBoardPos(int pos, int state){
-        board[pos] = state;
+        if(isValid(pos)) {
+            board[pos] = state;
+        }
     }
 
     /**
