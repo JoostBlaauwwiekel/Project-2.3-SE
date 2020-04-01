@@ -20,6 +20,15 @@ public interface CommunicationChannel {
     public String readLine() throws IOException;
 
     /**
+     * This method should read a line from the server, format the line using an internal format function and return
+     * the result in a String format.
+     *
+     * @return the formatted line from the server.
+     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
+     */
+    public String readFormattedLine() throws IOException;
+
+    /**
      * This method should return the game set, containing all games that can be played on the server.
      *
      * @return a HashSet which contains Strings, each item represents a game that can be played.
