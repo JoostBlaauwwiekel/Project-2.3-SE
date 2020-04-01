@@ -12,10 +12,6 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
 
     @Override
     public int getBestMove(GameBoard board, int player) {
-        // bestEval = -infinity;
-        // for move : validMoves:
-        //      eval = computeAlgorithm
-        //          if eval > bestEval
         ReversiBoard reversiBoard = (ReversiBoard) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(reversiBoard);
@@ -37,8 +33,8 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
-            int eval = miniMax(newBoard, 2, isMax);
-            System.out.println("Move: " + move + " Eval: " + eval);
+            int eval = miniMax(newBoard, 6, isMax);
+//            System.out.println("Move: " + move + " Eval: " + eval);
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
                 bestMove = move;
@@ -50,33 +46,53 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
 
     @Override
     public int miniMax(GameBoard board, int depth, boolean isMax) {
-        // basic test:
-        // bestMove = -infinity
-        // for move : validMoves:
-        //      if evaluate(move) > bestmove
-        //          bestMove = move
-        // return bestMove
+        //TODO: Deze hele methode is echt heel slecht door gebrek aan hersencellen maar ik fix het later
 
-        // if depth == 0 or board.finished;
-        //      return evaluate(board)
-        //
-        // if isMax
-        //      bestEval = -infinity
-        //      for move: validMoves:
-        //         newBoard = new ReversiBoard()
-        //         newBoard.setBoard(board.getBoard())
-        //         gameInstance = new ReversiGameLogic.setBoard(newBoard)
-        //         gameInstance.doMove(move)
-        //         eval = miniMax(newBoard, depth-1, false)
-        //         if eval > bestEval:
-        //             bestEval = eval
-        //          return maxEval
-        // else:
-        //     andersom
+        int player;
+        int bestEval;
+        if(isMax){
+            bestEval = -100;
+            player = 1;
+        } else {
+            bestEval = 100;
+            player = 2;
+        }
 
-//        ReversiGameLogic logic = new ReversiGameLogic();
-//        ReversiBoard reversiBoard = (ReversiBoard) board;
-//        logic.setBoard(reversiBoard);
-        return evaluate(board);
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+
+        if(depth == 0 || logic.getMoves(player).size() == 0){
+            return evaluate(board);
+        }
+
+        if(isMax){
+            for(int move : logic.getMoves(player)){
+                ReversiBoard newBoard = new ReversiBoard();
+                newBoard.setBoard(board.getBoard());
+                ReversiGameLogic tempGame = new ReversiGameLogic();
+                tempGame.setBoard(newBoard);
+                tempGame.doMove(move, player);
+                int eval = miniMax(newBoard, depth-1, false);
+//                System.out.println("Depth: " + depth + " Move: " + move + " Eval: " + eval);
+                if(eval > bestEval){
+                    bestEval = eval;
+                }
+            }
+            return bestEval;
+        } else {
+            for(int move : logic.getMoves(player)){
+                ReversiBoard newBoard = new ReversiBoard();
+                newBoard.setBoard(board.getBoard());
+                ReversiGameLogic tempGame = new ReversiGameLogic();
+                tempGame.setBoard(newBoard);
+                tempGame.doMove(move, player);
+                int eval = miniMax(newBoard, depth-1, true);
+//                System.out.println("Depth: " + depth + " Move: " + move + " Eval: " + eval);
+                if(eval < bestEval){
+                    bestEval = eval;
+                }
+            }
+            return bestEval;
+        }
     }
 }
