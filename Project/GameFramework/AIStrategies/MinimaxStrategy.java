@@ -1,6 +1,7 @@
 package Project.GameFramework.AIStrategies;
 
 import Project.GameFramework.GameAI;
+import Project.GameFramework.GameBoard;
 
 public abstract class MinimaxStrategy implements GameAI {
 
@@ -11,7 +12,7 @@ public abstract class MinimaxStrategy implements GameAI {
      * @param board the board about to be checked.
      * @return a given value which indicates the state of the board.
      */
-    public abstract int evaluate(int[] board);
+    public abstract int evaluate(GameBoard board);
 
     /**
      * This method should iterate the whole game board and it should determine which move currently is the best move
@@ -20,14 +21,14 @@ public abstract class MinimaxStrategy implements GameAI {
      *
      * @return the best move.
      */
-    public abstract int getBestMove(int[] board);
+    public abstract int getBestMove(GameBoard board, int player);
 
     /**
      * This method calls the miniMax() method. The main logic of the AI will be implemented there.
      *
      * @return the move that has been determined to be the best.
      */
-    public int computeAlgorithm(int[] board, int depth){
+    public int computeAlgorithm(GameBoard board, int depth){
         return miniMax(board, depth, false);
     }
 
@@ -40,5 +41,5 @@ public abstract class MinimaxStrategy implements GameAI {
      * @param isMax true when the current player is the maximizer, false when the current player is the minimizer.
      * @return the score for the best move.
      */
-    public abstract int miniMax(int[] board, int depth, boolean isMax);
+    public abstract int miniMax(GameBoard board, int depth, boolean isMax);
 }

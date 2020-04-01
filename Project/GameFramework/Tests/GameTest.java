@@ -2,6 +2,7 @@ package Project.GameFramework.Tests;
 
 import Project.GameModules.ReversiGame.ReversiBoard;
 import Project.GameModules.ReversiGame.ReversiGameLogic;
+import Project.GameModules.ReversiGame.ReversiMiniMaxStrategy;
 import Project.GameModules.TicTacToeGame.TicTacToeBoard;
 
 public class GameTest {
@@ -43,15 +44,19 @@ public class GameTest {
         System.out.println(".");
         reversiBoard.printBoard();
 
-        // Test game
+        // Test game with AI
         System.out.println("ACTUAL AI TOURNAMENT: ");
         reversiBoard.initBoard();
         reversiBoard.printBoard();
+
+        ReversiMiniMaxStrategy AI = new ReversiMiniMaxStrategy();
         int turn = 1;
         while(true){
             System.out.println("It's " + turn + "'s turn.");
 
-            reversiLogic.doMove(reversiLogic.getMoves(turn).get(0), turn);
+            int bestMove = AI.getBestMove(reversiBoard, turn);
+            System.out.println("Player " + turn + " made move " + bestMove);
+            reversiLogic.doMove(bestMove, turn);
             reversiBoard.printBoard();
             turn = 3 - turn;
 

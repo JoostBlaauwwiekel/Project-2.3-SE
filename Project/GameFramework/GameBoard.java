@@ -46,6 +46,9 @@ public abstract class GameBoard {
      * @param newBoard a int array that represents the new game board.
      */
     public void setBoard(int[] newBoard){
-        board = newBoard;
+        board = new int[newBoard.length];
+        for(int i=0; i<newBoard.length; i++){
+            board[i] = newBoard[i];
+        }
     }
 }
