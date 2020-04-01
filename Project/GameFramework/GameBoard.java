@@ -32,9 +32,7 @@ public abstract class GameBoard {
      * @param state the state it should be changed to.
      */
     public void setBoardPos(int pos, int state){
-        if(isValid(pos)) {
-            board[pos] = state;
-        }
+        board[pos] = state;
     }
 
     /**
