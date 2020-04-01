@@ -1,11 +1,15 @@
 package Project.MVC.View.MainScreen;
-
+import GameBoard.TicTacToe;
+import Project.GameModules.TicTacToeGame.TicTacToeBoard;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -32,6 +36,7 @@ public class TicTacToeView extends BorderPane {
         FlowPane centerLayout = new FlowPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #524D4E;");
+        centerLayout.setMaxSize(300, 300);
 
         Label gameMode = new Label("lmao");
         gameMode.setTextFill(Color.WHITE);
@@ -46,6 +51,26 @@ public class TicTacToeView extends BorderPane {
             gameMode.setText("Player VS Server");
         }
 
+        //Maak tictactoe board
+        TicTacToeBoard board = new TicTacToeBoard();
+        //Maak array met buttons
+        Button[] tiles = new Button[9];
+        //For loop geeft elke button eigenschappen
+        for(int i = 0; i < 9; i++){
+            tiles[i] = new Button("");
+            tiles[i].setMinSize(100, 100);
+            Button btn = tiles[i];
+            //Zorgt voor text op de button nadat deze geklikt is
+            btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    btn.setText("X");
+                }
+            });
+        }
+
+
+
         Button exitGame = new Button("Exit game");
 
         exitGame.setOnAction(e -> {
@@ -54,12 +79,10 @@ public class TicTacToeView extends BorderPane {
 
         sidebar.getChildren().addAll(wins, exitGame);
         topBar.getChildren().addAll(gameMode);
-        centerLayout.getChildren().add(placeholder);
+        centerLayout.getChildren().addAll(tiles);
 
         setCenter(centerLayout);
         setLeft(sidebar);
         setTop(topBar);
     }
-
-
 }
