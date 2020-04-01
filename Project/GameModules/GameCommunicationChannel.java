@@ -155,9 +155,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
     public String readFormattedLine() throws IOException{
-        String line = input.readLine();
-        System.out.println(line);
-        return formatServerMessage(line);
+        return formatServerMessage(input.readLine());
     }
 
     /**
