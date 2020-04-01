@@ -3,6 +3,7 @@ package Project.GameModules.TicTacToeGame;
 import Project.GameFramework.GameBoard;
 
 public class TicTacToeBoard extends GameBoard {
+    private int[] board;
 
     public TicTacToeBoard(){
         initBoard();
@@ -15,6 +16,25 @@ public class TicTacToeBoard extends GameBoard {
             defaultBoard[0] = 0;
         }
         setBoard(defaultBoard);
+        this.board = getBoard();
+    }
+
+    @Override
+    public void setBoardPos(int pos, int state) {
+        if(isValid(pos)) {
+            board[pos] = state;
+        }
+    }
+
+    /**
+     * This method checks if a position on the
+     * board is occupied.
+     *
+     * @param pos       position on the gameboard
+     * @return          return whether a position is occupied or not
+     */
+    public boolean isValid(int pos) {
+        return board[pos] == 0;
     }
 
     @Override
@@ -27,5 +47,9 @@ public class TicTacToeBoard extends GameBoard {
         System.out.println("-------------");
         System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
         System.out.println("-------------");
+    }
+
+    public int[] getTicTacToeBoard() {
+        return board;
     }
 }
