@@ -27,7 +27,7 @@ public class CommunicationTest {
         TicTacToeAI ai = new TicTacToeAI();
 
         channel.subscribe("Tic-tac-toe");
-        channel.challenge("BITM", "Tic-tac-toe");
+        channel.challenge("joost", "Tic-tac-toe");
 
         while (true) {
             String message = channel.readFormattedLine();
@@ -36,12 +36,14 @@ public class CommunicationTest {
                     int move = ai.getBestMove(board.getBoard());
                     channel.move(move);
                     board.setBoardPos(move, 2);
+                    System.out.println(move);
                 } else if (message.contains("previous move") && !message.contains("YOU")) {
                     int opponentHisMove = Integer.parseInt(message.charAt(message.length() - 1) + "");
                     System.out.println("opponent's move: " + opponentHisMove);
                     board.setBoardPos(opponentHisMove, 1);
-                } else if (message.contains("LOSE") || message.contains("WIN")) {
+                } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
                     System.out.println(message);
+                    board.resetBoard();
                 }
 
                 board.printBoard();

@@ -2,6 +2,9 @@ package Project.GameModules.TicTacToeGame;
 
 import Project.GameFramework.GameBoard;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class TicTacToeBoard extends GameBoard {
     private int[] board;
 
@@ -51,5 +54,9 @@ public class TicTacToeBoard extends GameBoard {
 
     public int[] getTicTacToeBoard() {
         return board;
+    }
+
+    public void resetBoard() {
+        Arrays.fill(board, 0);
     }
 }
