@@ -36,7 +36,7 @@ public class ChooseGameModeView extends AbstractView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        ticTacToeView = new TicTacToeView(window);
+        ticTacToeView = new TicTacToeView(window, "Player vs Server");
         ticTacToeScene = new Scene(ticTacToeView, 900, 600);
 
         pva.setOnAction(e -> {
@@ -55,7 +55,7 @@ public class ChooseGameModeView extends AbstractView {
         return ticTacToeScene;
     }
 
-    public TicTacToeView getTicTacToeView(){
+    public TicTacToeView getTicTacToeView1(){
         return ticTacToeView;
     }
 
