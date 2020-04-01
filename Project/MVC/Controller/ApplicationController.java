@@ -12,4 +12,8 @@ public class ApplicationController {
         this.applicationModel = applicationModel;
         applicationView = new ApplicationView(this, applicationModel);
     }
+
+    public ApplicationView getApplicationView(){
+        return applicationView;
+    }
 }

@@ -1,16 +1,23 @@
 package Project.MVC.View.MainScreen;
 
+import Project.MVC.View.AbstractView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ChooseGameModeView extends VBox {
+public class ChooseGameModeView extends AbstractView {
+
+    private Button pva;
+    private Button pvs;
+    private Button back;
+
+    private TicTacToeView ticTacToeView;
+    private Scene ticTacToeScene;
 
     public ChooseGameModeView(Stage window) {
         setSpacing(10);
@@ -21,31 +28,20 @@ public class ChooseGameModeView extends VBox {
         Label chooseGameTitle = new Label("Choose a mode");
         chooseGameTitle.setTextFill(Color.WHITE);
         chooseGameTitle.setFont(new Font("Arial", 30));
-        Button pva = new Button("Player vs AI");
-        Button pvs = new Button("Player vs Server");
-        Button back = new Button("Go back");
+        pva = new Button("Player vs AI");
+        pvs = new Button("Player vs Server");
+        back = new Button("Go back");
 
         pva.setMinWidth(150);
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
+        ticTacToeView = new TicTacToeView(window);
+        ticTacToeScene = new Scene(ticTacToeView, 900, 600);
 
         pva.setOnAction(e -> {
-            // Hier moet iets komen zodat de speler naar tictactoescene word gebracht met pva
-            TicTacToeView ticTacToeView = new TicTacToeView(window, "pva");
-            Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
-
-            window.setScene(TicTacToeScene);
-            window.setTitle("Tic Tac Toe Player vs AI");
-        });
-
-        pvs.setOnAction(e -> {
-            // Hier moet iets komen zodat de speler naar tictactoescene word gebracht met pvs
-            TicTacToeView ticTacToeView = new TicTacToeView(window, "pvs");
-            Scene TicTacToeScene = new Scene(ticTacToeView, 900, 600);
-
-            window.setScene(TicTacToeScene);
-            window.setTitle("Tic Tac Toe Player vs Server");
+            window.setScene(ticTacToeScene);
+            window.setTitle("Tic Tac Toe");
         });
 
         back.setOnAction(e -> {
@@ -53,5 +49,25 @@ public class ChooseGameModeView extends VBox {
         });
 
         getChildren().addAll(chooseGameTitle, pva, pvs, back);
+    }
+
+    public Scene getTicTacToeScene(){
+        return ticTacToeScene;
+    }
+
+    public TicTacToeView getTicTacToeView(){
+        return ticTacToeView;
+    }
+
+    public Button getPva() {
+        return pva;
+    }
+
+    public Button getPvs() {
+        return pvs;
+    }
+
+    public Button getBack() {
+        return back;
     }
 }

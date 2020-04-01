@@ -98,7 +98,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
         else if (line.contains("LOSS")) {
             String reason = "";
             if (!line.split("\"")[5].equals(""))
-                reason = " You made an " + line.split("\"")[5];
+                reason = "" + line.split("\"")[5];
             return "YOU LOSE!" + reason + "!";
         }
         else if(line.contains("WIN"))
@@ -109,6 +109,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
             return line;
     }
 
+    /**
+     * This method initializes the server configuration and initializes the necessary data structures. Furthermore,
+     * this method also fills the initialized data structures with server acquired from the server.
+     */
     public void startServerAndPrepareLists(){
         // Declare all the lists. Initialize the availableLists list.
         availableLists = new ArrayList<>();
@@ -141,6 +145,19 @@ public class GameCommunicationChannel implements CommunicationChannel {
      */
     public String readLine() throws IOException{
         return input.readLine();
+    }
+
+    /**
+     * The readFormattedLine() method, reads a line from the server formats the line using the formatServerMessage()
+     * method and returns the read line in String format.
+     *
+     * @return the formatted line from the server.
+     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
+     */
+    public String readFormattedLine() throws IOException{
+        String line = input.readLine();
+        System.out.println(line);
+        return formatServerMessage(line);
     }
 
     /**
@@ -204,7 +221,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
         String lastLine = "";
         while(input.ready()){
             lastLine = readLine();
-            System.out.println("S: " + formatServerMessage(lastLine));
+            System.out.println(" S: " + formatServerMessage(lastLine));
         }
         return lastLine;
     }

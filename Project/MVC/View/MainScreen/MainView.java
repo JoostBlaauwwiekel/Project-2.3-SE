@@ -1,16 +1,24 @@
 package Project.MVC.View.MainScreen;
 
+import Project.MVC.View.AbstractView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainView extends VBox {
+public class MainView extends AbstractView {
+
+    private Button chooseGame;
+    private Button options;
+    private Button close;
+
+    private Scene chooseGameScene;
+    private AbstractView chooseGameView;
+
     public MainView(Stage window) {
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
@@ -21,17 +29,16 @@ public class MainView extends VBox {
         title.setTextFill(Color.WHITE);
         title.setFont(new Font("Arial", 30));
 
-        Button chooseGame = new Button("Play");
-        Button options = new Button("Options");
-        Button close = new Button("Exit");
+        chooseGame = new Button("Play");
+        options = new Button("Options");
+        close = new Button("Exit");
 
         chooseGame.setMinWidth(100);
         options.setMinWidth(100);
         close.setMinWidth(100);
 
-        // Wanneer men een game kiest veranderd de scene naar een nieuwe scene
-        ChooseGameView chooseGameView = new ChooseGameView(window);
-        Scene chooseGameScene = new Scene(chooseGameView, 900, 600);
+        chooseGameView = new ChooseGameView(window);
+        chooseGameScene = new Scene(chooseGameView, 900, 600);
 
         chooseGame.setOnAction(e -> {
             window.setScene(chooseGameScene);
@@ -45,12 +52,23 @@ public class MainView extends VBox {
         getChildren().addAll(title, chooseGame, options, close);
     }
 
-    public static void closeApplication(Stage window)
-    {
-        Boolean answer = ConfirmBox.display("Are you sure?", "Are you sure you want to close the application?");
+    public Scene getChooseGameScene(){
+        return chooseGameScene;
+    }
 
-        if(answer) {
-            window.close();
-        }
+    public AbstractView getChooseGameView(){
+        return chooseGameView;
+    }
+
+    public Button getChooseGame() {
+        return chooseGame;
+    }
+
+    public Button getOptions() {
+        return options;
+    }
+
+    public Button getClose() {
+        return close;
     }
 }
