@@ -3,7 +3,7 @@ package Project.GameFramework;
 public abstract class GameBoard {
 
     // This variable stores all states within the gameBoard
-    public int[] board;
+    private int[] board;
 
     /**
      * This method should initialise the gameBoard.

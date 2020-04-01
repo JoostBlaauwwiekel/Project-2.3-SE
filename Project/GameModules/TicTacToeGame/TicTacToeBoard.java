@@ -19,6 +19,7 @@ public class TicTacToeBoard extends GameBoard {
 
     @Override
     public void printBoard() {
+        int[] board = getBoard();
         System.out.println("-------------");
         System.out.println("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
         System.out.println("-------------");

@@ -85,7 +85,7 @@ public class ReversiGameLogic extends GameLogic {
     }
 
     private void flipDir(int pos, int dir, int player){
-        int target = getTarget(pos, dir);
+        int target = getTarget(dir, pos);
         int targetState = getBoard().getBoardPos(target);
         if(targetState == 3 - player){
             getBoard().setBoardPos(target, player);
