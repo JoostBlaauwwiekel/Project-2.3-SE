@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractView;
+import project.mvc.view.AbstractScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,16 +10,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ChooseGameView extends AbstractView {
-
-    private Button chooseTTT;
-    private Button reversi;
-    private Button back;
+public class ChooseGameView extends AbstractScreenView {
 
     private Scene chooseGameModeViewScene;
-    private AbstractView chooseGameModeView;
+    private ChooseGameModeView chooseGameModeView;
 
     public ChooseGameView(Stage window) {
+        super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
         setAlignment(Pos.CENTER);
@@ -29,9 +26,13 @@ public class ChooseGameView extends AbstractView {
         chooseGameTitle.setTextFill(Color.WHITE);
         chooseGameTitle.setFont(new Font("Arial", 30));
 
-        chooseTTT = new Button("Tic Tac Toe");
-        reversi = new Button("Reversi");
-        back = new Button("Go back");
+        Button chooseTTT = new Button("Tic Tac Toe");
+        Button reversi = new Button("Reversi");
+        Button back = new Button("Previous scene");
+
+        super.getButtons().put(chooseTTT.getText(), chooseTTT);
+        super.getButtons().put(reversi.getText(), reversi);
+        super.getButtons().put(back.getText(), back);
 
         chooseTTT.setMinWidth(100);
         reversi.setMinWidth(100);
@@ -40,31 +41,15 @@ public class ChooseGameView extends AbstractView {
         chooseGameModeView = new ChooseGameModeView(window);
         chooseGameModeViewScene = new Scene(chooseGameModeView, 900, 600);
 
-        chooseTTT.setOnAction(e -> {
-            window.setScene(chooseGameModeViewScene);
-            window.setTitle("Tic Tac Toe");
-        });
-
         getChildren().addAll(chooseGameTitle, chooseTTT, reversi, back);
     }
 
-    public Scene getChooseGameModeViewScene(){
+    public Scene getSceneUnderneath(){
         return chooseGameModeViewScene;
     }
 
-    public AbstractView getChooseGameModeView(){
+    public AbstractScreenView getViewUnderneath() {
         return chooseGameModeView;
     }
 
-    public Button getChooseTTT() {
-        return chooseTTT;
-    }
-
-    public Button getReversi() {
-        return reversi;
-    }
-
-    public Button getBack() {
-        return back;
-    }
 }

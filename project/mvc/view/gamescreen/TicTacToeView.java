@@ -1,17 +1,17 @@
-package project.mvc.view.mainscreen;
+package project.mvc.view.gamescreen;
+import project.gameframework.GameBoardView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-
-public class TicTacToeView extends BorderPane {
+public class TicTacToeView extends GameBoardView {
 
     public TicTacToeView(Stage window, String mode) {
+        super(window);
 
         // Bovenbalk
         VBox sidebar = new VBox(20);
@@ -26,6 +26,7 @@ public class TicTacToeView extends BorderPane {
 
         // Met de TicTacToeBoard class moet je straks dus TicTacToeBoard board = new .... kunnen doen en .setCenter(board)
         // Content (Dus hetgene in het midden)
+
         FlowPane centerLayout = new FlowPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #524D4E;");
@@ -45,14 +46,8 @@ public class TicTacToeView extends BorderPane {
         }
         TicTacToeBoard board = new TicTacToeBoard(0);
 
-        //Als op Exit game word geklikt gaat deze terug naar ChooseGameView
-        Button exitGame = new Button("Exit game");
-        exitGame.setOnAction(e -> {
-            ChooseGameView chooseGameView = new ChooseGameView(window);
-            Scene chooseGameScene = new Scene(chooseGameView, 900, 600);
-            window.setScene(chooseGameScene);
-            window.setTitle("Choose a game");
-        });
+        Button exitGame = new Button("Exit Tic Tac Toe");
+        super.getGameButtons().put(exitGame.getText(), exitGame);
 
         sidebar.getChildren().addAll(wins, exitGame);
         topBar.getChildren().addAll(gameMode);

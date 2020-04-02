@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractView;
+import project.mvc.view.AbstractScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,18 +10,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainView extends AbstractView {
-
-    private Button chooseGame;
-    private Button options;
-    private Button close;
+public class MainView extends AbstractScreenView {
 
     private Scene chooseGameScene;
-    private AbstractView chooseGameView;
+    private ChooseGameView chooseGameView;
 
     public MainView(Stage window) {
+        super(window);
+
         setSpacing(10);
-        setPadding(new Insets(20,20,20,20));
+        setPadding(new Insets(20, 20, 20, 20));
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: #1da1f2;");
 
@@ -29,9 +27,13 @@ public class MainView extends AbstractView {
         title.setTextFill(Color.WHITE);
         title.setFont(new Font("Arial", 30));
 
-        chooseGame = new Button("Play");
-        options = new Button("Options");
-        close = new Button("Exit");
+        Button chooseGame = new Button("Play");
+        Button options = new Button("Options");
+        Button close = new Button("Exit");
+
+        super.getButtons().put(chooseGame.getText(), chooseGame);
+        super.getButtons().put(options.getText(), options);
+        super.getButtons().put(close.getText(), close);
 
         chooseGame.setMinWidth(100);
         options.setMinWidth(100);
@@ -40,35 +42,10 @@ public class MainView extends AbstractView {
         chooseGameView = new ChooseGameView(window);
         chooseGameScene = new Scene(chooseGameView, 900, 600);
 
-        chooseGame.setOnAction(e -> {
-            window.setScene(chooseGameScene);
-            window.setTitle("Choose a game");
-        });
-
-        close.setOnAction(e -> {
-            closeApplication(window);
-        });
-
         getChildren().addAll(title, chooseGame, options, close);
     }
 
-    public Scene getChooseGameScene(){
-        return chooseGameScene;
-    }
+    public Scene getSceneUnderneath() { return chooseGameScene; }
 
-    public AbstractView getChooseGameView(){
-        return chooseGameView;
-    }
-
-    public Button getChooseGame() {
-        return chooseGame;
-    }
-
-    public Button getOptions() {
-        return options;
-    }
-
-    public Button getClose() {
-        return close;
-    }
+    public AbstractScreenView getViewUnderneath() { return chooseGameView; }
 }

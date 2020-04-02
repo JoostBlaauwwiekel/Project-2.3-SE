@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractView;
+import project.mvc.view.AbstractScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,17 +9,15 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import project.mvc.view.gamescreen.TicTacToeView;
 
-public class ChooseGameModeView extends AbstractView {
-
-    private Button pva;
-    private Button pvs;
-    private Button back;
+public class ChooseGameModeView extends AbstractScreenView {
 
     private TicTacToeView ticTacToeView;
     private Scene ticTacToeScene;
 
     public ChooseGameModeView(Stage window) {
+        super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
         setAlignment(Pos.CENTER);
@@ -28,9 +26,13 @@ public class ChooseGameModeView extends AbstractView {
         Label chooseGameTitle = new Label("Choose a mode");
         chooseGameTitle.setTextFill(Color.WHITE);
         chooseGameTitle.setFont(new Font("Arial", 30));
-        pva = new Button("Player vs AI");
-        pvs = new Button("Player vs Server");
-        back = new Button("Go back");
+        Button pva = new Button("Player vs AI");
+        Button pvs = new Button("Player vs Server");
+        Button back = new Button("Go back");
+
+        super.getButtons().put(pva.getText(), pva);
+        super.getButtons().put(pvs.getText(), pvs);
+        super.getButtons().put(back.getText(), back);
 
         pva.setMinWidth(150);
         pvs.setMinWidth(150);
@@ -39,35 +41,18 @@ public class ChooseGameModeView extends AbstractView {
         ticTacToeView = new TicTacToeView(window, "Player vs Server");
         ticTacToeScene = new Scene(ticTacToeView, 900, 600);
 
-        pva.setOnAction(e -> {
-            window.setScene(ticTacToeScene);
-            window.setTitle("Tic Tac Toe");
-        });
-
-        back.setOnAction(e -> {
-            System.out.println("Moet terug naar ChooseGameView");
-        });
+        //TODO add reversi scene to the gameScenes hashmap and add reversiView to the gameViews hashmap!
+        super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);
+        super.getGameBoardViews().put("Tic Tac Toe", ticTacToeView);
 
         getChildren().addAll(chooseGameTitle, pva, pvs, back);
     }
 
-    public Scene getTicTacToeScene(){
-        return ticTacToeScene;
+    public Scene getSceneUnderneath(){
+        return null;
     }
 
-    public TicTacToeView getTicTacToeView1(){
-        return ticTacToeView;
-    }
-
-    public Button getPva() {
-        return pva;
-    }
-
-    public Button getPvs() {
-        return pvs;
-    }
-
-    public Button getBack() {
-        return back;
+    public AbstractScreenView getViewUnderneath(){
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package project.mvc.view.mainscreen;
+package project.mvc.view.gamescreen;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -7,7 +7,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class TicTacToeBoard {
-    project.gamemodules.tictactoegame.TicTacToeBoard board = new project.gamemodules.tictactoegame.TicTacToeBoard();
+
+    project.gamemodules.TicTacToeGame.TicTacToeBoard board = new project.gamemodules.TicTacToeGame.TicTacToeBoard();
     Button[] tiles = new Button[9];
     int turn = 1;
     int counter = 0;
@@ -39,21 +40,24 @@ public class TicTacToeBoard {
         }
 
     }
-    public project.gamemodules.tictactoegame.TicTacToeBoard getBoard(){
+    public project.gamemodules.TicTacToeGame.TicTacToeBoard getBoard(){
         return board;
     }
 
-    private void setMove(int pos, int state, project.gamemodules.tictactoegame.TicTacToeBoard board, Button btn) {
+    private void setMove(int pos, int state, project.gamemodules.TicTacToeGame.TicTacToeBoard board, Button btn) {
         btn.setText(Integer.toString(state));
         board.setBoardPos(state, pos);
         counter++;
     }
+
     public int getCounter(){
         return counter;
     }
+
     public Button[] getTiles(){
         return tiles;
     }
+
     public Label getResult(){
 
         Label result = new Label("TEST");
