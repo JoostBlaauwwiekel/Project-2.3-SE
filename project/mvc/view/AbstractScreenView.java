@@ -1,6 +1,5 @@
 package project.mvc.view;
 
-import project.gameframework.GameBoardView;
 import project.mvc.view.mainscreen.ConfirmBox;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

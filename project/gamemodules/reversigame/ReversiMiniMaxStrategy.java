@@ -1,18 +1,18 @@
 package project.gamemodules.reversigame;
 
+import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
-import project.gameframework.GameBoard;
 
 public class ReversiMiniMaxStrategy extends MinimaxStrategy {
     @Override
-    public int evaluate(GameBoard board) {
-        ReversiBoard reversiBoard = (ReversiBoard) board;
+    public int evaluate(GameBoardLogic board) {
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
     }
 
     @Override
-    public int getBestMove(GameBoard board, int player) {
-        ReversiBoard reversiBoard = (ReversiBoard) board;
+    public int getBestMove(GameBoardLogic board, int player) {
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(reversiBoard);
 
@@ -28,7 +28,7 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
 
         int bestMove = -1;
         for(int move : logic.getMoves(player)){
-            ReversiBoard newBoard = new ReversiBoard();
+            ReversiBoardLogic newBoard = new ReversiBoardLogic();
             newBoard.setBoard(reversiBoard.getBoard());
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
@@ -45,7 +45,7 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
     }
 
     @Override
-    public int miniMax(GameBoard board, int depth, boolean isMax) {
+    public int miniMax(GameBoardLogic board, int depth, boolean isMax) {
         //TODO: Deze hele methode is echt heel slecht door gebrek aan hersencellen maar ik fix het later
 
         int player;
@@ -67,7 +67,7 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
 
         if(isMax){
             for(int move : logic.getMoves(player)){
-                ReversiBoard newBoard = new ReversiBoard();
+                ReversiBoardLogic newBoard = new ReversiBoardLogic();
                 newBoard.setBoard(board.getBoard());
                 ReversiGameLogic tempGame = new ReversiGameLogic();
                 tempGame.setBoard(newBoard);
@@ -81,7 +81,7 @@ public class ReversiMiniMaxStrategy extends MinimaxStrategy {
             return bestEval;
         } else {
             for(int move : logic.getMoves(player)){
-                ReversiBoard newBoard = new ReversiBoard();
+                ReversiBoardLogic newBoard = new ReversiBoardLogic();
                 newBoard.setBoard(board.getBoard());
                 ReversiGameLogic tempGame = new ReversiGameLogic();
                 tempGame.setBoard(newBoard);

@@ -1,7 +1,5 @@
 package project.mvc.view;
 
-import javafx.scene.control.Button;
-import project.gameframework.GameBoardView;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.MainView;

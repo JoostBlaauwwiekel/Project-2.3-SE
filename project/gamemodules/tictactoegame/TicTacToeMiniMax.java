@@ -10,8 +10,8 @@
 
 package project.gamemodules.tictactoegame;
 
+import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
-import project.gameframework.GameBoard;
 
 public class TicTacToeMiniMax extends MinimaxStrategy {
 
@@ -26,7 +26,7 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @param b         the board of the game
      * @return          the amount of points after the evaluation
      */
-    public int evaluate(GameBoard b) {
+    public int evaluate(GameBoardLogic b) {
         int[] board = b.getBoard();
         int rowCounter = 0;
         for(int row = 0; row < 3; row++) {
@@ -81,7 +81,7 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @param p    This variable is ignored by this algorithm
      * @return          int with the best possible position
      */
-    public int getBestMove(GameBoard b, int p) {
+    public int getBestMove(GameBoardLogic b, int p) {
         int[] board = b.getBoard();
         int bestValue = -1000;
         int bestMove = -1;
@@ -113,7 +113,7 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @param isMax     true when the current player is the maximizer, false when the current player is the minimizer.
      * @return
      */
-    public int miniMax(GameBoard b, int depth, boolean isMax) {
+    public int miniMax(GameBoardLogic b, int depth, boolean isMax) {
         int score = evaluate(b);
         int[] board = b.getBoard();
 

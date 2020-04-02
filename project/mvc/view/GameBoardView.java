@@ -1,4 +1,4 @@
-package project.gameframework;
+package project.mvc.view;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;

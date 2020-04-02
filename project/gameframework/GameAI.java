@@ -9,7 +9,7 @@ public interface GameAI {
      * @param board the board about to be checked.
      * @return a given value which indicates the state of the board.
      */
-    public int evaluate(GameBoard board);
+    public int evaluate(GameBoardLogic board);
 
     /**
      * This method should iterate the whole game board and it should determine which move currently is the best move
@@ -18,7 +18,7 @@ public interface GameAI {
      *
      * @return the best move.
      */
-    public int getBestMove(GameBoard board, int player);
+    public int getBestMove(GameBoardLogic board, int player);
 
     /**
      * This is method should contain the main logic of the algorithm/ AI. This method can implemented as the user wishes
@@ -26,5 +26,5 @@ public interface GameAI {
      *
      * @return a move, depending on the implementation of the algorithm/ AI.
      */
-    public int computeAlgorithm(GameBoard board, int depth);
+    public int computeAlgorithm(GameBoardLogic board, int depth);
 }

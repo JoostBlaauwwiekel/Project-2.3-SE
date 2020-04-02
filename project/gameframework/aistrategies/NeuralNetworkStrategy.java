@@ -1,7 +1,7 @@
 package project.gameframework.aistrategies;
 
 import project.gameframework.GameAI;
-import project.gameframework.GameBoard;
+import project.gameframework.GameBoardLogic;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public abstract class NeuralNetworkStrategy <E> implements GameAI {
      * @param board the board about to be checked.
      * @return a given value which indicates the state of the board.
      */
-    public abstract int evaluate(GameBoard board);
+    public abstract int evaluate(GameBoardLogic board);
 
     /**
      * This method should iterate the whole game board and it should determine which move currently is the best move
@@ -23,14 +23,14 @@ public abstract class NeuralNetworkStrategy <E> implements GameAI {
      *
      * @return the best move.
      */
-    public abstract int getBestMove(GameBoard board);
+    public abstract int getBestMove(GameBoardLogic board);
 
     /**
      * This method calls the miniMax() method. The main logic of the AI will be implemented there.
      *
      * @return the move that has been determined to be the best.
      */
-    public int computeAlgorithm(GameBoard board, int depth){
+    public int computeAlgorithm(GameBoardLogic board, int depth){
         return determineMove(board, depth);
     }
 
@@ -42,7 +42,7 @@ public abstract class NeuralNetworkStrategy <E> implements GameAI {
      * @param depth the depth of the binary tree (number of moves to be calculated).
      * @return currently the best move to make.
      */
-    public abstract int determineMove(GameBoard board, int depth);
+    public abstract int determineMove(GameBoardLogic board, int depth);
 
     /**
      * This method should be implemented that the AI can be trained with a given dataset.
@@ -51,5 +51,5 @@ public abstract class NeuralNetworkStrategy <E> implements GameAI {
      * @param depth the depth of the tree (number of moves to be calculated).
      * @param dataset a generic dataset which the AI can use.
      */
-    public abstract void train(GameBoard board, int depth, List<E> dataset);
+    public abstract void train(GameBoardLogic board, int depth, List<E> dataset);
 }

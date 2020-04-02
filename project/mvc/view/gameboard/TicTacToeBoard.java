@@ -1,21 +1,23 @@
-package project.mvc.view.gamescreen;
+package project.mvc.view.gameboard;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import project.gameframework.GameBoardLogic;
+import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
 
 public class TicTacToeBoard {
 
-    project.gamemodules.TicTacToeGame.TicTacToeBoard board = new project.gamemodules.TicTacToeGame.TicTacToeBoard();
+    GameBoardLogic board = new TicTacToeBoardLogic();
     Button[] tiles = new Button[9];
     int turn = 1;
     int counter = 0;
 
     public TicTacToeBoard(int type) {
         if (type == 0) {
-            //For loop geeft elke button eigenschappen
+
             for (int i = 0; i < 9; i++) {
                 tiles[i] = new Button("");
                 tiles[i].setMinSize(150, 150);
@@ -40,13 +42,12 @@ public class TicTacToeBoard {
         }
 
     }
-    public project.gamemodules.TicTacToeGame.TicTacToeBoard getBoard(){
+    public GameBoardLogic getBoard(){
         return board;
     }
 
-    private void setMove(int pos, int state, project.gamemodules.TicTacToeGame.TicTacToeBoard board, Button btn) {
+    private void setMove(int pos, int state, GameBoardLogic board, Button btn) {
         btn.setText(Integer.toString(state));
-        board.setBoardPos(state, pos);
         counter++;
     }
 

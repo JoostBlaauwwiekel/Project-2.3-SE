@@ -2,7 +2,7 @@ package project.gameframework;
 
 import java.util.Arrays;
 
-public abstract class GameBoard {
+public abstract class GameBoardLogic {
 
     // This variable stores all states within the gameBoard
     private int[] board;

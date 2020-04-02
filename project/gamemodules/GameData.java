@@ -1,7 +1,7 @@
 package project.gamemodules;
 
 import project.gameframework.CommunicationChannel;
-import project.gameframework.GameBoard;
+import project.gameframework.GameBoardLogic;
 import project.gameframework.GameLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.tictactoegame.TicTacToeGameLogic;
@@ -40,7 +40,7 @@ public class GameData {
 
     public void playGame(String username, String gameName, boolean playLocal){
         GameLogic game = gameMap.get(gameName);
-        GameBoard board = game.getBoard();
+        GameBoardLogic board = game.getBoard();
 
         registerToServer(username, playLocal);
         communicationChannel.startServerAndPrepareLists();

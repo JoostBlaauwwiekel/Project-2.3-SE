@@ -1,11 +1,12 @@
 package project.gamemodules.tictactoegame;
 
-import project.gameframework.GameBoard;
+import project.gameframework.GameBoardLogic;
 
-public class TicTacToeBoard extends GameBoard {
+public class TicTacToeBoardLogic extends GameBoardLogic {
+
     private int[] board;
 
-    public TicTacToeBoard(){
+    public TicTacToeBoardLogic(){
         initBoard();
     }
 

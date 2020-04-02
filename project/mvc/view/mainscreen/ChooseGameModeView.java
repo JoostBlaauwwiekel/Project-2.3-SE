@@ -9,12 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import project.mvc.view.gamescreen.TicTacToeView;
+import project.mvc.view.gameview.ReversiView;
+import project.mvc.view.gameview.TicTacToeView;
 
 public class ChooseGameModeView extends AbstractScreenView {
-
-    private TicTacToeView ticTacToeView;
-    private Scene ticTacToeScene;
 
     public ChooseGameModeView(Stage window) {
         super(window);
@@ -38,12 +36,16 @@ public class ChooseGameModeView extends AbstractScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        ticTacToeView = new TicTacToeView(window, "Player vs Server");
-        ticTacToeScene = new Scene(ticTacToeView, 900, 600);
+        TicTacToeView ticTacToeView = new TicTacToeView(window);
+        Scene ticTacToeScene = new Scene(ticTacToeView, 900, 600);
 
-        //TODO add reversi scene to the gameScenes hashmap and add reversiView to the gameViews hashmap!
+        ReversiView reversiView = new ReversiView(window);
+        Scene reversiScene = new Scene(reversiView, 900, 600);
+
         super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);
         super.getGameBoardViews().put("Tic Tac Toe", ticTacToeView);
+        super.getGameScenes().put("Reversi", reversiScene);
+        super.getGameBoardViews().put("Reversi", reversiView);
 
         getChildren().addAll(chooseGameTitle, pva, pvs, back);
     }

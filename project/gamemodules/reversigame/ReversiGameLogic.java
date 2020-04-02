@@ -39,7 +39,7 @@ public class ReversiGameLogic extends GameLogic {
      */
     @Override
     public int gameOver (){
-        ReversiBoard board = (ReversiBoard)getBoard();
+        ReversiBoardLogic board = (ReversiBoardLogic)getBoard();
         if(board.getDiscCount(0) == 0 || getMoves(1).size() == 0 || getMoves(2).size() == 0){
             if(board.getDiscCount(1) > board.getDiscCount(2)){
                 return 1;
@@ -106,7 +106,7 @@ public class ReversiGameLogic extends GameLogic {
      * This is used to determine if a move is valid.
      * @param dir a integer representing a direction that needs to be checked.
      * @param pos integer of the position that needs to be checked.
-     * @param color integer representing the color of the player we want to check for.
+     * @param player integer representing the color of the player we want to check for.
      * @param flipped boolean indicating if a flippable disc has been found.
      * @return a boolean, true = there is a flippable disc in this direction,
      *                    false = there is no flippable disc in this direction.

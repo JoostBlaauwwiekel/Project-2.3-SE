@@ -7,21 +7,21 @@ import java.util.ArrayList;
  */
 public abstract class GameLogic {
 
-    private GameBoard board;
+    private GameBoardLogic board;
 
     /**
      * This method sets the gameboard that is used to play the game.
      * @param board the gameboard that will be uses.
      */
-    public void setBoard(GameBoard board){
+    public void setBoard(GameBoardLogic board){
         this.board = board;
     }
 
     /**
      * This method is used to get to the gameboard.
-     * @return GameBoard with current GameBoard.
+     * @return GameBoardLogic with current GameBoardLogic.
      */
-    public GameBoard getBoard(){
+    public GameBoardLogic getBoard(){
         return board;
     }
 

@@ -1,20 +1,18 @@
 package project.gameframework.tests;
 
-import project.gamemodules.reversigame.ReversiBoard;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMiniMaxStrategy;
-import project.gamemodules.tictactoegame.TicTacToeBoard;
 
 public class GameTest {
     public static void main(String[] args){
         // Make tic tac toe board and print it
         System.out.println("Tic tac toe board:");
-        TicTacToeBoard tictactoeBoard = new TicTacToeBoard();
+        project.gamemodules.tictactoegame.TicTacToeBoardLogic tictactoeBoard = new project.gamemodules.tictactoegame.TicTacToeBoardLogic();
         tictactoeBoard.printBoard();
 
         // Make reversi board + gamelogic and print it
         System.out.println("Reversi board:");
-        ReversiBoard reversiBoard = new ReversiBoard();
+        project.gamemodules.reversigame.ReversiBoardLogic reversiBoard = new project.gamemodules.reversigame.ReversiBoardLogic();
         reversiBoard.printBoard();
         ReversiGameLogic reversiLogic = new ReversiGameLogic();
         reversiLogic.setBoard(reversiBoard);

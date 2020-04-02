@@ -1,10 +1,10 @@
 package project.gamemodules.reversigame;
 
-import project.gameframework.GameBoard;
+import project.gameframework.GameBoardLogic;
 
-public class ReversiBoard extends GameBoard {
+public class ReversiBoardLogic extends GameBoardLogic {
 
-    public ReversiBoard(){
+    public ReversiBoardLogic(){
         initBoard();
     }
 
