@@ -8,10 +8,10 @@
  * @version 1.0
  */
 
-package Project.GameModules.TicTacToeGame;
+package project.gamemodules.tictactoegame;
 
-import Project.GameFramework.AIStrategies.MinimaxStrategy;
-import Project.GameFramework.GameBoard;
+import project.gameframework.aistrategies.MinimaxStrategy;
+import project.gameframework.GameBoard;
 
 public class TicTacToeMiniMax extends MinimaxStrategy {
 
