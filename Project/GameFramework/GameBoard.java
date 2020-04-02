@@ -1,5 +1,7 @@
 package Project.GameFramework;
 
+import java.util.Arrays;
+
 public abstract class GameBoard {
 
     // This variable stores all states within the gameBoard
@@ -50,5 +52,12 @@ public abstract class GameBoard {
         for(int i=0; i<newBoard.length; i++){
             board[i] = newBoard[i];
         }
+    }
+
+    /**
+     * This method resets the board back to its begin state: Only zero's.
+     */
+    public void resetBoard() {
+        Arrays.fill(board, 0);
     }
 }

@@ -1,13 +1,9 @@
 package Project.GameFramework.Tests;
 
-import Project.GameFramework.CommunicationChannel;
+import Project.GameFramework.*;
 import Project.GameModules.GameCommunicationChannel;
-import Project.GameModules.TicTacToeGame.TicTacToeBoard;
-import Project.GameModules.TicTacToeGame.TicTacToeAI;
-import javafx.scene.chart.ScatterChart;
-import Project.GameFramework.GameBoard;
+import Project.GameModules.TicTacToeGame.*;
 
-import TicTacToe_Joost.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,14 +12,14 @@ public class CommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("2");
+        channel.setUsername("bitm");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
 
         // Don't forget to start the server before running this program! Thanks.
         channel.startServerAndPrepareLists();
-        TicTacToeBoard board = new TicTacToeBoard();
+        GameBoard board = new TicTacToeBoard();
         TicTacToeAI ai = new TicTacToeAI();
 
         channel.subscribe("Tic-tac-toe");
@@ -32,7 +28,7 @@ public class CommunicationTest {
         while (true) {
             String message = channel.readFormattedLine();
             if (message.contains("YOUR TURN")) {
-                int move = ai.getBestMove(board.getBoard());
+                int move = ai.getBestMove(board, 0);
                 channel.move(move);
                 board.setBoardPos(move, 2);
                 System.out.println(move);
@@ -49,5 +45,4 @@ public class CommunicationTest {
             System.out.println();
         }
     }
-
 }

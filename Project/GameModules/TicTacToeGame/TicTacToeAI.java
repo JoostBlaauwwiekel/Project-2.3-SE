@@ -1,13 +1,15 @@
 package Project.GameModules.TicTacToeGame;
 
 import Project.GameFramework.AIStrategies.MinimaxStrategy;
+import Project.GameFramework.GameBoard;
 
-public class TicTacToeAI {
+public class TicTacToeAI extends MinimaxStrategy {
 
     int player = 2;
     int opponent = 1;
 
-    public int evaluate(int[] board) {
+    public int evaluate(GameBoard b) {
+        int[] board = b.getBoard();
         int rowCounter = 0;
         for(int row = 0; row < 3; row++) {
             // 0 - 1 : 1 - 2
@@ -55,7 +57,14 @@ public class TicTacToeAI {
         return 0;
     }
 
-    public int getBestMove(int[] board) {
+    /**
+     *
+     * @param b         The gameBoard, used to get the int[] board layout
+     * @param p    This variable is ignored by this algorithm
+     * @return          int with the best possible position
+     */
+    public int getBestMove(GameBoard b, int p) {
+        int[] board = b.getBoard();
         int bestValue = -1000;
         int bestMove = -1;
 
@@ -63,7 +72,7 @@ public class TicTacToeAI {
             if (board[pos] == 0) {
                 board[pos] = player;
 
-                int moveValue = miniMax(board, 0, false);
+                int moveValue = miniMax(b, 0, false);
 
                 board[pos] = 0;
 
@@ -76,8 +85,19 @@ public class TicTacToeAI {
         return bestMove;
     }
 
-    public int miniMax(int[] board, int depth, boolean isMax) {
-        int score = evaluate(board);
+    /**
+     * This is where the magic happens :)
+     * This method recursively checks which move is the most
+     * smart to choose.
+     *
+     * @param b         The gameBoard, used to get the int[] board layout
+     * @param depth     the depth of the binary tree (number of moves to be calculated).
+     * @param isMax     true when the current player is the maximizer, false when the current player is the minimizer.
+     * @return
+     */
+    public int miniMax(GameBoard b, int depth, boolean isMax) {
+        int score = evaluate(b);
+        int[] board = b.getBoard();
 
         if(score == 10) { return score; }
 
@@ -94,7 +114,7 @@ public class TicTacToeAI {
 
                     board[pos] = player;
 
-                    best = Math.max(best, miniMax(board, depth + 1, false));
+                    best = Math.max(best, miniMax(b, depth + 1, false));
 
                     board[pos] = 0;
 
@@ -112,7 +132,7 @@ public class TicTacToeAI {
 
                     board[pos] = opponent;
 
-                    best = Math.min(best, miniMax(board, depth + 1, true));
+                    best = Math.min(best, miniMax(b, depth + 1, true));
 
                     board[pos] = 0;
                 }

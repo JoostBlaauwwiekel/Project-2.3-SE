@@ -55,8 +55,4 @@ public class TicTacToeBoard extends GameBoard {
     public int[] getTicTacToeBoard() {
         return board;
     }
-
-    public void resetBoard() {
-        Arrays.fill(board, 0);
-    }
 }
