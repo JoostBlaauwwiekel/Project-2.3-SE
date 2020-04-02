@@ -12,7 +12,7 @@ public class CommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("bitm");
+        channel.setUsername("computer");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
@@ -20,10 +20,10 @@ public class CommunicationTest {
         // Don't forget to start the server before running this program! Thanks.
         channel.startServerAndPrepareLists();
         GameBoard board = new TicTacToeBoard();
-        TicTacToeAI ai = new TicTacToeAI();
+        TicTacToeMiniMax ai = new TicTacToeMiniMax();
 
         channel.subscribe("Tic-tac-toe");
-        channel.challenge("joost", "Tic-tac-toe");
+        //channel.challenge("computer", "Tic-tac-toe");
 
         while (true) {
             String message = channel.readFormattedLine();
