@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class ApplicationView {
 
     private static final String TICTACTOE = "Tic Tac Toe";
+    private static final String REVERSI = "Reversi";
 
     private ApplicationController applicationController;
     private ApplicationModel applicationModel;
@@ -24,10 +25,11 @@ public class ApplicationView {
     private Scene chooseGameScene;
     private Scene chooseGameModeScene;
     private Scene ticTacToeScene;
+    private Scene reversiScene;
 
-    private AbstractScreenView mainView;
-    private AbstractScreenView chooseGameView;
-    private AbstractScreenView chooseGameModeView;
+    private ScreenView mainView;
+    private ScreenView chooseGameView;
+    private ScreenView chooseGameModeView;
 
     private GameBoardView ticTacToeView;
     private GameBoardView reversiView;
@@ -37,11 +39,8 @@ public class ApplicationView {
         this.applicationModel = applicationModel;
     }
 
-    public void setPrimaryStage(Stage primaryStage){
+    public void initializeApplicationScreens(Stage primaryStage){
         this.primaryStage = primaryStage;
-    }
-
-    public void initializeApplicationScreens(){
         primaryStage.setTitle("StartApp screen");
         mainView = new MainView(primaryStage);
 
@@ -64,6 +63,10 @@ public class ApplicationView {
         // Declare and initialize the Tic-tac-toe scene and view.
         ticTacToeScene = chooseGameModeView.getGameScenes().get(TICTACTOE);
         ticTacToeView = chooseGameModeView.getGameBoardViews().get(TICTACTOE);
+
+        // Declare and initialize the Reversi scene and view.
+        reversiScene = chooseGameModeView.getGameScenes().get(REVERSI);
+        reversiView = chooseGameModeView.getGameBoardViews().get("Reversi");
 
         setOnActionAllButtons();
 
@@ -93,6 +96,11 @@ public class ApplicationView {
             chooseGameView.getWindow().setTitle(TICTACTOE);
         });
 
+        chooseGameView.getButtons().get(REVERSI).setOnAction(e -> {
+            chooseGameView.getWindow().setScene(chooseGameModeScene);
+            chooseGameView.getWindow().setTitle(REVERSI);
+        });
+
         chooseGameView.getButtons().get("Previous scene").setOnAction(e -> {
             chooseGameView.getWindow().setScene(mainScene);
             chooseGameView.getWindow().setTitle("StartApp screen");
@@ -101,13 +109,29 @@ public class ApplicationView {
 
     private void setOnActionChooseGameModeViewButtons(){
         chooseGameModeView.getButtons().get("Player vs AI").setOnAction(e -> {
-            chooseGameModeView.getWindow().setScene(ticTacToeScene);
-            chooseGameModeView.getWindow().setTitle(TICTACTOE);
+            if(chooseGameModeView.getWindow().getTitle().equals(TICTACTOE)) {
+                ticTacToeView.setMode("Player vs AI");
+                chooseGameModeView.getWindow().setScene(ticTacToeScene);
+                chooseGameModeView.getWindow().setTitle(TICTACTOE + "Player vs AI");
+            }
+            else{
+                reversiView.setMode("Player vs AI");
+                chooseGameModeView.getWindow().setScene(reversiScene);
+                chooseGameModeView.getWindow().setTitle(REVERSI + "Player vs AI");
+            }
         });
 
         chooseGameModeView.getButtons().get("Player vs Server").setOnAction(e -> {
-            chooseGameModeView.getWindow().setScene(ticTacToeScene);
-            chooseGameModeView.getWindow().setTitle(TICTACTOE);
+            if(chooseGameModeView.getWindow().getTitle().equals(TICTACTOE)) {
+                ticTacToeView.setMode("Player vs Server");
+                chooseGameModeView.getWindow().setScene(ticTacToeScene);
+                chooseGameModeView.getWindow().setTitle(TICTACTOE + "Player vs Server");
+            }
+            else{
+                reversiView.setMode("Player vs Server");
+                chooseGameModeView.getWindow().setScene(reversiScene);
+                chooseGameModeView.getWindow().setTitle(REVERSI + "Player vs Server");
+            }
         });
 
         chooseGameModeView.getButtons().get("Go back").setOnAction(e -> {
@@ -117,9 +141,14 @@ public class ApplicationView {
     }
 
     private void setOnActionGameViewButtons(){
-        ticTacToeView.getGameButtons().get("Exit Tic Tac Toe").setOnAction(e -> {
+        ticTacToeView.getGameButtons().get("Exit " + TICTACTOE).setOnAction(e -> {
             ticTacToeView.getWindow().setScene(chooseGameModeScene);
-            ticTacToeView.getWindow().setTitle("Choose a game");
+            ticTacToeView.getWindow().setTitle(TICTACTOE);
+        });
+
+        reversiView.getGameButtons().get("Exit " + REVERSI).setOnAction(e -> {
+           reversiView.getWindow().setScene(chooseGameModeScene);
+           reversiView.getWindow().setTitle(REVERSI);
         });
     }
 }

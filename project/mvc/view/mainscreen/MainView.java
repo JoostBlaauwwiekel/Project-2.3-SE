@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractScreenView;
+import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainView extends AbstractScreenView {
+public class MainView extends ScreenView {
 
     private Scene chooseGameScene;
     private ChooseGameView chooseGameView;
@@ -47,5 +47,5 @@ public class MainView extends AbstractScreenView {
 
     public Scene getSceneUnderneath() { return chooseGameScene; }
 
-    public AbstractScreenView getViewUnderneath() { return chooseGameView; }
+    public ScreenView getViewUnderneath() { return chooseGameView; }
 }

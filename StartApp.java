@@ -13,8 +13,7 @@ public class StartApp extends Application {
     public void start(Stage stage) throws Exception {
         ApplicationModel applicationModel = new ApplicationModel();
         ApplicationController applicationController = new ApplicationController(applicationModel);
-        applicationController.getApplicationView().setPrimaryStage(stage);
-        applicationController.getApplicationView().initializeApplicationScreens();
+        applicationController.getApplicationView().initializeApplicationScreens(stage);
     }
 
 }

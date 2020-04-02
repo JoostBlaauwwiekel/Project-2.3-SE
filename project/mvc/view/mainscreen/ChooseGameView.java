@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractScreenView;
+import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ChooseGameView extends AbstractScreenView {
+public class ChooseGameView extends ScreenView {
 
     private Scene chooseGameModeViewScene;
     private ChooseGameModeView chooseGameModeView;
@@ -48,7 +48,7 @@ public class ChooseGameView extends AbstractScreenView {
         return chooseGameModeViewScene;
     }
 
-    public AbstractScreenView getViewUnderneath() {
+    public ScreenView getViewUnderneath() {
         return chooseGameModeView;
     }
 

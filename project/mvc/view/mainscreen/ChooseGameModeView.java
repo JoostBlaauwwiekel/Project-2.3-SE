@@ -1,6 +1,6 @@
 package project.mvc.view.mainscreen;
 
-import project.mvc.view.AbstractScreenView;
+import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import project.mvc.view.gameview.ReversiView;
 import project.mvc.view.gameview.TicTacToeView;
 
-public class ChooseGameModeView extends AbstractScreenView {
+public class ChooseGameModeView extends ScreenView {
 
     public ChooseGameModeView(Stage window) {
         super(window);
@@ -54,7 +54,7 @@ public class ChooseGameModeView extends AbstractScreenView {
         return null;
     }
 
-    public AbstractScreenView getViewUnderneath(){
+    public ScreenView getViewUnderneath(){
         return null;
     }
 }

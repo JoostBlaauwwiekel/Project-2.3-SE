@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.HashMap;
 
-public abstract class AbstractScreenView extends VBox {
+public abstract class ScreenView extends VBox {
 
     private Stage window;
     private HashMap<String,Button> buttons = new HashMap<>();
@@ -15,11 +15,11 @@ public abstract class AbstractScreenView extends VBox {
     private HashMap<String, GameBoardView> gameBoardViews = new HashMap<>();
 
     /**
-     * This is the constructor for the AbstractScreenView class, the primary stage of a scene is given as a parameter.
+     * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
      *
      * @param window the stage of a particular scene.
      */
-    protected AbstractScreenView(Stage window){
+    protected ScreenView(Stage window){
         this.window = window;
     }
 
@@ -84,5 +84,5 @@ public abstract class AbstractScreenView extends VBox {
      *
      * @return the underlying view or null.
      */
-    public abstract AbstractScreenView getViewUnderneath();
+    public abstract ScreenView getViewUnderneath();
 }
