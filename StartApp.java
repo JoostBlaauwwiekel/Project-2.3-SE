@@ -1,6 +1,6 @@
-import Project.MVC.Controller.ApplicationController;
-import Project.MVC.Model.ApplicationModel;
-import Project.MVC.View.MainScreen.MainView;
+import project.mvc.controller.ApplicationController;
+import project.mvc.model.ApplicationModel;
+import project.mvc.view.mainscreen.MainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
