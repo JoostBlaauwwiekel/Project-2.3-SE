@@ -55,9 +55,9 @@ public abstract class GameBoardLogic {
     }
 
     /**
-     * This method resets the board back to its begin state: Only zero's.
+     * This method resets the board back to its begin state.
      */
     public void resetBoard() {
-        Arrays.fill(board, 0);
+        initBoard();
     }
 }

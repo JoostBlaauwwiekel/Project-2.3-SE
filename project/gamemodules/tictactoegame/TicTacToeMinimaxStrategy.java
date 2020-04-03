@@ -140,33 +140,25 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
             return score;
         }
 
-        if(isMax){
-            for(int move : logic.getMoves(player)){
-                TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
-                newBoard.setBoard(b.getBoard());
-                TicTacToeGameLogic tempGame = new TicTacToeGameLogic();
-                tempGame.setBoard(newBoard);
-                tempGame.doMove(move, player);
+        for(int move : logic.getMoves(player)){
+            TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
+            newBoard.setBoard(b.getBoard());
+            TicTacToeGameLogic tempGame = new TicTacToeGameLogic();
+            tempGame.setBoard(newBoard);
+            tempGame.doMove(move, player);
+            if(isMax){
                 int eval = miniMax(newBoard, depth-1, false);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
-            }
-            return bestEval;
-        } else {
-            for(int move : logic.getMoves(player)){
-                TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
-                newBoard.setBoard(b.getBoard());
-                TicTacToeGameLogic tempGame = new TicTacToeGameLogic();
-                tempGame.setBoard(newBoard);
-                tempGame.doMove(move, player);
+            } else {
                 int eval = miniMax(newBoard, depth-1, true);
                 if(eval < bestEval){
                     bestEval = eval;
                 }
             }
-            return bestEval;
         }
+        return bestEval;
     }
 }
 

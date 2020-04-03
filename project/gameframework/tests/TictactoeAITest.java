@@ -1,13 +1,11 @@
 package project.gameframework.tests;
 
-import javafx.scene.layout.Pane;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
 import project.gamemodules.tictactoegame.TicTacToeGameLogic;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class TictactoeAITest {
     public static void main(String[] args){

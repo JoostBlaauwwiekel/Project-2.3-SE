@@ -35,12 +35,12 @@ public class ReversiGameLogic extends GameLogic {
 
     /**
      * This method checks if the game is over and then returns the winner.
-     * @return int representing the winner of the game, 3 means draw.
+     * @return int representing the winner of the game, 3 means draw, 0 means the game is not over.
      */
     @Override
     public int gameOver (){
         ReversiBoardLogic board = (ReversiBoardLogic)getBoard();
-        if(board.getDiscCount(0) == 0 || getMoves(1).size() == 0 || getMoves(2).size() == 0){
+        if(getMoves(1).size() == 0 && getMoves(2).size() == 0){
             if(board.getDiscCount(1) > board.getDiscCount(2)){
                 return 1;
             } else if(board.getDiscCount(1) < board.getDiscCount(2)){

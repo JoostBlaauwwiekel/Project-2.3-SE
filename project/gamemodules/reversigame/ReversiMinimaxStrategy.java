@@ -4,6 +4,8 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
+    private static final int DEPTH = 2;
+
     @Override
     public int evaluate(GameBoardLogic board) {
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
@@ -33,7 +35,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
-            int eval = miniMax(newBoard, 6, isMax);
+            int eval = miniMax(newBoard, DEPTH, !isMax);
+            eval += bias(move, isMax);
+
 //            System.out.println("Move: " + move + " Eval: " + eval);
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
@@ -46,8 +50,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     @Override
     public int miniMax(GameBoardLogic board, int depth, boolean isMax) {
-        //TODO: Deze hele methode is echt heel slecht door gebrek aan hersencellen maar ik fix het later
-
         int player;
         int bestEval;
         if(isMax){
@@ -65,34 +67,45 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             return evaluate(board);
         }
 
-        if(isMax){
-            for(int move : logic.getMoves(player)){
-                ReversiBoardLogic newBoard = new ReversiBoardLogic();
-                newBoard.setBoard(board.getBoard());
-                ReversiGameLogic tempGame = new ReversiGameLogic();
-                tempGame.setBoard(newBoard);
-                tempGame.doMove(move, player);
+        for(int move : logic.getMoves(player)){
+            ReversiBoardLogic newBoard = new ReversiBoardLogic();
+            newBoard.setBoard(board.getBoard());
+            ReversiGameLogic tempGame = new ReversiGameLogic();
+            tempGame.setBoard(newBoard);
+            tempGame.doMove(move, player);
+            if(isMax){
                 int eval = miniMax(newBoard, depth-1, false);
-//                System.out.println("Depth: " + depth + " Move: " + move + " Eval: " + eval);
+                eval += bias(move, isMax);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
-            }
-            return bestEval;
-        } else {
-            for(int move : logic.getMoves(player)){
-                ReversiBoardLogic newBoard = new ReversiBoardLogic();
-                newBoard.setBoard(board.getBoard());
-                ReversiGameLogic tempGame = new ReversiGameLogic();
-                tempGame.setBoard(newBoard);
-                tempGame.doMove(move, player);
+            } else {
                 int eval = miniMax(newBoard, depth-1, true);
-//                System.out.println("Depth: " + depth + " Move: " + move + " Eval: " + eval);
+                eval += bias(move, isMax);
                 if(eval < bestEval){
                     bestEval = eval;
                 }
             }
-            return bestEval;
         }
+        return bestEval;
+    }
+
+    private int bias(int move, boolean isMax){
+        int bias = 0;
+
+        // Bias for corners
+        if(move == 0 || move == 7 || move == 56 || move == 63){
+            bias += 7;
+        }
+        // Bias for middle corners
+        else if(move == 18 || move == 21 || move == 42 || move == 45){
+            bias += 2;
+        }
+
+        if(!isMax){
+            bias = -bias;
+        }
+
+        return bias;
     }
 }
