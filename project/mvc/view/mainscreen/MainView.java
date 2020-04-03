@@ -21,7 +21,7 @@ public class MainView extends ScreenView {
         setSpacing(10);
         setPadding(new Insets(20, 20, 20, 20));
         setAlignment(Pos.CENTER);
-        setStyle("-fx-background-color: #1da1f2;");
+        setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #1da1f2, #1281bb)");
 
         Label title = new Label("Project 2.3 SE");
         title.setTextFill(Color.WHITE);

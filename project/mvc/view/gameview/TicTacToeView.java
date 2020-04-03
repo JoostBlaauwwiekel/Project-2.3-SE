@@ -14,24 +14,32 @@ public class TicTacToeView extends GameBoardView {
 
     private String mode = "";
 
-    public TicTacToeView(Stage window) {
+    // Heb deze variable toegevoegd de breedte mee te kunnen geven. Zo komen de blokken netjes naast elkaar. Als hij namelijk de breed is heb je geen blok van 9x9
+    public TicTacToeView(Stage window, int boardWidth) {
         super(window);
 
         FlowPane centerLayout = new FlowPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #524D4E;");
-        centerLayout.setMaxSize(450, 450);
+        centerLayout.setMaxWidth(boardWidth);
 
         Label gameMode = new Label("");
         gameMode.setTextFill(Color.WHITE);
-        Label wins = new Label("Wins: 1");
-        wins.setTextFill(Color.WHITE);
+        Label playerWins = new Label("Player Wins: ");
+        Label computerWins = new Label("Computer Wins: ");
+        playerWins.setTextFill(Color.WHITE);
+        computerWins.setTextFill(Color.WHITE);
 
         GameBoard board = new TicTacToeBoard();
+        Button[] gameBoardButtons = board.getTiles();
+        for(int i = 0; i < board.getTiles().length; i++) {
+            gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
+        }
+
         Button exitGame = new Button("Exit Tic Tac Toe");
         super.getGameButtons().put(exitGame.getText(), exitGame);
 
-        super.getSidebar().getChildren().addAll(wins, exitGame);
+        super.getSidebar().getChildren().addAll(playerWins, computerWins, exitGame);
         super.getTopBar().getChildren().addAll(gameMode);
         centerLayout.getChildren().addAll(board.getTiles());
 

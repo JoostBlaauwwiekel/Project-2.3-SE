@@ -6,7 +6,7 @@ import project.mvc.view.GameBoard;
 public class TicTacToeBoard extends GameBoard {
 
     public TicTacToeBoard() {
-        super(3, 3, new TicTacToeBoardLogic());
+        super(3, 3,150,150,new TicTacToeBoardLogic());
     }
 
 }

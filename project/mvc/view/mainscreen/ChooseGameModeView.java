@@ -19,7 +19,7 @@ public class ChooseGameModeView extends ScreenView {
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
         setAlignment(Pos.CENTER);
-        setStyle("-fx-background-color: #1da1f2;");
+        setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #f2b353, #c39540)");
 
         Label chooseGameTitle = new Label("Choose a mode");
         chooseGameTitle.setTextFill(Color.WHITE);
@@ -36,11 +36,11 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        TicTacToeView ticTacToeView = new TicTacToeView(window);
+        TicTacToeView ticTacToeView = new TicTacToeView(window, 450);
         Scene ticTacToeScene = new Scene(ticTacToeView, 900, 600);
 
-        ReversiView reversiView = new ReversiView(window);
-        Scene reversiScene = new Scene(reversiView, 900, 600);
+        ReversiView reversiView = new ReversiView(window, 600);
+        Scene reversiScene = new Scene(reversiView, 1200, 800);
 
         super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);
         super.getGameBoardViews().put("Tic Tac Toe", ticTacToeView);

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,11 +22,13 @@ public class ConfirmBox {
         window.setMinWidth(250);
 
         Label titleMessage = new Label(message);
-        Button confirm = new Button("Yes");
-        Button deny = new Button("No");
+        Button confirm = new Button("Yes, go on");
+        Button deny = new Button("Cancel");
 
         confirm.setMinWidth(100);
         deny.setMinWidth(100);
+        deny.setStyle("-fx-background-color: #EB4D4E; -fx-font-weight: bold;");
+        deny.setTextFill(Color.WHITE);
 
         confirm.setOnAction(e -> {
             answer = true;
@@ -37,7 +40,8 @@ public class ConfirmBox {
             window.close();
         });
 
-        VBox layout = new VBox(10);
+        VBox layout = new VBox(20);
+        layout.setStyle("-fx-background-color: #FFFFFF;");
         layout.setPadding(new Insets(50,50,50,50));
         layout.getChildren().addAll(titleMessage, confirm, deny);
         layout.setAlignment(Pos.CENTER);

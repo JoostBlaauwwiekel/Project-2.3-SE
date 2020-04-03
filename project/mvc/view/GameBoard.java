@@ -14,17 +14,25 @@ public abstract class GameBoard extends FlowPane {
     private int gameBoardHeight;
     private int gameBoardDimension;
 
+    // Deze twee voeg ik toe zodat je de grootte van de knop kan bepalen. Als je de knoppen standaard op 150x150 past het wel bij TicTacToe op het scherm maar niet bij reversi - Rainier
+    private int gameButtonWidth;
+    private int gameButtonHeight;
+
     private int turn;
     private int counter;
 
     private Button[] tiles;
     private GameBoardLogic gameBoard;
 
-    public GameBoard(int width, int height, GameBoardLogic gameBoard) {
+    public GameBoard(int width, int height, int buttonHeight, int buttonWidth, GameBoardLogic gameBoard) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
+        gameButtonWidth = buttonWidth;
+        gameButtonHeight = buttonHeight;
+
         this.gameBoard = gameBoard;
+
         turn = 1;
         counter = 0;
         tiles = new Button[width * height];
@@ -34,7 +42,8 @@ public abstract class GameBoard extends FlowPane {
     public void drawBoard() {
         for (int i = 0; i < gameBoardDimension; i++) {
             tiles[i] = new Button("");
-            tiles[i].setMinSize(150, 150);
+            // Misschien is het handig dat we de knop grootte kunnen instellen per game. Als je namelijk de knop 150x150 maakt dan past het niet op het scherm bij reversi
+            tiles[i].setMinSize(gameButtonWidth, gameButtonHeight);
             tiles[i].setId(Integer.toString(i));
             Button btn = tiles[i];
 
@@ -75,5 +84,25 @@ public abstract class GameBoard extends FlowPane {
             result.setText("Game over!");
         }
         return result;
+    }
+
+    public int getGameBoardWidth() {
+        return gameBoardWidth;
+    }
+
+    public int getGameBoardHeight() {
+        return gameBoardHeight;
+    }
+
+    public int getGameBoardDimension() {
+        return gameBoardDimension;
+    }
+
+    public int getGameButtonWidth() {
+        return gameButtonWidth;
+    }
+
+    public int getGameButtonHeight() {
+        return gameButtonHeight;
     }
 }
