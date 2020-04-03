@@ -102,16 +102,12 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
             TicTacToeGameLogic tempLogic = new TicTacToeGameLogic();
             tempLogic.setBoard(tempBoard);
             tempLogic.doMove(move, p);
-            System.out.println("    Subeval for player " + p + " move : " + move);
-            int moveValue = miniMax(tempBoard, 3, !isMax);
-            System.out.println("Move for player " + p + ": " + move + " Eval: " + moveValue);
+            int moveValue = miniMax(tempBoard, 5, !isMax);
             if(isMax && moveValue > bestMoveValue || !isMax && moveValue < bestMoveValue){
                 bestMoveValue = moveValue;
                 bestMove = move;
             }
         }
-
-        System.out.println("Best move for player " + p + " is " + bestMove);
         return bestMove;
     }
 
@@ -152,7 +148,6 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, false);
-                System.out.println("        depth " + depth +  " player" + player + " move " + move + " : " + eval);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
@@ -166,7 +161,6 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, true);
-                System.out.println("        depth " + depth +  " player" + player + " move " + move + " : " + eval);
                 if(eval < bestEval){
                     bestEval = eval;
                 }
