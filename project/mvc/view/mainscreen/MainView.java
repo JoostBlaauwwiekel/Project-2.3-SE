@@ -23,7 +23,7 @@ public class MainView extends ScreenView {
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: #1da1f2;");
 
-        Label title = new Label("project 2.3 SE");
+        Label title = new Label("Project 2.3 SE");
         title.setTextFill(Color.WHITE);
         title.setFont(new Font("Arial", 30));
 
