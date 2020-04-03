@@ -1,5 +1,6 @@
 package project.mvc.view;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -47,9 +48,9 @@ public abstract class GameBoard extends FlowPane {
             tiles[i].setId(Integer.toString(i));
             Button btn = tiles[i];
 
-            btn.setOnMouseClicked(new EventHandler<>() {
+            btn.setOnMouseClicked(new EventHandler() {
                 @Override
-                public void handle(MouseEvent mouseEvent) {
+                public void handle(Event event) {
                     if(getCounter() % 2 == 0 || getCounter() == 0) {
                         turn = 1;
                     }
