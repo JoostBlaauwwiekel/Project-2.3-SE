@@ -12,11 +12,16 @@ package project.gamemodules.tictactoegame;
 
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
+import project.mvc.view.gameboard.TicTacToeBoard;
 
 public class TicTacToeMiniMax extends MinimaxStrategy {
 
-    int player = 2;
-    int opponent = 1;
+    private int player, opponent;
+
+    public TicTacToeMiniMax(int player) {
+        this.player = player;
+        this.opponent = 3 - player;
+    }
 
     /**
      * This method evaluates the possibilities. A win situation returns
