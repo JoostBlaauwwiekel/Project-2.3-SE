@@ -8,12 +8,39 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ReversiAITest {
-    public static void main(String[] args){
-        ReversiBoardLogic board = new ReversiBoardLogic();
-        ReversiGameLogic logic = new ReversiGameLogic();
-        logic.setBoard(board);
-        ReversiMinimaxStrategy ai = new ReversiMinimaxStrategy();
 
+    private ReversiBoardLogic board;
+    private ReversiGameLogic logic;
+    private ReversiMinimaxStrategy ai;
+
+    public static void main(String[] args){
+        ReversiAITest test = new ReversiAITest();
+        test.findBias();
+    }
+
+    public ReversiAITest(){
+        this.board = new ReversiBoardLogic();
+        this.logic = new ReversiGameLogic();
+        logic.setBoard(board);
+        ai = new ReversiMinimaxStrategy();
+    }
+
+    private void findBias(){
+        int bestBiasEval = -1;
+        int bestBias = 0;
+        for(int cornerBias=0; cornerBias < 50; cornerBias++){
+            ai.setCornerbias(cornerBias);
+            System.out.println("Testing with corner bias : " + cornerBias + ", best bias so far is : " + bestBias);
+            int biasEval = doTests(100);
+            if(biasEval > bestBiasEval){
+                bestBiasEval = biasEval;
+                bestBias = cornerBias;
+            }
+        }
+        System.out.println("The best possible bias is : " + bestBias);
+    }
+
+    private int doTests(int amount){
         Random random = new Random();
 
         int tests = 0;
@@ -21,7 +48,7 @@ public class ReversiAITest {
         int p2 = 0;
         int draw = 0;
         System.out.println("REVERSI AI TEST:");
-        while(tests < 100){
+        while(tests < amount){
             int turn = 1;
             while(logic.gameOver() == 0){
                 ArrayList<Integer> moves = logic.getMoves(turn);
@@ -38,11 +65,8 @@ public class ReversiAITest {
 
                 if(move != -1){
                     logic.doMove(move, turn);
-//                    System.out.println("Player " + turn + " made move " + move);
                 } else {
-//                    System.out.println("Player " + turn + " passed");
                 }
-//                board.printBoard();
                 turn = 3 - turn;
             }
 
@@ -57,17 +81,13 @@ public class ReversiAITest {
                     draw++;
                     break;
             }
-            System.out.println("Total tests: " + tests);
-            System.out.println("Player 1 won " + p1 + " times");
-            System.out.println("Player 2 won " + p2 + " times");
-            System.out.println("Draws " + draw);
+//            System.out.println("Total tests: " + tests);
+//            System.out.println("Player 1 won " + p1 + " times");
+//            System.out.println("Player 2 won " + p2 + " times");
+//            System.out.println("Draws " + draw);
             board.resetBoard();
             tests++;
         }
-
-        System.out.println("Total tests: " + tests);
-        System.out.println("Player 1 won " + p1 + " times");
-        System.out.println("Player 2 won " + p2 + " times");
-        System.out.println("Draws " + draw);
+        return p2;
     }
 }

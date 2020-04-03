@@ -4,7 +4,8 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private static final int DEPTH = 2;
+    private static final int DEPTH = 4;
+    private int cornerBias = 0;
 
     @Override
     public int evaluate(GameBoardLogic board) {
@@ -73,15 +74,13 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             ReversiGameLogic tempGame = new ReversiGameLogic();
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
+            int eval = miniMax(newBoard, depth-1, isMax);
+            eval += bias(move, isMax);
             if(isMax){
-                int eval = miniMax(newBoard, depth-1, false);
-                eval += bias(move, isMax);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
             } else {
-                int eval = miniMax(newBoard, depth-1, true);
-                eval += bias(move, isMax);
                 if(eval < bestEval){
                     bestEval = eval;
                 }
@@ -90,12 +89,19 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         return bestEval;
     }
 
+    /**
+     * This method calculates a bias value. The bias value is used to add weight
+     * to the evaluation of certain moves.
+     * @param move the move to calculate the bias for
+     * @param isMax if the player is maximizing
+     * @return the bias value
+     */
     private int bias(int move, boolean isMax){
         int bias = 0;
 
         // Bias for corners
         if(move == 0 || move == 7 || move == 56 || move == 63){
-            bias += 7;
+            bias += cornerBias;
         }
         // Bias for middle corners
         else if(move == 18 || move == 21 || move == 42 || move == 45){
@@ -107,5 +113,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
 
         return bias;
+    }
+
+    public void setCornerbias(int bias){
+        this.cornerBias = bias;
     }
 }
