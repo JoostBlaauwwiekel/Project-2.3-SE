@@ -8,8 +8,8 @@ public class TicTacToeTest {
 
     public static void main(String[] args) {
         GameBoardLogic board = new TicTacToeBoardLogic();
-        TicTacToeMiniMax ai1 = new TicTacToeMiniMax(1);
-        TicTacToeMiniMax ai2 = new TicTacToeMiniMax(2);
+        TicTacToeMiniMax ai1 = new TicTacToeMiniMax();
+        TicTacToeMiniMax ai2 = new TicTacToeMiniMax();
         GameLogic logic = new TicTacToeGameLogic();
         logic.setBoard(board);
 

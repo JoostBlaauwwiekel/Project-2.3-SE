@@ -10,7 +10,15 @@ import java.util.List;
 public class TicTacToeGameLogic extends GameLogic {
     @Override
     public ArrayList<Integer> getMoves(int player) {
-        return null;
+        ArrayList<Integer> result = new ArrayList<>();
+
+        for(int pos = 0; pos<getBoard().getBoard().length; pos++){
+            if(getBoard().getBoardPos(pos) == 0){
+                result.add(pos);
+            }
+        }
+
+        return result;
     }
 
     @Override

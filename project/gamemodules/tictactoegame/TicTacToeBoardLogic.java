@@ -4,8 +4,6 @@ import project.gameframework.GameBoardLogic;
 
 public class TicTacToeBoardLogic extends GameBoardLogic {
 
-    private int[] board;
-
     public TicTacToeBoardLogic(){
         initBoard();
     }
@@ -17,25 +15,6 @@ public class TicTacToeBoardLogic extends GameBoardLogic {
             defaultBoard[0] = 0;
         }
         setBoard(defaultBoard);
-        this.board = getBoard();
-    }
-
-    @Override
-    public void setBoardPos(int pos, int state) {
-        if(isValid(pos)) {
-            board[pos] = state;
-        }
-    }
-
-    /**
-     * This method checks if a position on the
-     * board is occupied.
-     *
-     * @param pos       position on the gameboard
-     * @return          return whether a position is occupied or not
-     */
-    public boolean isValid(int pos) {
-        return board[pos] == 0;
     }
 
     @Override
@@ -48,9 +27,5 @@ public class TicTacToeBoardLogic extends GameBoardLogic {
         System.out.println("-------------");
         System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
         System.out.println("-------------");
-    }
-
-    public int[] getTicTacToeBoard() {
-        return board;
     }
 }

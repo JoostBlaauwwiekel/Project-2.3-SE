@@ -16,13 +16,6 @@ import project.mvc.view.gameboard.TicTacToeBoard;
 
 public class TicTacToeMiniMax extends MinimaxStrategy {
 
-    private int player, opponent;
-
-    public TicTacToeMiniMax(int player) {
-        this.player = player;
-        this.opponent = 3 - player;
-    }
-
     /**
      * This method evaluates the possibilities. A win situation returns
      * 10 points, a lose situation returns -10 points. Anything else
@@ -37,10 +30,10 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
         for(int row = 0; row < 3; row++) {
             // 0 - 1 : 1 - 2
             if(board[rowCounter] == board[rowCounter + 1] && board[rowCounter + 1] == board[rowCounter + 2]) {
-                if(board[rowCounter] == player) {
-                    return 10;
-                } else if(board[rowCounter] == opponent) {
-                    return -10;
+                if(board[rowCounter] == 1) {
+                    return 1;
+                } else if(board[rowCounter] == 2) {
+                    return -1;
                 }
             }
             rowCounter = rowCounter + 3;
@@ -50,10 +43,10 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
         for(int col = 0; col < 3; col++) {
             // 1 - 4 : 4 - 7
             if(board[colCounter] == board[colCounter + 3] && board[colCounter + 3] == board[colCounter + 6]) {
-                if(board[colCounter] == player) {
-                    return 10;
-                } else if(board[colCounter] == opponent) {
-                    return -10;
+                if(board[colCounter] == 1) {
+                    return 1;
+                } else if(board[colCounter] == 2) {
+                    return -1;
                 }
             }
             colCounter = colCounter + 1;
@@ -61,22 +54,22 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
 
         // Checking for diagonals
         if(board[0] == board[4] && board[4] == board[8]) {
-            if (board[0] == player) {
-                return 10;
-            } else if(board[0] == opponent) {
-                return -10;
+            if (board[0] == 1) {
+                return 1;
+            } else if(board[0] == 2) {
+                return -1;
             }
         }
 
         // Checking for diagonals
         if(board[2] == board[4] && board[4] == board[6]) {
-            if (board[2] == player) {
-                return 10;
-            } else if(board[2] == opponent) {
-                return -10;
+            if (board[2] == 1) {
+                return 1;
+            } else if(board[2] == 2) {
+                return -1;
             }
         }
-        // if both of them didn't won return 0
+        // if no one has won yet return 0
         return 0;
     }
 
@@ -87,24 +80,38 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @return          int with the best possible position
      */
     public int getBestMove(GameBoardLogic b, int p) {
-        int[] board = b.getBoard();
-        int bestValue = -1000;
+        TicTacToeBoardLogic ticTacToeBoard = (TicTacToeBoardLogic) b;
+        int bestMoveValue;
         int bestMove = -1;
+        boolean isMax;
 
-        for(int pos = 0; pos < 9; pos++) {
-            if (board[pos] == 0) {
-                board[pos] = player;
+        if(p == 1){
+            bestMoveValue = -10;
+            isMax = true;
+        } else {
+            isMax = false;
+            bestMoveValue = 10;
+        }
 
-                int moveValue = miniMax(b, 0, false);
-
-                board[pos] = 0;
-
-                if (moveValue > bestValue) {
-                    bestMove = pos;
-                    bestValue = moveValue;
-                }
+        TicTacToeGameLogic logic = new TicTacToeGameLogic();
+        logic.setBoard(b);
+        System.out.println();
+        for(int move : logic.getMoves(p)){
+            TicTacToeBoardLogic tempBoard = new TicTacToeBoardLogic();
+            tempBoard.setBoard(ticTacToeBoard.getBoard());
+            TicTacToeGameLogic tempLogic = new TicTacToeGameLogic();
+            tempLogic.setBoard(tempBoard);
+            tempLogic.doMove(move, p);
+            System.out.println("    Subeval for player " + p + " move : " + move);
+            int moveValue = miniMax(tempBoard, 2, isMax);
+            System.out.println("Move for player " + p + ": " + move + " Eval: " + moveValue);
+            if(isMax && moveValue > bestMoveValue || !isMax && moveValue < bestMoveValue){
+                bestMoveValue = moveValue;
+                bestMove = move;
             }
         }
+
+        System.out.println("Best move for player " + p + " is " + bestMove);
         return bestMove;
     }
 
@@ -119,48 +126,53 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @return
      */
     public int miniMax(GameBoardLogic b, int depth, boolean isMax) {
+//        return evaluate(b);
         int score = evaluate(b);
-        int[] board = b.getBoard();
+        if(depth == 0 || score == 1 || score == -1 || !hasMovesLeft(b.getBoard())) {
+            return score;
+        }
 
-        if(score == 10) { return score; }
-
-        if(score == -10) { return score; }
-
-        if(!hasMovesLeft(board)) { return 0; }
-
-        // If this maximizer's move
-        if(isMax) {
-            int best = -1000;
-
-            for(int pos = 0; pos < 9; pos++) {
-                if(board[pos] == 0) {
-
-                    board[pos] = player;
-
-                    best = Math.max(best, miniMax(b, depth + 1, false));
-
-                    board[pos] = 0;
-
-                }
-            }
-
-            return best;
+        int player;
+        int bestEval;
+        if(isMax){
+            bestEval = -10;
+            player = 1;
         } else {
-            // The minimizer's move
-            int best = 1000;
+            bestEval = 10;
+            player = 2;
+        }
 
-            for(int pos = 0; pos < 9; pos++) {
+        TicTacToeGameLogic logic = new TicTacToeGameLogic();
+        logic.setBoard(b);
 
-                if (board[pos] == 0) {
-
-                    board[pos] = opponent;
-
-                    best = Math.min(best, miniMax(b, depth + 1, true));
-
-                    board[pos] = 0;
+        if(isMax){
+            for(int move : logic.getMoves(player)){
+                TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
+                newBoard.setBoard(b.getBoard());
+                TicTacToeGameLogic tempGame = new TicTacToeGameLogic();
+                tempGame.setBoard(newBoard);
+                tempGame.doMove(move, player);
+                int eval = miniMax(newBoard, depth-1, false);
+//                System.out.println("        player " + player + " move " + move + " : " + eval);
+                if(eval > bestEval){
+                    bestEval = eval;
                 }
             }
-            return best;
+            return bestEval;
+        } else {
+            for(int move : logic.getMoves(player)){
+                TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
+                newBoard.setBoard(b.getBoard());
+                TicTacToeGameLogic tempGame = new TicTacToeGameLogic();
+                tempGame.setBoard(newBoard);
+                tempGame.doMove(move, player);
+                int eval = miniMax(newBoard, depth-1, true);
+//                System.out.println("        player " + player + " move " + move + " : " + eval);
+                if(eval < bestEval){
+                    bestEval = eval;
+                }
+            }
+            return bestEval;
         }
     }
 
@@ -171,7 +183,7 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @param board     the board of the game
      * @return          whether there are moves left or not
      */
-    public Boolean hasMovesLeft(int[] board) {
+    private Boolean hasMovesLeft(int[] board) {
         for(int pos : board) {
             if (pos == 0) {
                 return true;
