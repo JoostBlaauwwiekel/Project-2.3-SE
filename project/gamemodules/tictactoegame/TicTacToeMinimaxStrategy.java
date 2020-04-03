@@ -102,12 +102,16 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
             TicTacToeGameLogic tempLogic = new TicTacToeGameLogic();
             tempLogic.setBoard(tempBoard);
             tempLogic.doMove(move, p);
-            int moveValue = miniMax(tempBoard, 2, isMax);
+            System.out.println("    Subeval for player " + p + " move : " + move);
+            int moveValue = miniMax(tempBoard, 3, !isMax);
+            System.out.println("Move for player " + p + ": " + move + " Eval: " + moveValue);
             if(isMax && moveValue > bestMoveValue || !isMax && moveValue < bestMoveValue){
                 bestMoveValue = moveValue;
                 bestMove = move;
             }
         }
+
+        System.out.println("Best move for player " + p + " is " + bestMove);
         return bestMove;
     }
 
@@ -124,7 +128,7 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
     public int miniMax(GameBoardLogic b, int depth, boolean isMax) {
         int player;
         int bestEval;
-        if(!isMax){
+        if(isMax){
             bestEval = -10;
             player = 1;
         } else {
@@ -148,6 +152,7 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, false);
+                System.out.println("        depth " + depth +  " player" + player + " move " + move + " : " + eval);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
@@ -161,29 +166,13 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, true);
+                System.out.println("        depth " + depth +  " player" + player + " move " + move + " : " + eval);
                 if(eval < bestEval){
                     bestEval = eval;
                 }
             }
             return bestEval;
         }
-    }
-
-    /**
-     * This method checks whether there are possible
-     * moves left.
-     *
-     * @param board     the board of the game
-     * @return          whether there are moves left or not
-     */
-    private Boolean hasMovesLeft(int[] board) {
-        for(int pos : board) {
-            if (pos == 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
 
