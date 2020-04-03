@@ -20,7 +20,7 @@ public class CommunicationTest {
         // Don't forget to start the server before running this program! Thanks.
         channel.startServerAndPrepareLists();
         GameBoardLogic board = new TicTacToeBoardLogic();
-        TicTacToeMiniMax ai = new TicTacToeMiniMax();
+        TicTacToeMinimaxStrategy ai = new TicTacToeMinimaxStrategy();
 
         channel.subscribe("Tic-tac-toe");
         //channel.challenge("computer", "Tic-tac-toe");

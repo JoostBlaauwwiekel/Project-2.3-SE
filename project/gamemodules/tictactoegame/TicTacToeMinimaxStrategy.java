@@ -14,7 +14,7 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 import project.mvc.view.gameboard.TicTacToeBoard;
 
-public class TicTacToeMiniMax extends MinimaxStrategy {
+public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
 
     /**
      * This method evaluates the possibilities. A win situation returns
@@ -102,16 +102,12 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
             TicTacToeGameLogic tempLogic = new TicTacToeGameLogic();
             tempLogic.setBoard(tempBoard);
             tempLogic.doMove(move, p);
-            System.out.println("    Subeval for player " + p + " move : " + move);
             int moveValue = miniMax(tempBoard, 2, isMax);
-            System.out.println("Move for player " + p + ": " + move + " Eval: " + moveValue);
             if(isMax && moveValue > bestMoveValue || !isMax && moveValue < bestMoveValue){
                 bestMoveValue = moveValue;
                 bestMove = move;
             }
         }
-
-        System.out.println("Best move for player " + p + " is " + bestMove);
         return bestMove;
     }
 
@@ -126,15 +122,9 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
      * @return
      */
     public int miniMax(GameBoardLogic b, int depth, boolean isMax) {
-//        return evaluate(b);
-        int score = evaluate(b);
-        if(depth == 0 || score == 1 || score == -1 || !hasMovesLeft(b.getBoard())) {
-            return score;
-        }
-
         int player;
         int bestEval;
-        if(isMax){
+        if(!isMax){
             bestEval = -10;
             player = 1;
         } else {
@@ -145,6 +135,11 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
         TicTacToeGameLogic logic = new TicTacToeGameLogic();
         logic.setBoard(b);
 
+        int score = evaluate(b);
+        if(depth == 0 || logic.gameOver() != 0) {
+            return score;
+        }
+
         if(isMax){
             for(int move : logic.getMoves(player)){
                 TicTacToeBoardLogic newBoard = new TicTacToeBoardLogic();
@@ -153,7 +148,6 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, false);
-//                System.out.println("        player " + player + " move " + move + " : " + eval);
                 if(eval > bestEval){
                     bestEval = eval;
                 }
@@ -167,7 +161,6 @@ public class TicTacToeMiniMax extends MinimaxStrategy {
                 tempGame.setBoard(newBoard);
                 tempGame.doMove(move, player);
                 int eval = miniMax(newBoard, depth-1, true);
-//                System.out.println("        player " + player + " move " + move + " : " + eval);
                 if(eval < bestEval){
                     bestEval = eval;
                 }

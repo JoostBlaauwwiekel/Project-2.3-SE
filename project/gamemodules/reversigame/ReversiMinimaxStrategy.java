@@ -3,7 +3,7 @@ package project.gamemodules.reversigame;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
-public class ReversiMiniMaxStrategy extends MinimaxStrategy {
+public class ReversiMinimaxStrategy extends MinimaxStrategy {
     @Override
     public int evaluate(GameBoardLogic board) {
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;

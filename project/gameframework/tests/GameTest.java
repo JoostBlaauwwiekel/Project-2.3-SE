@@ -1,7 +1,7 @@
 package project.gameframework.tests;
 
 import project.gamemodules.reversigame.ReversiGameLogic;
-import project.gamemodules.reversigame.ReversiMiniMaxStrategy;
+import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 
 public class GameTest {
     public static void main(String[] args){
@@ -47,7 +47,7 @@ public class GameTest {
         reversiBoard.initBoard();
         reversiBoard.printBoard();
 
-        ReversiMiniMaxStrategy AI = new ReversiMiniMaxStrategy();
+        ReversiMinimaxStrategy AI = new ReversiMinimaxStrategy();
         int turn = 1;
         while(true){
             System.out.println("It's " + turn + "'s turn.");
