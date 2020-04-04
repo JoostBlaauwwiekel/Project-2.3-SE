@@ -36,11 +36,11 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        TicTacToeView ticTacToeView = new TicTacToeView(window, 450);
-        Scene ticTacToeScene = new Scene(ticTacToeView, 900, 600);
+        TicTacToeView ticTacToeView = new TicTacToeView(window, 500);
+        Scene ticTacToeScene = new Scene(ticTacToeView, 500, 700);
 
-        ReversiView reversiView = new ReversiView(window, 600);
-        Scene reversiScene = new Scene(reversiView, 1200, 800);
+        ReversiView reversiView = new ReversiView(window, 500);
+        Scene reversiScene = new Scene(reversiView, 500, 700);
 
         super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);
         super.getGameBoardViews().put("Tic Tac Toe", ticTacToeView);

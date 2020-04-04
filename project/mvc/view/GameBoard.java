@@ -16,8 +16,8 @@ public abstract class GameBoard extends FlowPane {
     private int gameBoardDimension;
 
     // Deze twee voeg ik toe zodat je de grootte van de knop kan bepalen. Als je de knoppen standaard op 150x150 past het wel bij TicTacToe op het scherm maar niet bij reversi - Rainier
-    private int gameButtonWidth;
-    private int gameButtonHeight;
+    private double gameButtonWidth;
+    private double gameButtonHeight;
 
     private int turn;
     private int counter;
@@ -25,7 +25,7 @@ public abstract class GameBoard extends FlowPane {
     private Button[] tiles;
     private GameBoardLogic gameBoard;
 
-    public GameBoard(int width, int height, int buttonHeight, int buttonWidth, GameBoardLogic gameBoard) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
@@ -99,11 +99,11 @@ public abstract class GameBoard extends FlowPane {
         return gameBoardDimension;
     }
 
-    public int getGameButtonWidth() {
+    public double getGameButtonWidth() {
         return gameButtonWidth;
     }
 
-    public int getGameButtonHeight() {
+    public double getGameButtonHeight() {
         return gameButtonHeight;
     }
 }

@@ -5,7 +5,7 @@ import project.mvc.view.GameBoard;
 
 public class ReversiBoard extends GameBoard {
 
-    public ReversiBoard(){
-        super(8,8, 75,75, new ReversiBoardLogic());
+    public ReversiBoard(double buttonHeight, double buttonWidth){
+        super(8,8, buttonHeight,buttonWidth, new ReversiBoardLogic());
     }
 }
