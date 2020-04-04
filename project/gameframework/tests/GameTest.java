@@ -54,7 +54,10 @@ public class GameTest {
 
             int bestMove = AI.getBestMove(reversiBoard, turn);
             System.out.println("Player " + turn + " made move " + bestMove);
-            reversiLogic.doMove(bestMove, turn);
+            if(bestMove != -1){
+                reversiLogic.doMove(bestMove, turn);
+            }
+            System.out.println(reversiLogic.getPossibleFlips(reversiBoard, turn));
             reversiBoard.printBoard();
             turn = 3 - turn;
 

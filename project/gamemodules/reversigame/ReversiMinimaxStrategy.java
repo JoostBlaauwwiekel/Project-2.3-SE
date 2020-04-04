@@ -4,13 +4,40 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private static final int DEPTH = 4;
-    private int cornerBias = 0;
+    private int depth = 3;
+
+    // These 'magic values' have been found through thousands of automated tests.
+    // midCornerBias and midBias seems to be unnecessary when cornerBias is used.
+    // Best values so far: 7, 0, -5, 0, ?
+    private int cornerBias = 7;
+    private int midCornerBias = 0;
+    private int edgeBias = -5;
+    private int midBias = 0;
+    private int insideCornerBias = 0;
 
     @Override
     public int evaluate(GameBoardLogic board) {
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+    }
+
+    // TODO: not done yet
+    public int evaluate2(GameBoardLogic board){
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+
+        if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0){
+            int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+            if(result > 0){
+                result += 5000;
+            } else {
+                result -= 5000;
+            }
+            return result;
+        }
+        return logic.getMoves(1).size() - logic.getMoves(2).size();
+//        return logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
     }
 
     @Override
@@ -22,11 +49,11 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         int bestEval;
         boolean isMax;
         if(player == 1){
-            bestEval = -100;
+            bestEval = -10000;
             isMax = true;
         } else {
             isMax = false;
-            bestEval = 100;
+            bestEval = 10000;
         }
 
         int bestMove = -1;
@@ -36,10 +63,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
-            int eval = miniMax(newBoard, DEPTH, !isMax);
+            int eval = miniMax(newBoard, depth, !isMax);
             eval += bias(move, isMax);
 
-//            System.out.println("Move: " + move + " Eval: " + eval);
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
                 bestMove = move;
@@ -54,10 +80,10 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         int player;
         int bestEval;
         if(isMax){
-            bestEval = -100;
+            bestEval = -10000;
             player = 1;
         } else {
-            bestEval = 100;
+            bestEval = 10000;
             player = 2;
         }
 
@@ -105,7 +131,22 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
         // Bias for middle corners
         else if(move == 18 || move == 21 || move == 42 || move == 45){
-            bias += 2;
+            bias += midCornerBias;
+        }
+        // Bias for inside corners
+        else if(move == 9 || move == 14 || move == 49 || move == 54){
+            bias += insideCornerBias;
+        }
+        // Bias for edges
+        else if(move == 8 || move == 16 || move == 24 || move == 32 || move == 40 || move == 48 ||
+                move == 1 || move == 2 || move == 3 || move == 4 || move == 5 || move == 6 ||
+                move == 15 || move == 23 || move == 31 || move == 39 || move == 47 || move == 55 ||
+                move == 57 || move == 58 || move == 59 || move == 60 || move == 61 || move == 62){
+            bias += edgeBias;
+        }
+        // Bias for middle 4
+        else if(move == 27 || move == 28 || move == 35 || move == 36){
+            bias += midBias;
         }
 
         if(!isMax){
@@ -115,7 +156,51 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         return bias;
     }
 
-    public void setCornerbias(int bias){
+    public void setCornerBias(int bias){
         this.cornerBias = bias;
+    }
+
+    public void setMidCornerBias(int bias){
+        this.midCornerBias = bias;
+    }
+
+    public void setEdgeBias(int bias){
+        this.edgeBias = bias;
+    }
+
+    public void setMidBias(int bias){
+        this.midBias = bias;
+    }
+
+    public void setInsideCornerBias(int insideCornerBias) {
+        this.insideCornerBias = insideCornerBias;
+    }
+
+    public void setDepth(int depth){
+        this.depth = depth;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public int getCornerBias() {
+        return cornerBias;
+    }
+
+    public int getMidCornerBias() {
+        return midCornerBias;
+    }
+
+    public int getEdgeBias() {
+        return edgeBias;
+    }
+
+    public int getMidBias() {
+        return midBias;
+    }
+
+    public int getInsideCornerBias() {
+        return insideCornerBias;
     }
 }

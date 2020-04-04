@@ -4,6 +4,7 @@ import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,7 +16,8 @@ public class ReversiAITest {
 
     public static void main(String[] args){
         ReversiAITest test = new ReversiAITest();
-        test.findBias();
+//        test.findBias();
+        test.effectivenessTest();
     }
 
     public ReversiAITest(){
@@ -25,16 +27,25 @@ public class ReversiAITest {
         ai = new ReversiMinimaxStrategy();
     }
 
+    private void effectivenessTest(){
+        long startTime = System.currentTimeMillis();
+        int testCount = 100;
+        float win = doTests(testCount);
+        System.out.println("The test finished and took " + (System.currentTimeMillis() - startTime) / 1000.00 + " seconds");
+        System.out.println("Win percentage is " + ((win / testCount) * 100) + "%");
+    }
+
     private void findBias(){
         int bestBiasEval = -1;
         int bestBias = 0;
-        for(int cornerBias=0; cornerBias < 50; cornerBias++){
-            ai.setCornerbias(cornerBias);
-            System.out.println("Testing with corner bias : " + cornerBias + ", best bias so far is : " + bestBias);
+        for(int bias=-10; bias < 50; bias++){
+            ai.setInsideCornerBias(bias);
+            System.out.println("Testing with bias : " + bias + ", best bias so far is : " + bestBias);
             int biasEval = doTests(100);
+            System.out.println("Eval: " + biasEval);
             if(biasEval > bestBiasEval){
                 bestBiasEval = biasEval;
-                bestBias = cornerBias;
+                bestBias = bias;
             }
         }
         System.out.println("The best possible bias is : " + bestBias);
@@ -47,7 +58,6 @@ public class ReversiAITest {
         int p1 = 0;
         int p2 = 0;
         int draw = 0;
-        System.out.println("REVERSI AI TEST:");
         while(tests < amount){
             int turn = 1;
             while(logic.gameOver() == 0){
@@ -67,6 +77,7 @@ public class ReversiAITest {
                     logic.doMove(move, turn);
                 } else {
                 }
+//                board.printBoard();
                 turn = 3 - turn;
             }
 
@@ -81,13 +92,15 @@ public class ReversiAITest {
                     draw++;
                     break;
             }
-//            System.out.println("Total tests: " + tests);
-//            System.out.println("Player 1 won " + p1 + " times");
-//            System.out.println("Player 2 won " + p2 + " times");
-//            System.out.println("Draws " + draw);
             board.resetBoard();
             tests++;
         }
+
+        System.out.println("Total tests: " + tests);
+        System.out.println("Player 1 won " + p1 + " times");
+        System.out.println("Player 2 won " + p2 + " times");
+        System.out.println("Draws " + draw);
+
         return p2;
     }
 }

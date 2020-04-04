@@ -1,5 +1,6 @@
 package project.gamemodules.reversigame;
 
+import project.gameframework.GameBoardLogic;
 import project.gameframework.GameLogic;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class ReversiGameLogic extends GameLogic {
      * Method used to call checkDir function without having to pass a boolean.
      * See next method for more.
      */
-    public boolean checkDir(int dir, int pos, int color){
+    private boolean checkDir(int dir, int pos, int color){
         return checkDir(dir, pos, color, false);
     }
 
@@ -111,7 +112,7 @@ public class ReversiGameLogic extends GameLogic {
      * @return a boolean, true = there is a flippable disc in this direction,
      *                    false = there is no flippable disc in this direction.
      */
-    public boolean checkDir(int dir, int pos, int player, boolean flipped){
+    private boolean checkDir(int dir, int pos, int player, boolean flipped){
         // Filtering out vertical edge cases.
         int vEdge = pos % 8;
         switch(vEdge){
@@ -152,5 +153,57 @@ public class ReversiGameLogic extends GameLogic {
         }
 
         return false;
+    }
+
+    /**
+     * Method that calculates the total amount of opponent discs that can be flipped.
+     * @param board the board
+     * @param player the player
+     * @return the amount of opponent discs that can be flipped.
+     */
+    public int getPossibleFlips(GameBoardLogic board, int player){
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+        ArrayList<Integer> moves = logic.getMoves(player);
+
+        int result = 0;
+        for(int move : moves){
+            ReversiBoardLogic tempBoard = new ReversiBoardLogic();
+            tempBoard.setBoard(board.getBoard());
+            ReversiGameLogic tempLogic = new ReversiGameLogic();
+            tempLogic.setBoard(tempBoard);
+            int oldDiscs = tempBoard.getDiscCount(player);
+            tempLogic.doMove(move, player);
+            int newDiscs = tempBoard.getDiscCount(player) - 1;
+            result += newDiscs - oldDiscs;
+        }
+
+        return result;
+    }
+
+    public int getStableFlips(GameBoardLogic board, int player){
+        // Check for a disc in corner
+        // Check all adjacent discs on the x-axis
+        // Go up or down on y-axis
+        // Check for all adjacent discs on x-axis,
+        // but do not check further then length of previous adjacent discs
+        // Add all positions to a arraylist
+        // repeat
+        // TODO: not done yet
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        if(board.getBoardPos(0) == player){
+            boolean reachedEnd = false;
+            int pos = 0;
+            while(!reachedEnd){
+                if(board.getBoardPos(pos) == player){
+                    positions.add(pos);
+                    pos++;
+                } else {
+                    reachedEnd = true;
+                }
+            }
+        }
+        return 0;
     }
 }
