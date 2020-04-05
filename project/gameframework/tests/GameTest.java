@@ -46,7 +46,6 @@ public class GameTest {
         System.out.println("ACTUAL AI TOURNAMENT: ");
         reversiBoard.initBoard();
         reversiBoard.printBoard();
-
         ReversiMinimaxStrategy AI = new ReversiMinimaxStrategy();
         int turn = 1;
         while(true){
@@ -71,5 +70,9 @@ public class GameTest {
             }
         }
         System.out.println("Player " + reversiLogic.gameOver() + " won");
+
+        // Test stable discs
+        reversiBoard.setTestBoard();
+        System.out.println("Amount of stable discs for player 1 : " + reversiLogic.getStableDiscs(reversiBoard, 1));
     }
 }

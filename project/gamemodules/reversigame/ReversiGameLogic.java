@@ -181,29 +181,93 @@ public class ReversiGameLogic extends GameLogic {
         return result;
     }
 
-    public int getStableFlips(GameBoardLogic board, int player){
-        // Check for a disc in corner
-        // Check all adjacent discs on the x-axis
-        // Go up or down on y-axis
-        // Check for all adjacent discs on x-axis,
-        // but do not check further then length of previous adjacent discs
-        // Add all positions to a arraylist
-        // repeat
-        // TODO: not done yet
+    /**
+     * This method returns the amount of stable discs for a given player.
+     * Stable discs are discs that are stuck in position and cannot be changed for the entirety of
+     * the game.
+     * @param board board that should be checked for.
+     * @param player player that should be checked for.
+     * @return the amount of stable discs.
+     */
+    public int getStableDiscs(GameBoardLogic board, int player){
         ArrayList<Integer> positions = new ArrayList<>();
 
-        if(board.getBoardPos(0) == player){
-            boolean reachedEnd = false;
-            int pos = 0;
-            while(!reachedEnd){
-                if(board.getBoardPos(pos) == player){
+        for(int i=0; i<4; i++){
+            for(int pos : getStablePositionsFromCorner(i, board, player)){
+                if(!positions.contains(pos)){
                     positions.add(pos);
-                    pos++;
-                } else {
-                    reachedEnd = true;
                 }
             }
         }
-        return 0;
+        return positions.size();
+    }
+
+    /**
+     * Method used by getStableDiscs to find all stable positions for a specific corner.
+     * @param corner the corner that should be checked for.
+     * @param board the board that should be checked for.
+     * @param player the player that should be checked for.
+     * @return ArrayList containing stable positions.
+     */
+    private ArrayList<Integer> getStablePositionsFromCorner(int corner, GameBoardLogic board, int player){
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        int xMod = 0;
+        int yMod = 0;
+        int startPos = 0;
+        switch(corner){
+            case 0: // top left
+                startPos = 0;
+                xMod = 1;
+                yMod = 1;
+                break;
+            case 1: // top right
+                startPos = 7;
+                xMod = -1;
+                yMod = 1;
+                break;
+            case 2: // bottom left
+                startPos = 56;
+                xMod = 1;
+                yMod = -1;
+                break;
+            case 3: // bottom right
+                startPos = 63;
+                xMod = -1;
+                yMod = -1;
+                break;
+        }
+
+        int pos = startPos;
+        if(board.getBoardPos(0) == player){
+            boolean reachedEndX = false;
+            boolean reachedEndY = false;
+            int row = 0;
+            int maxCol = 7;
+            while(!reachedEndY){
+                int col = 0;
+                while(!reachedEndX){
+                    if(board.getBoardPos(pos) == player && col < maxCol){
+                        if(!positions.contains(pos)){
+                            positions.add(pos);
+                        }
+                        pos += xMod;
+                        col++;
+                    } else {
+                        maxCol = col;
+                        reachedEndX = true;
+                    }
+                }
+
+                row++;
+                pos = startPos + (8 * yMod) * row;
+                if(row == 8 || board.getBoardPos(pos) != player ){
+                    reachedEndY = true;
+                }
+                reachedEndX = false;
+            }
+        }
+
+        return positions;
     }
 }

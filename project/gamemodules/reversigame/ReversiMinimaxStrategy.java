@@ -4,7 +4,7 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private int depth = 3;
+    private int depth = 5;
 
     // These 'magic values' have been found through thousands of automated tests.
     // midCornerBias and midBias seems to be unnecessary when cornerBias is used.
@@ -31,13 +31,15 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
             if(result > 0){
                 result += 5000;
-            } else {
+            } else if(result < 0){
                 result -= 5000;
             }
             return result;
         }
-        return logic.getMoves(1).size() - logic.getMoves(2).size();
-//        return logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
+        int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
+        int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
+//        System.out.println(stability * 6 + mobility);
+        return stability * 6 + mobility;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
             int eval = miniMax(newBoard, depth, !isMax);
-            eval += bias(move, isMax);
+//            eval += bias(move, isMax);
 
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
@@ -91,7 +93,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         logic.setBoard(board);
 
         if(depth == 0 || logic.getMoves(player).size() == 0){
-            return evaluate(board);
+            return evaluate2(board);
         }
 
         for(int move : logic.getMoves(player)){
@@ -101,7 +103,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
             int eval = miniMax(newBoard, depth-1, isMax);
-            eval += bias(move, isMax);
+//            eval += bias(move, isMax);
             if(isMax){
                 if(eval > bestEval){
                     bestEval = eval;

@@ -29,7 +29,7 @@ public class ReversiAITest {
 
     private void effectivenessTest(){
         long startTime = System.currentTimeMillis();
-        int testCount = 100;
+        int testCount = 1;
         float win = doTests(testCount);
         System.out.println("The test finished and took " + (System.currentTimeMillis() - startTime) / 1000.00 + " seconds");
         System.out.println("Win percentage is " + ((win / testCount) * 100) + "%");
@@ -77,7 +77,7 @@ public class ReversiAITest {
                     logic.doMove(move, turn);
                 } else {
                 }
-//                board.printBoard();
+                board.printBoard();
                 turn = 3 - turn;
             }
 

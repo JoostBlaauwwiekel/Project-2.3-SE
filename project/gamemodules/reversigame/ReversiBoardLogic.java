@@ -39,6 +39,7 @@ public class ReversiBoardLogic extends GameBoardLogic {
             }
             System.out.println();
         }
+        System.out.println("-=-=-=-=-=-=-=-=-=-=-");
     }
 
     /**
@@ -47,17 +48,42 @@ public class ReversiBoardLogic extends GameBoardLogic {
     public void setTestBoard() {
         // 0 = unoccupied 1 = white 2 = black
         int[] testBoard = new int[64];
-        testBoard[18] = 1;
-        testBoard[19] = 1;
-        testBoard[20] = 1;
+        testBoard[0] = 1;
+        testBoard[1] = 1;
+        testBoard[2] = 1;
+        testBoard[3] = 1;
+        testBoard[8] = 1;
+        testBoard[9] = 1;
+        testBoard[10] = 1;
+        testBoard[11] = 1;
+        testBoard[12] = 1;
+        testBoard[16] = 1;
+        testBoard[17] = 1;
+        testBoard[24] = 1;
+        testBoard[25] = 1;
         testBoard[26] = 1;
-        testBoard[27] = 1;
-        testBoard[28] = 2;
-        testBoard[34] = 1;
-        testBoard[35] = 1;
-        testBoard[36] = 1;
-        testBoard[37] = 2;
-        testBoard[45] = 1;
+
+        testBoard[32] = 1;
+        testBoard[40] = 1;
+        testBoard[48] = 1;
+        testBoard[56] = 1;
+        testBoard[57] = 1;
+        testBoard[58] = 1;
+        testBoard[59] = 1;
+        testBoard[49] = 1;
+        testBoard[50] = 1;
+        testBoard[51] = 1;
+
+        testBoard[39] = 1;
+        testBoard[47] = 1;
+        testBoard[46] = 1;
+        testBoard[55] = 1;
+        testBoard[54] = 1;
+        testBoard[53] = 1;
+        testBoard[52] = 1;
+        testBoard[61] = 1;
+        testBoard[62] = 1;
+        testBoard[63] = 1;
         setBoard(testBoard);
     }
 
