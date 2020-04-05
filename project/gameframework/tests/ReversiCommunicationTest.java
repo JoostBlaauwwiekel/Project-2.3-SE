@@ -40,7 +40,19 @@ public class ReversiCommunicationTest {
                 logic.doMove(move, 2);
                 System.out.println(move);
             } else if (message.contains("previous move") && !message.contains("YOU")) {
-                int opponentHisMove = Integer.parseInt(message.charAt(message.length() - 1) + "");
+                int opponentHisMove;
+                String s;
+
+                // First try last two chars of the string
+                try {
+                    s = message.substring(message.length() - 2);
+                    opponentHisMove = Integer.parseInt(s);
+                } catch (java.lang.NumberFormatException e) {
+                    // Else get the last char of the string
+                    s = message.substring(message.length() - 1);
+                    opponentHisMove = Integer.parseInt(s);
+                }
+
                 System.out.println("opponent's move: " + opponentHisMove);
                 logic.doMove(opponentHisMove, 1);
             } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
