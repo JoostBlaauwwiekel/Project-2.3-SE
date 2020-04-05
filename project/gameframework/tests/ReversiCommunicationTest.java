@@ -35,9 +35,9 @@ public class ReversiCommunicationTest {
         while (true) {
             String message = channel.readFormattedLine();
             if (message.contains("YOUR TURN")) {
-                int move = ai.getBestMove(board, 2);
+                int move = ai.getBestMove(board, 1);
                 channel.move(move);
-                logic.doMove(move, 2);
+                logic.doMove(move, 1);
                 System.out.println(move);
             } else if (message.contains("previous move") && !message.contains("YOU")) {
                 int opponentHisMove;
@@ -54,7 +54,7 @@ public class ReversiCommunicationTest {
                 }
 
                 System.out.println("opponent's move: " + opponentHisMove);
-                logic.doMove(opponentHisMove, 1);
+                logic.doMove(opponentHisMove, 2);
             } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
                 System.out.println(message);
                 board.resetBoard();

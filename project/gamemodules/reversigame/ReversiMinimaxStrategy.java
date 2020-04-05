@@ -4,7 +4,7 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private int depth = 5;
+    private int depth = 4;
 
     // These 'magic values' have been found through thousands of automated tests.
     // midCornerBias and midBias seems to be unnecessary when cornerBias is used.
@@ -21,7 +21,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
     }
 
-    // TODO: not done yet
     public int evaluate2(GameBoardLogic board){
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
@@ -38,7 +37,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
-//        System.out.println(stability * 6 + mobility);
         return stability * 6 + mobility;
     }
 

@@ -156,9 +156,9 @@ public class ReversiGameLogic extends GameLogic {
     }
 
     /**
-     * Method that calculates the total amount of opponent discs that can be flipped.
-     * @param board the board
-     * @param player the player
+     * Method that calculates the total amount of opponent discs that can be flipped at this moment.
+     * @param board the board that should be checked for.
+     * @param player the player that should be checked for.
      * @return the amount of opponent discs that can be flipped.
      */
     public int getPossibleFlips(GameBoardLogic board, int player){
@@ -185,8 +185,8 @@ public class ReversiGameLogic extends GameLogic {
      * This method returns the amount of stable discs for a given player.
      * Stable discs are discs that are stuck in position and cannot be changed for the entirety of
      * the game.
-     * @param board board that should be checked for.
-     * @param player player that should be checked for.
+     * @param board the board that should be checked for.
+     * @param player the player that should be checked for.
      * @return the amount of stable discs.
      */
     public int getStableDiscs(GameBoardLogic board, int player){
