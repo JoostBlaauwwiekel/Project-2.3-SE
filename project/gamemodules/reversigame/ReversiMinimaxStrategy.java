@@ -3,36 +3,33 @@ package project.gamemodules.reversigame;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
-public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private int depth = 5;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-    // These 'magic values' have been found through thousands of automated tests.
-    // midCornerBias and midBias seems to be unnecessary when cornerBias is used.
-    // Best values so far: 7, 0, -5, 0, ?
-    private int cornerBias = 7;
-    private int midCornerBias = 0;
-    private int edgeBias = -5;
-    private int midBias = 0;
-    private int insideCornerBias = 0;
+public class ReversiMinimaxStrategy extends MinimaxStrategy {
+
+    private Map<Integer, Integer> results = new ConcurrentHashMap<>();
+    private int depth = 3;
 
     @Override
     public int evaluate(GameBoardLogic board){
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
-        if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0){
-            int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
-            if(result > 0){
-                result += 5000;
-            } else if(result < 0){
-                result -= 5000;
-            }
-            return result;
-        }
+        //TODO: For some reason it keeps seeing game over possibilities at the start of the game
+        // I need to figure out why but for now I took this code out for a temporary fix.
+//        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
+//        if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0){
+//            int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+//            if(result > 0){
+//                result += 5000;
+//            } else if(result < 0){
+//                result -= 5000;
+//            }
+//            return result;
+//        }
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
-//        int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
 
         return (int)(stability * 5.5 + mobility) + getBias(board);
     }
@@ -53,62 +50,48 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             bestEval = 10000;
         }
 
-        int bestMove = -1;
+        int resultCount = 0;
         for(int move : logic.getMoves(player)){
+            // Generate a temp board and do the move
             ReversiBoardLogic newBoard = new ReversiBoardLogic();
             newBoard.setBoard(reversiBoard.getBoard());
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
-            int eval = miniMax(newBoard, depth, !isMax);
 
+            // Give the new board to a minimax worker
+            ReversiMinimaxWorker worker = new ReversiMinimaxWorker(newBoard, depth, !isMax, move, results);
+            Thread thread = new Thread(worker);
+            thread.start();
+
+            resultCount++;
+        }
+        // Wait until all results are back
+        // TODO: 10 second timer to choose if calculating takes to long
+        while(results.size() != resultCount){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ignored) {}
+        }
+
+        // Choose the best result
+        int bestMove = -1;
+        for(Map.Entry<Integer, Integer> result : results.entrySet()){
+            int eval = result.getValue();
+            int move = result.getKey();
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
                 bestMove = move;
             }
         }
+        results.clear();
 
         return bestMove;
     }
 
     @Override
     public int miniMax(GameBoardLogic board, int depth, boolean isMax) {
-        int player;
-        int bestEval;
-        if(isMax){
-            bestEval = -10000;
-            player = 1;
-        } else {
-            bestEval = 10000;
-            player = 2;
-        }
-
-        ReversiGameLogic logic = new ReversiGameLogic();
-        logic.setBoard(board);
-
-        if(depth == 0 || logic.getMoves(player).size() == 0){
-            return evaluate(board);
-        }
-
-        for(int move : logic.getMoves(player)){
-            ReversiBoardLogic newBoard = new ReversiBoardLogic();
-            newBoard.setBoard(board.getBoard());
-            ReversiGameLogic tempGame = new ReversiGameLogic();
-            tempGame.setBoard(newBoard);
-            tempGame.doMove(move, player);
-            int eval = miniMax(newBoard, depth-1, isMax);
-
-            if(isMax){
-                if(eval > bestEval){
-                    bestEval = eval;
-                }
-            } else {
-                if(eval < bestEval){
-                    bestEval = eval;
-                }
-            }
-        }
-        return bestEval;
+        return 0;
     }
 
     /**
@@ -141,53 +124,5 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
 
         return bias;
-    }
-
-    public void setCornerBias(int bias){
-        this.cornerBias = bias;
-    }
-
-    public void setMidCornerBias(int bias){
-        this.midCornerBias = bias;
-    }
-
-    public void setEdgeBias(int bias){
-        this.edgeBias = bias;
-    }
-
-    public void setMidBias(int bias){
-        this.midBias = bias;
-    }
-
-    public void setInsideCornerBias(int insideCornerBias) {
-        this.insideCornerBias = insideCornerBias;
-    }
-
-    public void setDepth(int depth){
-        this.depth = depth;
-    }
-
-    public int getDepth() {
-        return depth;
-    }
-
-    public int getCornerBias() {
-        return cornerBias;
-    }
-
-    public int getMidCornerBias() {
-        return midCornerBias;
-    }
-
-    public int getEdgeBias() {
-        return edgeBias;
-    }
-
-    public int getMidBias() {
-        return midBias;
-    }
-
-    public int getInsideCornerBias() {
-        return insideCornerBias;
     }
 }

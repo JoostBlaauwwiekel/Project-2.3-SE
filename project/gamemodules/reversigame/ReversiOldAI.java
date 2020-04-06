@@ -37,7 +37,7 @@ public class ReversiOldAI extends MinimaxStrategy {
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
-            int eval = miniMax(newBoard, 6, !isMax);
+            int eval = miniMax(newBoard, 5, !isMax);
             eval += bias(move, isMax);
 
             if(isMax && eval > bestEval || !isMax && eval < bestEval){

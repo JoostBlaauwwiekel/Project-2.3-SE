@@ -5,7 +5,6 @@ import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.reversigame.ReversiOldAI;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,7 +31,7 @@ public class ReversiAITest {
 
     private void effectivenessTest(){
         long startTime = System.currentTimeMillis();
-        int testCount = 1;
+        int testCount = 100;
         float win = doTests(testCount);
         System.out.println("The test finished and took " + (System.currentTimeMillis() - startTime) / 1000.00 + " seconds");
         System.out.println("Win percentage is " + ((win / testCount) * 100) + "%");
@@ -42,7 +41,7 @@ public class ReversiAITest {
         int bestBiasEval = -1;
         int bestBias = 0;
         for(int bias=-10; bias < 50; bias++){
-            ai.setInsideCornerBias(bias);
+//            ai.setInsideCornerBias(bias);
             System.out.println("Testing with bias : " + bias + ", best bias so far is : " + bestBias);
             int biasEval = doTests(100);
             System.out.println("Eval: " + biasEval);
@@ -69,9 +68,9 @@ public class ReversiAITest {
                 int move = -1;
                 if(moves.size() != 0){
                     if(turn == 1){
-//                        int choice = random.nextInt(moves.size());
-//                        move = moves.get(choice);
-                        move = oldAi.getBestMove(board, turn);
+                        int choice = random.nextInt(moves.size());
+                        move = moves.get(choice);
+//                        move = oldAi.getBestMove(board, turn);
                     } else {
                         move = ai.getBestMove(board, turn);
                     }
@@ -81,12 +80,13 @@ public class ReversiAITest {
                     logic.doMove(move, turn);
                 } else {
                 }
-                board.printBoard();
+//                board.printBoard();
                 turn = 3 - turn;
             }
 
             switch(logic.gameOver()){
                 case 1:
+                    board.printBoard();
                     p1++;
                     break;
                 case 2:
