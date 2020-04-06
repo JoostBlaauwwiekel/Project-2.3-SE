@@ -88,12 +88,12 @@ public class GameCommunicationChannel implements CommunicationChannel {
             else
                 return "OPPONENT: " + betweenQuotes[1] + "'s previous move: " + betweenQuotes[3];
         }
-        else if(line.contains("GAME MATCH")){
+        else if(line.contains("PLAYERTOMOVE")){
             betweenQuotes = line.split("\"");
             if(betweenQuotes[1].equals(username))
-                return "YOU START " + username + "!";
+                return "PLAYER TO START: YOU! " + username + "!";
             else
-                return "OPPONENT " + betweenQuotes[1] + "'s move, wait patiently...";
+                return "PLAYER TO START: OPPONENT " + betweenQuotes[1] + " starts!";
         }
         else if (line.contains("LOSS")) {
             String reason = "";
