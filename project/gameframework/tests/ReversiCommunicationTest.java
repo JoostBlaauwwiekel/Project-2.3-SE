@@ -8,6 +8,7 @@ import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
+import sun.plugin2.message.Message;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,13 +33,21 @@ public class ReversiCommunicationTest {
         channel.subscribe("Reversi");
 //        channel.challenge("computer", "Reversi");
 
+        int player = 0;
         while (true) {
             String message = channel.readFormattedLine();
-            if (message.contains("YOUR TURN")) {
-                int move = ai.getBestMove(board, 1);
+            System.out.println(message);
+            if (message.contains("PLAYER TO START")){
+                if(message.contains("OPPONENT")){
+                    player = 1;
+                } else {
+                    player = 2;
+                }
+                System.out.println(message);
+            } else if (message.contains("YOUR TURN")) {
+                int move = ai.getBestMove(board, player);
                 channel.move(move);
-                logic.doMove(move, 1);
-                System.out.println(move);
+                logic.doMove(move, player);
             } else if (message.contains("previous move") && !message.contains("YOU")) {
                 int opponentHisMove;
                 String s;
@@ -54,7 +63,7 @@ public class ReversiCommunicationTest {
                 }
 
                 System.out.println("opponent's move: " + opponentHisMove);
-                logic.doMove(opponentHisMove, 2);
+                logic.doMove(opponentHisMove, 3 - player);
             } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
                 System.out.println(message);
                 board.resetBoard();

@@ -4,7 +4,7 @@ import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
-    private int depth = 4;
+    private int depth = 5;
 
     // These 'magic values' have been found through thousands of automated tests.
     // midCornerBias and midBias seems to be unnecessary when cornerBias is used.
@@ -16,12 +16,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     private int insideCornerBias = 0;
 
     @Override
-    public int evaluate(GameBoardLogic board) {
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
-        return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
-    }
-
-    public int evaluate2(GameBoardLogic board){
+    public int evaluate(GameBoardLogic board){
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
@@ -37,7 +32,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
-        return stability * 6 + mobility;
+//        int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
+
+        return (int)(stability * 5.5 + mobility) + getBias(board);
     }
 
     @Override
@@ -64,7 +61,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
             int eval = miniMax(newBoard, depth, !isMax);
-//            eval += bias(move, isMax);
 
             if(isMax && eval > bestEval || !isMax && eval < bestEval){
                 bestEval = eval;
@@ -91,7 +87,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         logic.setBoard(board);
 
         if(depth == 0 || logic.getMoves(player).size() == 0){
-            return evaluate2(board);
+            return evaluate(board);
         }
 
         for(int move : logic.getMoves(player)){
@@ -101,7 +97,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
             int eval = miniMax(newBoard, depth-1, isMax);
-//            eval += bias(move, isMax);
+
             if(isMax){
                 if(eval > bestEval){
                     bestEval = eval;
@@ -118,39 +114,30 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     /**
      * This method calculates a bias value. The bias value is used to add weight
      * to the evaluation of certain moves.
-     * @param move the move to calculate the bias for
-     * @param isMax if the player is maximizing
      * @return the bias value
      */
-    private int bias(int move, boolean isMax){
+    private int getBias(GameBoardLogic board){
         int bias = 0;
 
-        // Bias for corners
-        if(move == 0 || move == 7 || move == 56 || move == 63){
-            bias += cornerBias;
+        if(board.getBoardPos(0) == 1){
+            bias += 50;
+        } else if(board.getBoardPos(0) == 2){
+            bias -= 50;
         }
-        // Bias for middle corners
-        else if(move == 18 || move == 21 || move == 42 || move == 45){
-            bias += midCornerBias;
+        if(board.getBoardPos(7) == 1){
+            bias += 50;
+        } else if(board.getBoardPos(7) == 2){
+            bias -= 50;
         }
-        // Bias for inside corners
-        else if(move == 9 || move == 14 || move == 49 || move == 54){
-            bias += insideCornerBias;
+        if(board.getBoardPos(56) == 1){
+            bias += 50;
+        } else if(board.getBoardPos(56) == 2){
+            bias -= 50;
         }
-        // Bias for edges
-        else if(move == 8 || move == 16 || move == 24 || move == 32 || move == 40 || move == 48 ||
-                move == 1 || move == 2 || move == 3 || move == 4 || move == 5 || move == 6 ||
-                move == 15 || move == 23 || move == 31 || move == 39 || move == 47 || move == 55 ||
-                move == 57 || move == 58 || move == 59 || move == 60 || move == 61 || move == 62){
-            bias += edgeBias;
-        }
-        // Bias for middle 4
-        else if(move == 27 || move == 28 || move == 35 || move == 36){
-            bias += midBias;
-        }
-
-        if(!isMax){
-            bias = -bias;
+        if(board.getBoardPos(63) == 1){
+            bias += 50;
+        } else if(board.getBoardPos(63) == 2){
+            bias -= 50;
         }
 
         return bias;

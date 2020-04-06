@@ -3,6 +3,7 @@ package project.gameframework.tests;
 import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
+import project.gamemodules.reversigame.ReversiOldAI;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ReversiAITest {
     private ReversiBoardLogic board;
     private ReversiGameLogic logic;
     private ReversiMinimaxStrategy ai;
+    private ReversiOldAI oldAi;
 
     public static void main(String[] args){
         ReversiAITest test = new ReversiAITest();
@@ -25,11 +27,12 @@ public class ReversiAITest {
         this.logic = new ReversiGameLogic();
         logic.setBoard(board);
         ai = new ReversiMinimaxStrategy();
+        oldAi = new ReversiOldAI();
     }
 
     private void effectivenessTest(){
         long startTime = System.currentTimeMillis();
-        int testCount = 100;
+        int testCount = 1;
         float win = doTests(testCount);
         System.out.println("The test finished and took " + (System.currentTimeMillis() - startTime) / 1000.00 + " seconds");
         System.out.println("Win percentage is " + ((win / testCount) * 100) + "%");
@@ -59,15 +62,16 @@ public class ReversiAITest {
         int p2 = 0;
         int draw = 0;
         while(tests < amount){
-            int turn = 1;
+            int turn = 2;
             while(logic.gameOver() == 0){
                 ArrayList<Integer> moves = logic.getMoves(turn);
 
                 int move = -1;
                 if(moves.size() != 0){
                     if(turn == 1){
-                        int choice = random.nextInt(moves.size());
-                        move = moves.get(choice);
+//                        int choice = random.nextInt(moves.size());
+//                        move = moves.get(choice);
+                        move = oldAi.getBestMove(board, turn);
                     } else {
                         move = ai.getBestMove(board, turn);
                     }
@@ -93,6 +97,12 @@ public class ReversiAITest {
                     break;
             }
             board.resetBoard();
+
+            System.out.println("Total tests: " + tests);
+            System.out.println("Player 1 won " + p1 + " times");
+            System.out.println("Player 2 won " + p2 + " times");
+            System.out.println("Draws " + draw);
+
             tests++;
         }
 
