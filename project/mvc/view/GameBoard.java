@@ -78,8 +78,10 @@ public abstract class GameBoard extends FlowPane {
                     int ID = Integer.parseInt(btn.getId());
                     setMove(ID, turn, btn);
 
-                    // now let the ai make a move
-                    setAIMove();
+                    if(!gameOver()) {
+                        setAIMove();
+                        gameOver();
+                    }
                 }
             });
         }
@@ -89,13 +91,43 @@ public abstract class GameBoard extends FlowPane {
         // first get the gameboard which we can give to the algorithm
         GameBoardLogic board = gameData.getGame(gameName).getBoard();
         int move = minimaxStrategy.getBestMove(board, 2);
-        setMove(move, 2, tiles[move]);
+        try {
+            setMove(move, 2, tiles[move]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // ignore
+        }
+    }
+
+    private boolean gameOver() {
+        if(gameData.getGame(gameName).gameOver() == 1) {
+            System.out.println("Player 1 won!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        } else if(gameData.getGame(gameName).gameOver() == 2) {
+            System.out.println("Player 2 won!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        } else if(gameData.getGame(gameName).gameOver() == 3) {
+            System.out.println("draw!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void resetBoard() {
+        for(Button button : tiles) {
+            button.setText("");
+        }
     }
 
     private void setMove(int pos, int state, Button btn) {
         btn.setText(Integer.toString(state));
         gameData.getGame(gameName).doMove(pos, state);
-        gameData.getGame(gameName).getBoard().printBoard();
         counter++;
     }
 
