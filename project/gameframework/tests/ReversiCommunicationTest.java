@@ -18,7 +18,7 @@ public class ReversiCommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("depth4");
+        channel.setUsername("2");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
@@ -36,6 +36,7 @@ public class ReversiCommunicationTest {
         int player = 0;
         while (true) {
             String message = channel.readFormattedLine();
+            System.out.println(message);
             if (message.contains("PLAYER TO START")){
                 if(message.contains("OPPONENT")){
                     player = 1;
@@ -47,6 +48,8 @@ public class ReversiCommunicationTest {
                 int move = ai.getBestMove(board, player);
                 channel.move(move);
                 logic.doMove(move, player);
+                System.out.println("Our move " + move);
+                board.printBoard();
             } else if (message.contains("previous move") && !message.contains("YOU")) {
                 int opponentHisMove;
                 String s;
@@ -61,14 +64,13 @@ public class ReversiCommunicationTest {
                     opponentHisMove = Integer.parseInt(s);
                 }
 
-                System.out.println("opponent's move: " + opponentHisMove);
+                System.out.println("Opponent's move: " + opponentHisMove);
                 logic.doMove(opponentHisMove, 3 - player);
+                board.printBoard();
             } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
                 System.out.println(message);
                 board.resetBoard();
             }
-
-            board.printBoard();
             System.out.println();
         }
     }

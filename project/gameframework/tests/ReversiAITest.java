@@ -80,13 +80,18 @@ public class ReversiAITest {
                     logic.doMove(move, turn);
                 } else {
                 }
-//                board.printBoard();
                 turn = 3 - turn;
+
+                // Do prints
+//                board.printBoard();
             }
+
+//            System.out.println("Currently there are " + board.getDiscCount(0) + " unoccupied positions, "
+//                    + board.getDiscCount(1) + " white discs and "
+//                    + board.getDiscCount(2) + " black discs.");
 
             switch(logic.gameOver()){
                 case 1:
-                    board.printBoard();
                     p1++;
                     break;
                 case 2:

@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-    private int depth = 3;
+    private int depth = 5;
 
     @Override
     public int evaluate(GameBoardLogic board){
@@ -83,6 +83,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 bestEval = eval;
                 bestMove = move;
             }
+//            System.out.println("Move " + move + " eval:" + eval);
         }
         results.clear();
 
