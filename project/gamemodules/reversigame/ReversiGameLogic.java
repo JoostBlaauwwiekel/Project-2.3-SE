@@ -254,7 +254,8 @@ public class ReversiGameLogic extends GameLogic {
                         pos += xMod;
                         col++;
                     } else {
-                        maxCol = col;
+                        maxCol = col - 1;
+                        if(maxCol == 0) maxCol = 1;
                         reachedEndX = true;
                     }
                 }

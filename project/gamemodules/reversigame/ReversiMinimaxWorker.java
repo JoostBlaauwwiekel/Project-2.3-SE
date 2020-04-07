@@ -11,6 +11,10 @@ public class ReversiMinimaxWorker implements Runnable{
     private int move;
     private Map<Integer, Integer> result;
 
+    int temp1;
+    int temp2;
+    int temp3;
+
     public ReversiMinimaxWorker(GameBoardLogic board, int depth, boolean isMax, int move, Map<Integer, Integer> result){
         this.board = board;
         this.depth = depth;
@@ -24,6 +28,9 @@ public class ReversiMinimaxWorker implements Runnable{
         int eval = minimax(board, depth, isMax);
         result.put(move, eval);
 //        System.out.println("Thread for move : " + move + " finished");
+//        System.out.println("Stability : " + temp1);
+//        System.out.println("Mobility : " + temp2);
+//        System.out.println("Bias : " + temp3);
     }
 
     private int minimax(GameBoardLogic board, int depth, boolean isMax) {
@@ -66,13 +73,20 @@ public class ReversiMinimaxWorker implements Runnable{
     }
 
     private int evaluate(GameBoardLogic board){
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
+//        int turn = reversiBoard.getDiscCount(1) + reversiBoard.getDiscCount(2);
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
+        // int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
 
         return (int)(stability * 5.5 + mobility) + getBias(board);
+//        temp1 = (int)((stability * turn) / 20.0);
+//        temp2 = mobility * 20;
+//        temp3 = getBias(board) * 2;
+//        return (int)((stability * turn) / 20.0 + mobility * 5) + (getBias(board) * 2);
     }
 
     /**
