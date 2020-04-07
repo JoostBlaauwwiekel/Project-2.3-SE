@@ -1,5 +1,6 @@
 package project.mvc.view.mainscreen;
 
+import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +15,7 @@ import project.mvc.view.gameview.TicTacToeView;
 
 public class ChooseGameModeView extends ScreenView {
 
-    public ChooseGameModeView(Stage window) {
+    public ChooseGameModeView(Stage window, ApplicationController applicationController) {
         super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
@@ -36,10 +37,10 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        TicTacToeView ticTacToeView = new TicTacToeView(window, 500);
+        TicTacToeView ticTacToeView = new TicTacToeView(window, 500, applicationController);
         Scene ticTacToeScene = new Scene(ticTacToeView, 500, 700);
 
-        ReversiView reversiView = new ReversiView(window, 500);
+        ReversiView reversiView = new ReversiView(window, 500, applicationController);
         Scene reversiScene = new Scene(reversiView, 500, 700);
 
         super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);

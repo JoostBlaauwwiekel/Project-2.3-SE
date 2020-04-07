@@ -16,4 +16,8 @@ public class ApplicationController {
     public ApplicationView getApplicationView(){
         return applicationView;
     }
+
+    public ApplicationModel getApplicationModel() {
+        return applicationModel;
+    }
 }

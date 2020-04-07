@@ -12,7 +12,7 @@ public class CommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("computer");
+        channel.setUsername("covid");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
@@ -23,7 +23,7 @@ public class CommunicationTest {
         TicTacToeMinimaxStrategy ai = new TicTacToeMinimaxStrategy();
 
         channel.subscribe("Tic-tac-toe");
-//        channel.challenge("computer", "Tic-tac-toe");
+        //channel.challenge("computer", "Tic-tac-toe");
 
         while (true) {
             String message = channel.readFormattedLine();

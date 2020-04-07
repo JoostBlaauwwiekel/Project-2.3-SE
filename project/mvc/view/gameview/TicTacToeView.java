@@ -1,5 +1,9 @@
 package project.mvc.view.gameview;
 
+import project.gameframework.GameLogic;
+import project.gamemodules.GameData;
+import project.gamemodules.tictactoegame.TicTacToeGameLogic;
+import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
@@ -13,10 +17,15 @@ import project.mvc.view.gameboard.TicTacToeBoard;
 public class TicTacToeView extends GameBoardView {
 
     private String mode = "";
+    private GameData gameData;
+    private GameLogic ticTacToeGameLogic;
 
     // Heb deze variable toegevoegd de breedte mee te kunnen geven. Zo komen de blokken netjes naast elkaar. Als hij namelijk de breed is heb je geen blok van 9x9
-    public TicTacToeView(Stage window, int boardWidth) {
+    public TicTacToeView(Stage window, int boardWidth, ApplicationController applicationController) {
         super(window);
+
+        this.gameData = applicationController.getApplicationModel().getGameData();
+        this.ticTacToeGameLogic = this.gameData.getGame("Tic-tac-toe");
 
         FlowPane centerLayout = new FlowPane();
         centerLayout.setAlignment(Pos.CENTER);
@@ -24,7 +33,7 @@ public class TicTacToeView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/3;
-        GameBoard board = new TicTacToeBoard(tileSize, tileSize);
+        GameBoard board = new TicTacToeBoard(tileSize, tileSize, gameData);
         Button[] gameBoardButtons = board.getTiles();
         for(int i = 0; i < board.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");

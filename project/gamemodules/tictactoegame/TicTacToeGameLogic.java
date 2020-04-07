@@ -8,6 +8,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TicTacToeGameLogic extends GameLogic {
+
+    private TicTacToeBoardLogic ticTacToeBoardLogic;
+
+    public TicTacToeGameLogic() {
+        this.ticTacToeBoardLogic = new TicTacToeBoardLogic();
+        setBoard(this.ticTacToeBoardLogic);
+    }
+
     @Override
     public ArrayList<Integer> getMoves(int player) {
         ArrayList<Integer> result = new ArrayList<>();

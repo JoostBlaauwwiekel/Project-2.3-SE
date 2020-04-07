@@ -1,5 +1,6 @@
 package project.mvc.view.mainscreen;
 
+import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,8 +15,9 @@ public class ChooseGameView extends ScreenView {
 
     private Scene chooseGameModeViewScene;
     private ChooseGameModeView chooseGameModeView;
+    private ApplicationController applicationController;
 
-    public ChooseGameView(Stage window) {
+    public ChooseGameView(Stage window, ApplicationController applicationController) {
         super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
@@ -38,7 +40,7 @@ public class ChooseGameView extends ScreenView {
         reversi.setMinWidth(100);
         back.setMinWidth(100);
 
-        chooseGameModeView = new ChooseGameModeView(window);
+        chooseGameModeView = new ChooseGameModeView(window, applicationController);
         chooseGameModeViewScene = new Scene(chooseGameModeView, 900, 600);
 
         getChildren().addAll(chooseGameTitle, chooseTTT, reversi, back);

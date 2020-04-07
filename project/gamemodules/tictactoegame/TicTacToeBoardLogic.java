@@ -28,4 +28,9 @@ public class TicTacToeBoardLogic extends GameBoardLogic {
         System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
         System.out.println("-------------");
     }
+
+    @Override
+    public String getGame() {
+        return "TicTacToe";
+    }
 }

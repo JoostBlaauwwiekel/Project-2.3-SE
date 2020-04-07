@@ -42,6 +42,11 @@ public class ReversiBoardLogic extends GameBoardLogic {
         System.out.println("-=-=-=-=-=-=-=-=-=-=-");
     }
 
+    @Override
+    public String getGame() {
+        return "Reversi";
+    }
+
     /**
      * This method sets up a testing scenario for debugging purposes. Should probably be removed eventually.
      */

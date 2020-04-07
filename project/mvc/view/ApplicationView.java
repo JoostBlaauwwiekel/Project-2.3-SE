@@ -42,7 +42,7 @@ public class ApplicationView {
     public void initializeApplicationScreens(Stage primaryStage){
         this.primaryStage = primaryStage;
         primaryStage.setTitle("StartApp screen");
-        mainView = new MainView(primaryStage);
+        mainView = new MainView(primaryStage, applicationController);
 
         primaryStage.setOnCloseRequest(e -> {
             e.consume();

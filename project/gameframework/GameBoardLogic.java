@@ -60,4 +60,6 @@ public abstract class GameBoardLogic {
     public void resetBoard() {
         initBoard();
     }
+
+    public abstract String getGame();
 }
