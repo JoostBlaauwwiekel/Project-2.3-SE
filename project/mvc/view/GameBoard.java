@@ -108,7 +108,7 @@ public abstract class GameBoard extends FlowPane {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
             alert.setHeaderText(null);
-            alert.setContentText("O Won!");
+            alert.setContentText("player 1 Won!");
 
             alert.showAndWait();
             System.out.println("Player 1 won!");
@@ -119,7 +119,7 @@ public abstract class GameBoard extends FlowPane {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
             alert.setHeaderText(null);
-            alert.setContentText("X Won!");
+            alert.setContentText("player 2 Won!");
 
             alert.showAndWait();
             System.out.println("Player 2 won!");

@@ -2,10 +2,17 @@ package project.gamemodules.reversigame;
 
 import project.gameframework.GameBoardLogic;
 import project.gameframework.GameLogic;
+import project.mvc.view.gameboard.TicTacToeBoard;
 
 import java.util.ArrayList;
 
 public class ReversiGameLogic extends GameLogic {
+    private ReversiBoardLogic reversiBoardLogic;
+
+    public ReversiGameLogic() {
+        this.reversiBoardLogic = new ReversiBoardLogic();
+        setBoard(this.reversiBoardLogic);
+    }
 
     @Override
     public ArrayList<Integer> getMoves(int player){
