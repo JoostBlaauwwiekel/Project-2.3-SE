@@ -58,6 +58,7 @@ public abstract class GameBoard extends FlowPane {
             this.minimaxStrategy = new ReversiMinimaxStrategy();
         }
 
+        gameData.getGame("Reversi").getBoard().printBoard();
         turn = 1;
         counter = 0;
         tiles = new Button[width * height];
@@ -98,6 +99,7 @@ public abstract class GameBoard extends FlowPane {
         } catch (ArrayIndexOutOfBoundsException e) {
             // ignore
         }
+        gameData.getGame(gameName).getBoard().printBoard();
     }
 
     private boolean gameOver() {
@@ -122,8 +124,16 @@ public abstract class GameBoard extends FlowPane {
     }
 
     private void resetBoard() {
+        GameBoardLogic board = gameData.getGame(gameName).getBoard();
+
         for(Button button : tiles) {
             button.setText("");
+        }
+
+        if(board.getGame().equals("TicTacToe")) {
+            for(Button button : tiles) {
+                button.setGraphic(null);
+            }
         }
     }
 
