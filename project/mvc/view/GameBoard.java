@@ -4,6 +4,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -126,7 +128,29 @@ public abstract class GameBoard extends FlowPane {
     }
 
     private void setMove(int pos, int state, Button btn) {
-        btn.setText(Integer.toString(state));
+        GameBoardLogic board = gameData.getGame(gameName).getBoard();
+        if(board.getGame().equals("TicTacToe")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-times.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        } else if(board.getGame().equals("Reversi")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        }
+//        btn.setText(Integer.toString(state));
         gameData.getGame(gameName).doMove(pos, state);
         counter++;
     }

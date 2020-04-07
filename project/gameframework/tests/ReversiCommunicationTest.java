@@ -8,7 +8,7 @@ import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
-import sun.plugin2.message.Message;
+//import sun.plugin2.message.Message;
 
 import java.io.IOException;
 import java.util.HashMap;
