@@ -4,6 +4,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -78,8 +80,10 @@ public abstract class GameBoard extends FlowPane {
                     int ID = Integer.parseInt(btn.getId());
                     setMove(ID, turn, btn);
 
-                    // now let the ai make a move
-                    setAIMove();
+                    if(!gameOver()) {
+                        setAIMove();
+                        gameOver();
+                    }
                 }
             });
         }
@@ -89,13 +93,65 @@ public abstract class GameBoard extends FlowPane {
         // first get the gameboard which we can give to the algorithm
         GameBoardLogic board = gameData.getGame(gameName).getBoard();
         int move = minimaxStrategy.getBestMove(board, 2);
-        setMove(move, 2, tiles[move]);
+        try {
+            setMove(move, 2, tiles[move]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // ignore
+        }
+    }
+
+    private boolean gameOver() {
+        if(gameData.getGame(gameName).gameOver() == 1) {
+            System.out.println("Player 1 won!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        } else if(gameData.getGame(gameName).gameOver() == 2) {
+            System.out.println("Player 2 won!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        } else if(gameData.getGame(gameName).gameOver() == 3) {
+            System.out.println("draw!");
+            gameData.getGame(gameName).getBoard().resetBoard();
+            resetBoard();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void resetBoard() {
+        for(Button button : tiles) {
+            button.setText("");
+        }
     }
 
     private void setMove(int pos, int state, Button btn) {
-        btn.setText(Integer.toString(state));
+        GameBoardLogic board = gameData.getGame(gameName).getBoard();
+        if(board.getGame().equals("TicTacToe")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-times.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        } else if(board.getGame().equals("Reversi")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        }
+//        btn.setText(Integer.toString(state));
         gameData.getGame(gameName).doMove(pos, state);
-        gameData.getGame(gameName).getBoard().printBoard();
         counter++;
     }
 
