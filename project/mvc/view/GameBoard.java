@@ -2,8 +2,7 @@ package project.mvc.view;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +13,8 @@ import project.gameframework.aistrategies.MinimaxStrategy;
 import project.gamemodules.GameData;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
+
+import java.util.Optional;
 
 public abstract class GameBoard extends FlowPane {
 
@@ -104,16 +105,34 @@ public abstract class GameBoard extends FlowPane {
 
     private boolean gameOver() {
         if(gameData.getGame(gameName).gameOver() == 1) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("End of round");
+            alert.setHeaderText(null);
+            alert.setContentText("O Won!");
+
+            alert.showAndWait();
             System.out.println("Player 1 won!");
             gameData.getGame(gameName).getBoard().resetBoard();
             resetBoard();
             return true;
         } else if(gameData.getGame(gameName).gameOver() == 2) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("End of round");
+            alert.setHeaderText(null);
+            alert.setContentText("X Won!");
+
+            alert.showAndWait();
             System.out.println("Player 2 won!");
             gameData.getGame(gameName).getBoard().resetBoard();
             resetBoard();
             return true;
         } else if(gameData.getGame(gameName).gameOver() == 3) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("End of round");
+            alert.setHeaderText(null);
+            alert.setContentText("Draw!");
+
+            alert.showAndWait();
             System.out.println("draw!");
             gameData.getGame(gameName).getBoard().resetBoard();
             resetBoard();
