@@ -84,7 +84,10 @@ public abstract class GameBoard extends FlowPane {
                     turn = 1;
                     int ID = Integer.parseInt(btn.getId());
                     setMove(ID, turn, btn);
-                    setAIMove();
+                    if(!gameOver()) {
+                        setAIMove();
+                        gameOver();
+                    }
                 });
                 gameLayout.add(tiles[id], column, row);
             }
