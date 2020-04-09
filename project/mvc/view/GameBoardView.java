@@ -14,7 +14,7 @@ import java.util.HashMap;
 public abstract class GameBoardView extends BorderPane {
 
     private Stage window;
-    private VBox sideBar;
+    private VBox buttons;
     private HBox topBar;
 
     private HashMap<String, Button> gameButtons = new HashMap<>();
@@ -31,16 +31,9 @@ public abstract class GameBoardView extends BorderPane {
         topBar.setPadding(new Insets(0,0,0,0));
         topBar.setStyle("-fx-background-color: #FFFFFF;");
         topBar.setPrefSize(500, 200);
-        //
-        Button exit = new Button("Go back");
-        Button restart = new Button("Restart Game");
-        exit.setStyle("-fx-background-color: #FF0000; -fx-border-color: #000000;");
-        restart.setStyle("-fx-background-color: #808080; -fx-border-color: #000000;");
 
-        VBox buttons = new VBox();
+        buttons = new VBox();
         buttons.setPrefSize(150, 200);
-        exit.setPrefSize(150, 100);
-        restart.setPrefSize(150, 100);
         //
         turn = makeLabel("Turn: ", 300, 50, "left");
         turn.setPadding(new Insets(0, 0, 0, 10));
@@ -61,9 +54,9 @@ public abstract class GameBoardView extends BorderPane {
 
         VBox turnandwin = new VBox(turn, players, scores);
         buttons.setStyle("-fx-border-width: 2px;");
-        buttons.getChildren().addAll(restart, exit);
         topBar.getChildren().addAll(buttons, turnandwin);
     }
+
     private Label makeLabel(String text, int width, int height, String allignment){
         Label label = new Label(text);
         label.setPrefSize(width, height);
@@ -82,8 +75,8 @@ public abstract class GameBoardView extends BorderPane {
         return label;
     }
 
-    protected VBox getSidebar(){
-        return sideBar;
+    protected VBox getButtons(){
+        return buttons;
     }
 
     protected HBox getTopBar(){
@@ -101,4 +94,6 @@ public abstract class GameBoardView extends BorderPane {
     }
 
     public abstract void setMode(String mode);
+
+    public abstract GameBoard getGameBoard();
 }

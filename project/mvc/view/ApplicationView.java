@@ -101,7 +101,7 @@ public class ApplicationView {
             chooseGameView.getWindow().setTitle(REVERSI);
         });
 
-        chooseGameView.getButtons().get("Previous scene").setOnAction(e -> {
+        chooseGameView.getButtons().get(" Go back").setOnAction(e -> {
             chooseGameView.getWindow().setScene(mainScene);
             chooseGameView.getWindow().setTitle("StartApp screen");
         });
@@ -145,6 +145,9 @@ public class ApplicationView {
             ticTacToeView.getWindow().setScene(chooseGameModeScene);
             ticTacToeView.getWindow().setTitle(TICTACTOE);
         });
+
+        ticTacToeView.getGameButtons().get("Restart " + TICTACTOE).setOnAction(e -> ticTacToeView.getGameBoard().resetBoard());
+        reversiView.getGameButtons().get("Restart " + REVERSI).setOnAction(e -> reversiView.getGameBoard().resetBoard());
 
         reversiView.getGameButtons().get("Exit " + REVERSI).setOnAction(e -> {
            reversiView.getWindow().setScene(chooseGameModeScene);

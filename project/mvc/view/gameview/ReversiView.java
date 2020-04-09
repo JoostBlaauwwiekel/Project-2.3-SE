@@ -1,31 +1,25 @@
 package project.mvc.view.gameview;
 
-import project.gameframework.GameLogic;
 import project.gamemodules.GameData;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.mvc.view.gameboard.ReversiBoard;
-import project.mvc.view.gameboard.TicTacToeBoard;
 
 public class ReversiView extends GameBoardView {
 
     private String mode = "";
     private GameData gameData;
-    private GameLogic reversiGameLogic;
+    private GameBoard reversiGameBoard;
 
-    // Heb deze variable toegevoegd de breedte mee te kunnen geven. Zo komen de blokken netjes naast elkaar. Als hij namelijk de breed is heb je geen blok van 9x9
     public ReversiView(Stage window, int boardWidth, ApplicationController applicationController) {
         super(window);
 
         this.gameData = applicationController.getApplicationModel().getGameData();
-        this.reversiGameLogic = this.gameData.getGame("Reversi");
 
         GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
@@ -33,15 +27,23 @@ public class ReversiView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/8;
-        GameBoard board = new ReversiBoard(tileSize, tileSize, gameData, centerLayout);
-        Button[] gameBoardButtons = board.getTiles();
-        for(int i = 0; i < board.getTiles().length; i++) {
+        reversiGameBoard = new ReversiBoard(tileSize, tileSize, gameData, centerLayout);
+        Button[] gameBoardButtons = reversiGameBoard.getTiles();
+        for(int i = 0; i < reversiGameBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
         }
 
+        Button restart = new Button("Restart Reversi");
         Button exitGame = new Button("Exit Reversi");
+
+        exitGame.setStyle("-fx-background-color: #FF0000; -fx-border-color: #000000;");
+        restart.setStyle("-fx-background-color: #808080; -fx-border-color: #000000;");
+        exitGame.setPrefSize(150, 100);
+        restart.setPrefSize(150, 100);
+
         super.getGameButtons().put(exitGame.getText(), exitGame);
-        super.getTopBar();
+        super.getGameButtons().put(restart.getText(), restart);
+        super.getButtons().getChildren().addAll(restart, exitGame);
 
         setCenter(centerLayout);
         setTop(super.getTopBar());
@@ -51,4 +53,7 @@ public class ReversiView extends GameBoardView {
         this.mode = mode;
     }
 
+    public GameBoard getGameBoard(){
+        return reversiGameBoard;
+    }
 }

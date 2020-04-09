@@ -25,6 +25,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
         int bestEval;
         boolean isMax;
+
         if(player == 1){
             bestEval = -10000;
             isMax = true;

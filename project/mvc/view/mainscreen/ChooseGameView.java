@@ -30,7 +30,7 @@ public class ChooseGameView extends ScreenView {
 
         Button chooseTTT = new Button("Tic Tac Toe");
         Button reversi = new Button("Reversi");
-        Button back = new Button("Previous scene");
+        Button back = new Button(" Go back");
 
         super.getButtons().put(chooseTTT.getText(), chooseTTT);
         super.getButtons().put(reversi.getText(), reversi);
