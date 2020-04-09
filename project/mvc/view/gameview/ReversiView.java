@@ -27,23 +27,21 @@ public class ReversiView extends GameBoardView {
         this.gameData = applicationController.getApplicationModel().getGameData();
         this.reversiGameLogic = this.gameData.getGame("Reversi");
 
-        FlowPane centerLayout = new FlowPane();
+        GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #524D4E;");
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/8;
-        GameBoard board = new ReversiBoard(tileSize, tileSize, gameData);
+        GameBoard board = new ReversiBoard(tileSize, tileSize, gameData, centerLayout);
         Button[] gameBoardButtons = board.getTiles();
         for(int i = 0; i < board.getTiles().length; i++) {
-            gameBoardButtons[i].setStyle("-fx-background-color: #2DAE52; -fx-border-color: #000000; -fx-border-width: 2px;");
+            gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
         }
 
         Button exitGame = new Button("Exit Reversi");
         super.getGameButtons().put(exitGame.getText(), exitGame);
         super.getTopBar();
-
-        centerLayout.getChildren().addAll(board.getTiles());
 
         setCenter(centerLayout);
         setTop(super.getTopBar());

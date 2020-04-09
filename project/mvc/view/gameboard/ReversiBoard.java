@@ -1,12 +1,13 @@
 package project.mvc.view.gameboard;
 
+import javafx.scene.layout.GridPane;
 import project.gamemodules.GameData;
 import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.mvc.view.GameBoard;
 
 public class ReversiBoard extends GameBoard {
 
-    public ReversiBoard(double buttonHeight, double buttonWidth, GameData gameData){
-        super(8,8, buttonHeight,buttonWidth, new ReversiBoardLogic(), gameData, "Reversi");
+    public ReversiBoard(double buttonHeight, double buttonWidth, GameData gameData, GridPane layout){
+        super(8,8, buttonHeight,buttonWidth, new ReversiBoardLogic(), gameData, "Reversi", layout);
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
@@ -33,17 +34,19 @@ public abstract class GameBoard extends FlowPane {
     private GameBoardLogic gameBoard;
 
     private GameData gameData;
+    private GridPane gameLayout;
 
     String gameName;
 
     private MinimaxStrategy minimaxStrategy;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, GameData gameData, String gameName) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, GameData gameData, String gameName, GridPane layout) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
         gameButtonWidth = buttonWidth;
         gameButtonHeight = buttonHeight;
+        gameLayout = layout;
 
         this.gameName = gameName;
 
@@ -67,27 +70,24 @@ public abstract class GameBoard extends FlowPane {
     }
 
     public void drawBoard() {
-        for (int i = 0; i < gameBoardDimension; i++) {
-            tiles[i] = new Button("");
-            // Misschien is het handig dat we de knop grootte kunnen instellen per game. Als je namelijk de knop 150x150 maakt dan past het niet op het scherm bij reversi
-            tiles[i].setMinSize(gameButtonWidth, gameButtonHeight);
-            tiles[i].setId(Integer.toString(i));
-            Button btn = tiles[i];
+        int id = 0;
+        for (int row = 0; row < gameBoardHeight; row++) {
+            for (int column = 0; column < gameBoardWidth; column++) {
+                id = ((row * gameBoardWidth) + column);
 
-            btn.setOnMouseClicked(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    // handle the player's input
+                tiles[id] = new Button("");
+                tiles[id].setMinSize(gameButtonWidth, gameButtonHeight);
+                tiles[id].setId(Integer.toString(id));
+
+                Button btn = tiles[id];
+                btn.setOnAction(e -> {
                     turn = 1;
                     int ID = Integer.parseInt(btn.getId());
                     setMove(ID, turn, btn);
-
-                    if(!gameOver()) {
-                        setAIMove();
-                        gameOver();
-                    }
-                }
-            });
+                    setAIMove();
+                });
+                gameLayout.add(tiles[id], column, row);
+            }
         }
     }
 
@@ -170,16 +170,15 @@ public abstract class GameBoard extends FlowPane {
             }
         } else if(board.getGame().equals("Reversi")) {
             if(state == 1) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
                 ImageView imageView = new ImageView(image);
                 btn.setGraphic(imageView);
             } else if (state == 2) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
                 ImageView imageView = new ImageView(image);
                 btn.setGraphic(imageView);
             }
         }
-//        btn.setText(Integer.toString(state));
         gameData.getGame(gameName).doMove(pos, state);
         counter++;
     }
