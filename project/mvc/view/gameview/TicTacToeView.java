@@ -35,16 +35,13 @@ public class TicTacToeView extends GameBoardView {
         double tileSize = boardWidth/3;
         GameBoard board = new TicTacToeBoard(tileSize, tileSize, gameData, centerLayout);
         Button[] gameBoardButtons = board.getTiles();
-
-//        for(int i = 0; i < board.getTiles().length; i++) {
-//            gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
-//        }
+        for(int i = 0; i < board.getTiles().length; i++) {
+            gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
+        }
 
         Button exitGame = new Button("Exit Tic Tac Toe");
         super.getGameButtons().put(exitGame.getText(), exitGame);
         super.getTopBar();
-
-//        centerLayout.getChildren().addAll(board.getTiles());
 
         setCenter(centerLayout);
         setTop(super.getTopBar());
