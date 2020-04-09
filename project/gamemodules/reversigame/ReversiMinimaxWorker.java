@@ -77,12 +77,22 @@ public class ReversiMinimaxWorker implements Runnable{
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
-//        int turn = reversiBoard.getDiscCount(1) + reversiBoard.getDiscCount(2);
+        int turn = reversiBoard.getDiscCount(1) + reversiBoard.getDiscCount(2);
+        if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0 && turn > 50){
+            int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+            if(result < 0){
+                result -= 5000;
+            } else if(result > 0){
+                result += 5000;
+            }
+            return result;
+        }
+
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
         // int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
 
-        return (int)(stability * 5.5 + mobility) + getBias(board);
+        return (int)(stability * 5.5 + mobility * 1.8) + getBias(board);
 //        temp1 = (int)((stability * turn) / 20.0);
 //        temp2 = mobility * 20;
 //        temp3 = getBias(board) * 2;
