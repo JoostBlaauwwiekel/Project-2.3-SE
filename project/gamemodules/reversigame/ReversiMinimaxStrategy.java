@@ -12,11 +12,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     private int depth = 3;
 
     @Override
-    public int evaluate(GameBoardLogic board){
-        return 0;
-    }
-
-    @Override
     public int getBestMove(GameBoardLogic board, int player) {
         long startTime = System.currentTimeMillis();
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
@@ -79,10 +74,5 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         results.clear();
 
         return bestMove;
-    }
-
-    @Override
-    public int miniMax(GameBoardLogic board, int depth, boolean isMax) {
-        return 0;
     }
 }

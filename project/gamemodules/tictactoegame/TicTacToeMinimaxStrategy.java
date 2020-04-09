@@ -4,15 +4,12 @@
  * this class does all the calculations for the game.
  * It is based on the MiniMax algorithm.
  *
- * @author Joost Blaauwwiekel
- * @version 1.0
  */
 
 package project.gamemodules.tictactoegame;
 
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
-import project.mvc.view.gameboard.TicTacToeBoard;
 
 public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
 
@@ -24,7 +21,7 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
      * @param b         the board of the game
      * @return          the amount of points after the evaluation
      */
-    public int evaluate(GameBoardLogic b) {
+    private int evaluate(GameBoardLogic b) {
         int[] board = b.getBoard();
         int rowCounter = 0;
         for(int row = 0; row < 3; row++) {
@@ -112,7 +109,6 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
     }
 
     /**
-     * This is where the magic happens :)
      * This method recursively checks which move is the most
      * smart to choose.
      *
@@ -121,7 +117,7 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
      * @param isMax     true when the current player is the maximizer, false when the current player is the minimizer.
      * @return
      */
-    public int miniMax(GameBoardLogic b, int depth, boolean isMax) {
+    private int miniMax(GameBoardLogic b, int depth, boolean isMax) {
         int player;
         int bestEval;
         if(isMax){
