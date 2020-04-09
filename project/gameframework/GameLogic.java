@@ -44,4 +44,12 @@ public abstract class GameLogic {
      * @return integer representing the player that won the game.
      */
     public abstract int gameOver();
+
+    /**
+     * This method should check whether a move is valid or not.
+     * @param move the move that should be checked.
+     * @param move the player that should be checked for.
+     * @return true if valid, false if not.
+     */
+    public abstract boolean isValid(int move, int player);
 }

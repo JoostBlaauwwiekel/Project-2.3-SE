@@ -103,4 +103,9 @@ public class TicTacToeGameLogic extends GameLogic {
         // when the game ended in a draw
         return 3;
     }
+
+    @Override
+    public boolean isValid(int move, int player) {
+        return getBoard().getBoardPos(move) == 0;
+    }
 }

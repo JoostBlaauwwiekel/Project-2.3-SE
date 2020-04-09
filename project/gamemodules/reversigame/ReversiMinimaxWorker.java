@@ -92,11 +92,11 @@ public class ReversiMinimaxWorker implements Runnable{
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
         // int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
 
-        return (int)(stability * 5.5 + mobility * 1.8) + getBias(board);
+//        return (int)(stability * 5.5 + mobility * 1.9) + getBias(board);
 //        temp1 = (int)((stability * turn) / 20.0);
 //        temp2 = mobility * 20;
 //        temp3 = getBias(board) * 2;
-//        return (int)((stability * turn) / 20.0 + mobility * 5) + (getBias(board) * 2);
+        return (int)((stability * turn) / 10.0 + mobility * 1.9) + (getBias(board));
     }
 
     /**

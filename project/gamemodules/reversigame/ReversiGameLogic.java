@@ -60,6 +60,11 @@ public class ReversiGameLogic extends GameLogic {
         return 0;
     }
 
+    @Override
+    public boolean isValid(int move, int player) {
+        return getMoves(player).contains(move);
+    }
+
     private int getTarget(int dir, int pos){
         // Calculate position of target.
         int target = 0;
