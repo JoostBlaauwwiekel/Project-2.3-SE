@@ -27,23 +27,24 @@ public class TicTacToeView extends GameBoardView {
         this.gameData = applicationController.getApplicationModel().getGameData();
         this.ticTacToeGameLogic = this.gameData.getGame("Tic-tac-toe");
 
-        FlowPane centerLayout = new FlowPane();
+        GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #524D4E;");
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/3;
-        GameBoard board = new TicTacToeBoard(tileSize, tileSize, gameData);
+        GameBoard board = new TicTacToeBoard(tileSize, tileSize, gameData, centerLayout);
         Button[] gameBoardButtons = board.getTiles();
-        for(int i = 0; i < board.getTiles().length; i++) {
-            gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
-        }
+
+//        for(int i = 0; i < board.getTiles().length; i++) {
+//            gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
+//        }
 
         Button exitGame = new Button("Exit Tic Tac Toe");
         super.getGameButtons().put(exitGame.getText(), exitGame);
         super.getTopBar();
 
-        centerLayout.getChildren().addAll(board.getTiles());
+//        centerLayout.getChildren().addAll(board.getTiles());
 
         setCenter(centerLayout);
         setTop(super.getTopBar());

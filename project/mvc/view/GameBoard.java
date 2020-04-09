@@ -2,11 +2,14 @@ package project.mvc.view;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
@@ -14,9 +17,10 @@ import project.gamemodules.GameData;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
 
-import java.util.Optional;
+import java.sql.Array;
+import java.util.Arrays;
 
-public abstract class GameBoard extends FlowPane {
+public abstract class GameBoard extends GridPane {
 
     private int gameBoardWidth;
     private int gameBoardHeight;
@@ -33,17 +37,19 @@ public abstract class GameBoard extends FlowPane {
     private GameBoardLogic gameBoard;
 
     private GameData gameData;
+    private GridPane gameLayout;
 
     String gameName;
 
     private MinimaxStrategy minimaxStrategy;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, GameData gameData, String gameName) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, GameData gameData, String gameName, GridPane layout) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
         gameButtonWidth = buttonWidth;
         gameButtonHeight = buttonHeight;
+        gameLayout = layout;
 
         this.gameName = gameName;
 
@@ -59,7 +65,6 @@ public abstract class GameBoard extends FlowPane {
             this.minimaxStrategy = new ReversiMinimaxStrategy();
         }
 
-        gameData.getGame("Reversi").getBoard().printBoard();
         turn = 1;
         counter = 0;
         tiles = new Button[width * height];
@@ -67,28 +72,64 @@ public abstract class GameBoard extends FlowPane {
     }
 
     public void drawBoard() {
-        for (int i = 0; i < gameBoardDimension; i++) {
-            tiles[i] = new Button("");
-            // Misschien is het handig dat we de knop grootte kunnen instellen per game. Als je namelijk de knop 150x150 maakt dan past het niet op het scherm bij reversi
-            tiles[i].setMinSize(gameButtonWidth, gameButtonHeight);
-            tiles[i].setId(Integer.toString(i));
-            Button btn = tiles[i];
+        int id = 0;
+//        for(int i = 0; i < tiles.length; i++) {
+//            tiles[id] = new Button("");
+//        }
+        System.out.println(tiles.length);
+        for (int row = 0; row < gameBoardHeight; row++) {
+            for (int column = 0; column < gameBoardWidth; column++) {
+                id = ((row * gameBoardWidth) + column);
+                System.out.println(id);
 
-            btn.setOnMouseClicked(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    // handle the player's input
+                tiles[id] = new Button("");
+                tiles[id].setMinSize(gameButtonWidth, gameButtonHeight);
+                tiles[id].setId(Integer.toString(id));
+
+                Button btn = tiles[id];
+                btn.setOnAction(e -> {
                     turn = 1;
                     int ID = Integer.parseInt(btn.getId());
                     setMove(ID, turn, btn);
-
                     if(!gameOver()) {
                         setAIMove();
                         gameOver();
                     }
-                }
-            });
+                });
+                gameLayout.add(tiles[id], column, row);
+            }
         }
+        System.out.println("De array ziet er zo uit: " + Arrays.toString(tiles));
+    }
+
+    private void setMove(int pos, int state, Button btn) {
+        GameBoardLogic board = gameData.getGame(gameName).getBoard();
+
+        if(board.getGame().equals("TicTacToe")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-times.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        } else if(board.getGame().equals("Reversi")) {
+            if(state == 1) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            } else if (state == 2) {
+                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
+                ImageView imageView = new ImageView(image);
+                btn.setGraphic(imageView);
+            }
+        }
+
+        gameData.getGame(gameName).doMove(pos, state);
+        gameData.getGame(gameName).getBoard().printBoard();
+        counter++;
     }
 
     private void setAIMove() {
@@ -154,34 +195,6 @@ public abstract class GameBoard extends FlowPane {
                 button.setGraphic(null);
             }
         }
-    }
-
-    private void setMove(int pos, int state, Button btn) {
-        GameBoardLogic board = gameData.getGame(gameName).getBoard();
-        if(board.getGame().equals("TicTacToe")) {
-            if(state == 1) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            } else if (state == 2) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-times.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            }
-        } else if(board.getGame().equals("Reversi")) {
-            if(state == 1) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            } else if (state == 2) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 10, gameButtonHeight - 10, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            }
-        }
-//        btn.setText(Integer.toString(state));
-        gameData.getGame(gameName).doMove(pos, state);
-        counter++;
     }
 
     public int getCounter(){
