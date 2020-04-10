@@ -1,6 +1,7 @@
 package project.mvc.view.mainscreen;
 
 import project.mvc.controller.ApplicationController;
+import project.mvc.model.ApplicationModel;
 import project.mvc.view.ApplicationView;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
@@ -16,9 +17,8 @@ public class MainView extends ScreenView {
 
     private Scene chooseGameScene;
     private ChooseGameView chooseGameView;
-    private ApplicationController applicationController;
 
-    public MainView(Stage window, ApplicationController applicationController) {
+    public MainView(Stage window, ApplicationModel model) {
         super(window);
 
         setSpacing(10);
@@ -42,7 +42,7 @@ public class MainView extends ScreenView {
         options.setMinWidth(100);
         close.setMinWidth(100);
 
-        chooseGameView = new ChooseGameView(window, applicationController);
+        chooseGameView = new ChooseGameView(window, model);
         chooseGameScene = new Scene(chooseGameView, 900, 600);
 
         getChildren().addAll(title, chooseGame, options, close);

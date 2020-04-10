@@ -1,6 +1,7 @@
 package project.mvc.view.mainscreen;
 
 import project.mvc.controller.ApplicationController;
+import project.mvc.model.ApplicationModel;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,7 +16,10 @@ import project.mvc.view.gameview.TicTacToeView;
 
 public class ChooseGameModeView extends ScreenView {
 
-    public ChooseGameModeView(Stage window, ApplicationController applicationController) {
+    private Scene serverOptionsScene;
+    private ServerOptionsView serverOptionsView;
+
+    public ChooseGameModeView(Stage window, ApplicationModel model) {
         super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
@@ -37,10 +41,13 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        TicTacToeView ticTacToeView = new TicTacToeView(window, 500, applicationController);
+        serverOptionsView = new ServerOptionsView(window,model);
+        serverOptionsScene = new Scene(serverOptionsView, 900,600);
+
+        TicTacToeView ticTacToeView = new TicTacToeView(window, 500, model);
         Scene ticTacToeScene = new Scene(ticTacToeView, 500, 700);
 
-        ReversiView reversiView = new ReversiView(window, 500, applicationController);
+        ReversiView reversiView = new ReversiView(window, 500, model);
         Scene reversiScene = new Scene(reversiView, 500, 700);
 
         super.getGameScenes().put("Tic Tac Toe", ticTacToeScene);
@@ -52,10 +59,10 @@ public class ChooseGameModeView extends ScreenView {
     }
 
     public Scene getSceneUnderneath(){
-        return null;
+        return serverOptionsScene;
     }
 
     public ScreenView getViewUnderneath(){
-        return null;
+        return serverOptionsView;
     }
 }
