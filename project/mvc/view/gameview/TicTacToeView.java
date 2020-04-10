@@ -2,6 +2,7 @@ package project.mvc.view.gameview;
 
 import project.gamemodules.GameData;
 import project.mvc.controller.ApplicationController;
+import project.mvc.model.ApplicationModel;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
@@ -13,13 +14,10 @@ import project.mvc.view.gameboard.TicTacToeBoard;
 public class TicTacToeView extends GameBoardView {
 
     private String mode = "";
-    private GameData gameData;
     private GameBoard ticTacToeBoard;
 
-    public TicTacToeView(Stage window, int boardWidth, ApplicationController applicationController) {
+    public TicTacToeView(Stage window, int boardWidth, ApplicationModel model) {
         super(window);
-
-        this.gameData = applicationController.getApplicationModel().getGameData();
 
         GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
@@ -27,7 +25,7 @@ public class TicTacToeView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/3;
-        ticTacToeBoard = new TicTacToeBoard(tileSize, tileSize, gameData, centerLayout);
+        ticTacToeBoard = new TicTacToeBoard(tileSize, tileSize, model, centerLayout);
         Button[] gameBoardButtons = ticTacToeBoard.getTiles();
         for(int i = 0; i < ticTacToeBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");

@@ -10,11 +10,14 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import project.gameframework.GameBoardLogic;
+import project.gameframework.GameLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 import project.gamemodules.GameData;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
+import project.mvc.model.ApplicationModel;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public abstract class GameBoard extends FlowPane {
@@ -39,7 +42,7 @@ public abstract class GameBoard extends FlowPane {
 
     private MinimaxStrategy minimaxStrategy;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, GameData gameData, String gameName, GridPane layout) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String gameName, GridPane layout) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
@@ -49,7 +52,7 @@ public abstract class GameBoard extends FlowPane {
 
         this.gameName = gameName;
 
-        this.gameData = gameData;
+        this.gameData = model.getGameData();
 
         this.gameBoard = gameBoard;
 
@@ -66,10 +69,15 @@ public abstract class GameBoard extends FlowPane {
         counter = 0;
         tiles = new Button[width * height];
         drawBoard();
+
+        if(gameName.equals("Reversi")) {
+            updateReversiBoard();
+        }
     }
 
     public void drawBoard() {
         int id = 0;
+        System.out.println(gameName);
         for (int row = 0; row < gameBoardHeight; row++) {
             for (int column = 0; column < gameBoardWidth; column++) {
                 id = ((row * gameBoardWidth) + column);
@@ -80,12 +88,28 @@ public abstract class GameBoard extends FlowPane {
 
                 Button btn = tiles[id];
                 btn.setOnAction(e -> {
-                    turn = 1;
-                    int ID = Integer.parseInt(btn.getId());
-                    setMove(ID, turn, btn);
-                    if(!gameOver()) {
-                        setAIMove();
-                        gameOver();
+                    GameLogic logic = gameData.getGame(gameName);
+                    if(gameName.equals("Tic-tac-toe")) {
+                        turn = 1;
+                        int ID = Integer.parseInt(btn.getId());
+                        if(logic.isValid(ID, turn)) {
+                            setMove(ID, turn, btn);
+                            if (!gameOver()) {
+                                setAIMove();
+                                gameOver();
+                            }
+                        }
+                    } else if(gameName.equals("Reversi")) {
+                        int ID = Integer.parseInt(btn.getId());
+                        //if(logic.isValid(ID, 2)) {
+                            updateReversiBoard();
+                            setMove(ID, 1, btn);
+                            if (!gameOver()) {
+                                setAIMove();
+                                updateReversiBoard();
+                                gameOver();
+                            }
+                        //}
                     }
                 });
                 gameLayout.add(tiles[id], column, row);
@@ -102,10 +126,30 @@ public abstract class GameBoard extends FlowPane {
         } catch (ArrayIndexOutOfBoundsException e) {
             // ignore
         }
-        gameData.getGame(gameName).getBoard().printBoard();
+        //gameData.getGame(gameName).getBoard().printBoard();
     }
 
     private boolean gameOver() {
+
+        if(gameName.equals("Reversi")) {
+            GameLogic logic = gameData.getGame(gameName);
+            ArrayList moves = logic.getMoves(1);
+
+            if(moves.size() == 0) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("End of round");
+                alert.setHeaderText(null);
+                alert.setContentText("player 2 Won!");
+
+                alert.showAndWait();
+                System.out.println("Player 2 won!");
+                gameData.getGame(gameName).getBoard().resetBoard();
+                resetBoard();
+            }
+        }
+
+        System.out.println(gameData.getGame(gameName).gameOver());
+
         if(gameData.getGame(gameName).gameOver() == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
@@ -148,18 +192,17 @@ public abstract class GameBoard extends FlowPane {
         GameBoardLogic board = gameData.getGame(gameName).getBoard();
 
         for(Button button : tiles) {
-            button.setText("");
+            button.setGraphic(null);
         }
 
-        if(board.getGame().equals("TicTacToe")) {
-            for(Button button : tiles) {
-                button.setGraphic(null);
-            }
+        if(gameName.equals("Reversi")) {
+            updateReversiBoard();
         }
     }
 
     private void setMove(int pos, int state, Button btn) {
         GameBoardLogic board = gameData.getGame(gameName).getBoard();
+
         if(board.getGame().equals("TicTacToe")) {
             if(state == 1) {
                 Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
@@ -183,6 +226,36 @@ public abstract class GameBoard extends FlowPane {
         }
         gameData.getGame(gameName).doMove(pos, state);
         counter++;
+    }
+
+    public void updateReversiBoard() {
+        GameLogic logic = gameData.getGame(gameName);
+        ArrayList moves = logic.getMoves(1);
+        GameBoardLogic board = gameData.getGame(gameName).getBoard();
+        System.out.println(moves);
+        int[] b = board.getBoard();
+
+        for(int i = 0; i < tiles.length; i++) {
+            if(!moves.contains(i)) {
+                tiles[i].setDisable(true);
+            } else {
+                tiles[i].setDisable(false);
+            }
+
+            if(b[i] == 1) {
+                // draw a black disc
+                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
+                ImageView imageView = new ImageView(image);
+                tiles[i].setGraphic(imageView);
+            }
+
+            if(b[i] == 2) {
+                // draw a white disc
+                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
+                ImageView imageView = new ImageView(image);
+                tiles[i].setGraphic(imageView);
+            }
+        }
     }
 
     public int getCounter(){

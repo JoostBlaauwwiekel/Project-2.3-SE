@@ -2,6 +2,7 @@ package project.mvc.view.gameview;
 
 import project.gamemodules.GameData;
 import project.mvc.controller.ApplicationController;
+import project.mvc.model.ApplicationModel;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
@@ -13,13 +14,10 @@ import project.mvc.view.gameboard.ReversiBoard;
 public class ReversiView extends GameBoardView {
 
     private String mode = "";
-    private GameData gameData;
     private GameBoard reversiGameBoard;
 
-    public ReversiView(Stage window, int boardWidth, ApplicationController applicationController) {
+    public ReversiView(Stage window, int boardWidth, ApplicationModel model) {
         super(window);
-
-        this.gameData = applicationController.getApplicationModel().getGameData();
 
         GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
@@ -27,7 +25,7 @@ public class ReversiView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/8;
-        reversiGameBoard = new ReversiBoard(tileSize, tileSize, gameData, centerLayout);
+        reversiGameBoard = new ReversiBoard(tileSize, tileSize, model, centerLayout);
         Button[] gameBoardButtons = reversiGameBoard.getTiles();
         for(int i = 0; i < reversiGameBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
