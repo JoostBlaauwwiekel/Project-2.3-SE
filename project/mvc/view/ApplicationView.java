@@ -161,10 +161,10 @@ public class ApplicationView {
 
         serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {
             // Update the listViews
-//            ListView<String> playerList = serverOptionsView.getListViews().get(0);
+            ListView<String> playerList = serverOptionsView.getListViews().get("PlayerList");
 
             // Clear the whole list
-//            playerList.getItems().clear();
+            playerList.getItems().clear();
 
             // Fetch the player list and add them individually
         });
