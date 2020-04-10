@@ -25,7 +25,7 @@ public class ReversiMinimaxWorker implements Runnable{
 
     @Override
     public void run() {
-        int eval = minimax(board, depth, isMax);
+        int eval = minimax(board, depth, isMax, -10000, 10000);
         result.put(move, eval);
 //        System.out.println("Thread for move : " + move + " finished");
 //        System.out.println("Stability : " + temp1);
@@ -33,7 +33,7 @@ public class ReversiMinimaxWorker implements Runnable{
 //        System.out.println("Bias : " + temp3);
     }
 
-    private int minimax(GameBoardLogic board, int depth, boolean isMax) {
+    private int minimax(GameBoardLogic board, int depth, boolean isMax, int alpha, int beta) {
         int player;
         int bestEval;
         if(isMax){
@@ -57,17 +57,16 @@ public class ReversiMinimaxWorker implements Runnable{
             ReversiGameLogic tempGame = new ReversiGameLogic();
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
-            int eval = minimax(newBoard, depth-1, isMax);
+            int eval = minimax(newBoard, depth-1, !isMax, alpha, beta);
 
             if(isMax){
-                if(eval > bestEval){
-                    bestEval = eval;
-                }
+                if(eval > bestEval) bestEval = eval;
+                if(eval > alpha) alpha = eval;
             } else {
-                if(eval < bestEval){
-                    bestEval = eval;
-                }
+                if(eval < bestEval) bestEval = eval;
+                if(eval < beta) beta = eval;
             }
+            if(beta <= alpha) break;
         }
         return bestEval;
     }
@@ -96,7 +95,8 @@ public class ReversiMinimaxWorker implements Runnable{
 //        temp1 = (int)((stability * turn) / 20.0);
 //        temp2 = mobility * 20;
 //        temp3 = getBias(board) * 2;
-        return (int)((stability * turn) / 10.0 + mobility * 1.9) + (getBias(board));
+        // These numbers have been found through 50000+ tests
+        return (int)((stability * turn) / 12 + mobility * 1.9) + (getBias(board));
     }
 
     /**

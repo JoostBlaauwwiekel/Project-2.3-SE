@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-    private int depth = 3;
+    private int depth = 7;
 
     @Override
     public int getBestMove(GameBoardLogic board, int player) {
@@ -45,12 +45,13 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
             resultCount++;
         }
+
         // Wait until all results are back
         boolean timeout = false;
         while(results.size() != resultCount && !timeout){
             try {
                 Thread.sleep(10);
-                if((System.currentTimeMillis() - startTime) / 1000 > 9.85){
+                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.5){
                     System.err.println("A timeout occurred!");
                     timeout = true;
                 }
@@ -73,6 +74,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
         results.clear();
 
+        System.out.println("Calculating move took : " + (float)((System.currentTimeMillis() - startTime) / 1000.0) + " seconds");
         return bestMove;
     }
 }
