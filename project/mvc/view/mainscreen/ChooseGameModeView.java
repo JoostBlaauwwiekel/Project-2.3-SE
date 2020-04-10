@@ -16,6 +16,9 @@ import project.mvc.view.gameview.TicTacToeView;
 
 public class ChooseGameModeView extends ScreenView {
 
+    private Scene serverOptionsScene;
+    private ServerOptionsView serverOptionsView;
+
     public ChooseGameModeView(Stage window, ApplicationModel model) {
         super(window);
         setSpacing(10);
@@ -38,6 +41,9 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
+        serverOptionsView = new ServerOptionsView(window,model);
+        serverOptionsScene = new Scene(serverOptionsView, 900,600);
+
         TicTacToeView ticTacToeView = new TicTacToeView(window, 500, model);
         Scene ticTacToeScene = new Scene(ticTacToeView, 500, 700);
 
@@ -53,10 +59,10 @@ public class ChooseGameModeView extends ScreenView {
     }
 
     public Scene getSceneUnderneath(){
-        return null;
+        return serverOptionsScene;
     }
 
     public ScreenView getViewUnderneath(){
-        return null;
+        return serverOptionsView;
     }
 }

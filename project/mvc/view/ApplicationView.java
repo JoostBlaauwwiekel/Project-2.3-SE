@@ -1,5 +1,6 @@
 package project.mvc.view;
 
+import javafx.scene.control.ListView;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.MainView;
@@ -24,12 +25,14 @@ public class ApplicationView {
     private Scene mainScene;
     private Scene chooseGameScene;
     private Scene chooseGameModeScene;
+    private Scene serverOptionsScene;
     private Scene ticTacToeScene;
     private Scene reversiScene;
 
     private ScreenView mainView;
     private ScreenView chooseGameView;
     private ScreenView chooseGameModeView;
+    private ScreenView serverOptionsView;
 
     private GameBoardView ticTacToeView;
     private GameBoardView reversiView;
@@ -60,6 +63,9 @@ public class ApplicationView {
         chooseGameModeScene = chooseGameView.getSceneUnderneath();
         chooseGameModeView = chooseGameView.getViewUnderneath();
 
+        serverOptionsScene = chooseGameModeView.getSceneUnderneath();
+        serverOptionsView = chooseGameModeView.getViewUnderneath();
+
         // Declare and initialize the Tic-tac-toe scene and view.
         ticTacToeScene = chooseGameModeView.getGameScenes().get(TICTACTOE);
         ticTacToeView = chooseGameModeView.getGameBoardViews().get(TICTACTOE);
@@ -78,6 +84,7 @@ public class ApplicationView {
         setOnActionMainViewButtons();
         setOnActionChooseGameViewButtons();
         setOnActionChooseGameModeViewButtons();
+        setOnActionServerOptionsViewButtons();
         setOnActionGameViewButtons();
     }
 
@@ -122,16 +129,9 @@ public class ApplicationView {
         });
 
         chooseGameModeView.getButtons().get("Player vs Server").setOnAction(e -> {
-            if(chooseGameModeView.getWindow().getTitle().equals(TICTACTOE)) {
-                ticTacToeView.setMode("Player vs Server");
-                chooseGameModeView.getWindow().setScene(ticTacToeScene);
-                chooseGameModeView.getWindow().setTitle(TICTACTOE + "Player vs Server");
-            }
-            else{
-                reversiView.setMode("Player vs Server");
-                chooseGameModeView.getWindow().setScene(reversiScene);
-                chooseGameModeView.getWindow().setTitle(REVERSI + "Player vs Server");
-            }
+            System.out.println("test");
+            chooseGameModeView.getWindow().setScene(serverOptionsScene);
+            chooseGameModeView.getWindow().setTitle("Options select");
         });
 
         chooseGameModeView.getButtons().get("Go back").setOnAction(e -> {
@@ -139,6 +139,46 @@ public class ApplicationView {
             chooseGameModeView.getWindow().setTitle("Choose a game");
         });
     }
+
+    private void setOnActionServerOptionsViewButtons() {
+        serverOptionsView.getButtons().get("Challenge!").setOnAction(e -> {
+            // Challange functionality
+            // Lees de challange list uit
+
+            // Returns the selected item in the list
+            ListView<String> playerList = serverOptionsView.getListViews().get("PlayerList");
+
+            // String with the selected player
+            String selectedPlayer = playerList.getSelectionModel().getSelectedItem();
+
+            // Returns the selected item in the list
+            ListView<String> challangeList = serverOptionsView.getListViews().get("ChallengeList");
+            // String with the selected challange
+            String selectedChallange = challangeList.getSelectionModel().getSelectedItem();
+
+            System.out.println("Selected player: " + selectedPlayer + "\n Selected challange: " + selectedChallange);
+        });
+
+        serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {
+            // Update the listViews
+//            ListView<String> playerList = serverOptionsView.getListViews().get(0);
+
+            // Clear the whole list
+//            playerList.getItems().clear();
+
+            // Fetch the player list and add them individually
+        });
+        serverOptionsView.getButtons().get("Subscribe").setOnAction(e -> {
+
+            // Subscribe functionality
+
+        });
+        serverOptionsView.getButtons().get("Go back").setOnAction(e -> {
+            serverOptionsView.getWindow().setScene(chooseGameModeScene);
+            chooseGameModeView.getWindow().setTitle("Choose a game");
+        });
+    }
+
 
     private void setOnActionGameViewButtons(){
         ticTacToeView.getGameButtons().get("Exit " + TICTACTOE).setOnAction(e -> {

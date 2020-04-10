@@ -1,10 +1,13 @@
 package project.mvc.view;
 
+import javafx.scene.control.ListView;
 import project.mvc.view.mainscreen.ConfirmBox;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class ScreenView extends VBox {
@@ -13,6 +16,7 @@ public abstract class ScreenView extends VBox {
     private HashMap<String,Button> buttons = new HashMap<>();
     private HashMap<String, Scene> gameScenes = new HashMap<>();
     private HashMap<String, GameBoardView> gameBoardViews = new HashMap<>();
+    private HashMap<String, ListView<String>> listViews = new HashMap<>();
 
     /**
      * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
@@ -85,4 +89,6 @@ public abstract class ScreenView extends VBox {
      * @return the underlying view or null.
      */
     public abstract ScreenView getViewUnderneath();
+
+    public HashMap<String, ListView<String>> getListViews() { return listViews; }
 }
