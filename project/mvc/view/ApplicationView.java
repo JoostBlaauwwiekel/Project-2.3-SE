@@ -146,8 +146,8 @@ public class ApplicationView {
             ticTacToeView.getWindow().setTitle(TICTACTOE);
         });
 
-        ticTacToeView.getGameButtons().get("Restart " + TICTACTOE).setOnAction(e -> ticTacToeView.getGameBoard().resetBoard());
-        reversiView.getGameButtons().get("Restart " + REVERSI).setOnAction(e -> reversiView.getGameBoard().resetBoard());
+        ticTacToeView.getGameButtons().get("Restart " + TICTACTOE).setOnAction(e -> ticTacToeView.getGameBoard().getBoardLogic().resetBoard());
+        reversiView.getGameButtons().get("Restart " + REVERSI).setOnAction(e -> reversiView.getGameBoard().getBoardLogic().resetBoard());
 
         reversiView.getGameButtons().get("Exit " + REVERSI).setOnAction(e -> {
            reversiView.getWindow().setScene(chooseGameModeScene);

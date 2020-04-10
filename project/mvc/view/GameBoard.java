@@ -19,6 +19,7 @@ import project.mvc.model.ApplicationModel;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import project.mvc.view.BoardLogic;
 
 public abstract class GameBoard extends FlowPane {
 
@@ -33,28 +34,27 @@ public abstract class GameBoard extends FlowPane {
     private int counter;
 
     private Button[] tiles;
-    private GameBoardLogic gameBoard;
+    private BoardLogic BoardLogic;
 
     private GameData gameData;
     private GridPane gameLayout;
-
-    String gameName;
+    private String gameName;
+    private GameBoardLogic gameBoardLogic;
+    private BoardLogic boardLogic;
 
     private MinimaxStrategy minimaxStrategy;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String gameName, GridPane layout) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String name, GridPane layout) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
         gameButtonWidth = buttonWidth;
         gameButtonHeight = buttonHeight;
         gameLayout = layout;
+        gameName = name;
+        gameData = model.getGameData();
 
-        this.gameName = gameName;
-
-        this.gameData = model.getGameData();
-
-        this.gameBoard = gameBoard;
+        this.gameBoardLogic = gameBoard;
 
         if(gameName.equals("Tic-tac-toe")) {
             this.minimaxStrategy = new TicTacToeMinimaxStrategy();
@@ -64,14 +64,15 @@ public abstract class GameBoard extends FlowPane {
             this.minimaxStrategy = new ReversiMinimaxStrategy();
         }
 
-        gameData.getGame("Reversi").getBoard().printBoard();
+        this.boardLogic = new BoardLogic(gameData, gameName, gameBoardWidth, gameBoardHeight, gameBoardDimension, gameButtonHeight, gameButtonWidth, this);
+
         turn = 1;
         counter = 0;
         tiles = new Button[width * height];
         drawBoard();
 
         if(gameName.equals("Reversi")) {
-            updateReversiBoard();
+            boardLogic.updateReversiBoard();
         }
     }
 
@@ -94,20 +95,20 @@ public abstract class GameBoard extends FlowPane {
                         int ID = Integer.parseInt(btn.getId());
                         if(logic.isValid(ID, turn)) {
                             setMove(ID, turn, btn);
-                            if (!gameOver()) {
+                            if (!boardLogic.gameOver()) {
                                 setAIMove();
-                                gameOver();
+                                boardLogic.gameOver();
                             }
                         }
                     } else if(gameName.equals("Reversi")) {
                         int ID = Integer.parseInt(btn.getId());
                         //if(logic.isValid(ID, 2)) {
-                            updateReversiBoard();
+                            boardLogic.updateReversiBoard();
                             setMove(ID, 1, btn);
-                            if (!gameOver()) {
+                            if (!boardLogic.gameOver()) {
                                 setAIMove();
-                                updateReversiBoard();
-                                gameOver();
+                                boardLogic.updateReversiBoard();
+                                boardLogic.gameOver();
                             }
                         //}
                     }
@@ -127,77 +128,6 @@ public abstract class GameBoard extends FlowPane {
             // ignore
         }
         //gameData.getGame(gameName).getBoard().printBoard();
-    }
-
-    private boolean gameOver() {
-
-        if(gameName.equals("Reversi")) {
-            GameLogic logic = gameData.getGame(gameName);
-            ArrayList moves = logic.getMoves(1);
-
-            if(moves.size() == 0) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("End of round");
-                alert.setHeaderText(null);
-                alert.setContentText("player 2 Won!");
-
-                alert.showAndWait();
-                System.out.println("Player 2 won!");
-                gameData.getGame(gameName).getBoard().resetBoard();
-                resetBoard();
-            }
-        }
-
-        System.out.println(gameData.getGame(gameName).gameOver());
-
-        if(gameData.getGame(gameName).gameOver() == 1) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("End of round");
-            alert.setHeaderText(null);
-            alert.setContentText("player 1 Won!");
-
-            alert.showAndWait();
-            System.out.println("Player 1 won!");
-            gameData.getGame(gameName).getBoard().resetBoard();
-            resetBoard();
-            return true;
-        } else if(gameData.getGame(gameName).gameOver() == 2) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("End of round");
-            alert.setHeaderText(null);
-            alert.setContentText("player 2 Won!");
-
-            alert.showAndWait();
-            System.out.println("Player 2 won!");
-            gameData.getGame(gameName).getBoard().resetBoard();
-            resetBoard();
-            return true;
-        } else if(gameData.getGame(gameName).gameOver() == 3) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("End of round");
-            alert.setHeaderText(null);
-            alert.setContentText("Draw!");
-
-            alert.showAndWait();
-            System.out.println("draw!");
-            gameData.getGame(gameName).getBoard().resetBoard();
-            resetBoard();
-            return true;
-        }
-
-        return false;
-    }
-
-    public void resetBoard() {
-        GameBoardLogic board = gameData.getGame(gameName).getBoard();
-
-        for(Button button : tiles) {
-            button.setGraphic(null);
-        }
-
-        if(gameName.equals("Reversi")) {
-            updateReversiBoard();
-        }
     }
 
     private void setMove(int pos, int state, Button btn) {
@@ -228,42 +158,16 @@ public abstract class GameBoard extends FlowPane {
         counter++;
     }
 
-    public void updateReversiBoard() {
-        GameLogic logic = gameData.getGame(gameName);
-        ArrayList moves = logic.getMoves(1);
-        GameBoardLogic board = gameData.getGame(gameName).getBoard();
-        System.out.println(moves);
-        int[] b = board.getBoard();
-
-        for(int i = 0; i < tiles.length; i++) {
-            if(!moves.contains(i)) {
-                tiles[i].setDisable(true);
-            } else {
-                tiles[i].setDisable(false);
-            }
-
-            if(b[i] == 1) {
-                // draw a black disc
-                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
-                ImageView imageView = new ImageView(image);
-                tiles[i].setGraphic(imageView);
-            }
-
-            if(b[i] == 2) {
-                // draw a white disc
-                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
-                ImageView imageView = new ImageView(image);
-                tiles[i].setGraphic(imageView);
-            }
-        }
-    }
-
     public int getCounter(){
         return counter;
     }
 
     public Button[] getTiles(){
         return tiles;
+    }
+
+    public BoardLogic getBoardLogic(){
+        return boardLogic;
     }
 
     public Label getResult(){
@@ -296,3 +200,8 @@ public abstract class GameBoard extends FlowPane {
         return gameButtonHeight;
     }
 }
+
+
+
+
+
