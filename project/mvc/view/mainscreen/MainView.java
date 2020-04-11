@@ -51,7 +51,7 @@ public class MainView extends ScreenView {
         chooseGameScene = new Scene(chooseGameView, 900, 600);
 
         optionsView = new OptionsView(window);
-        optionsScene = new Scene(optionsView, 900, 600);
+        optionsScene = new Scene(optionsView, 300, 600);
 
         getChildren().addAll(title, chooseGame, options, close);
     }
@@ -59,6 +59,8 @@ public class MainView extends ScreenView {
     public Scene getSceneUnderneath() { return chooseGameScene; }
 
     public ScreenView getViewUnderneath() { return chooseGameView; }
+
+    public Scene getSceneOverhead() { return optionsScene; }
 
     public ScreenBorderPaneView getBorderPaneViewUnderneath() {
         return optionsView;

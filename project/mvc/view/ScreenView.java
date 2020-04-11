@@ -83,6 +83,14 @@ public abstract class ScreenView extends VBox {
     public abstract Scene getSceneUnderneath();
 
     /**
+     * This method should return the overhead scene. This should be a scene in addition to the scene underneath
+     * return null when this method is implemented in the most underlying scene.
+     *
+     * @return the overhead scene or null.
+     */
+    public Scene getSceneOverhead() { return null; }
+
+    /**
      * This method should return the underlying view. A.k.a the view beneath the current view. In addition, it should
      * return null when this method is implemented in the most underlying view.
      *
@@ -90,7 +98,18 @@ public abstract class ScreenView extends VBox {
      */
     public abstract ScreenView getViewUnderneath();
 
+    /**
+     * This method should return the underlying BorderPane scene. A.k.a the scene beneath the current scene with a BorderPane layout. In addition, it should
+     * return null when this method is implemented in the most underlying scene.
+     *
+     * @return the underlying scene or null.
+     */
     public ScreenBorderPaneView getBorderPaneViewUnderneath() { return null; };
 
+    /**
+     * This method returns the listview hashmap.
+     *
+     * @return the hashmap, listviews.
+     */
     public HashMap<String, ListView<String>> getListViews() { return listViews; }
 }
