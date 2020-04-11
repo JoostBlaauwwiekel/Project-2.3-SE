@@ -58,6 +58,7 @@ public class ServerOptionsView extends ScreenBorderPaneView {
 
         playerList = new ListView<String>();
         playerList.setMaxWidth(200);
+        playerList.setMaxHeight(400);
         playerList.getItems().add("Speler 1");
         playerList.getItems().add("Speler 2");
 
@@ -65,6 +66,7 @@ public class ServerOptionsView extends ScreenBorderPaneView {
 
         challengeList = new ListView<String>();
         challengeList.setMaxWidth(200);
+        challengeList.setMaxHeight(400);
         challengeList.getItems().add("je moeder");
 
         Button challengeButton = new Button("Challenge!");

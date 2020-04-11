@@ -159,14 +159,16 @@ public class ApplicationView {
             // String with the selected challange
             String selectedChallange = challangeList.getSelectionModel().getSelectedItem();
 
-            System.out.println("Selected player: " + selectedPlayer + "\n Selected challange: " + selectedChallange);
+            System.out.println("Selected player: " + selectedPlayer);
+            System.out.println("Selected challange: " + selectedChallange);
         });
 
         serverOptionsView.getButtons().get("Accept challenge").setOnAction(e -> {
-            System.out.println("test");
+            System.out.println("Accept challenge functionality");
         });
 
         serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {
+            System.out.println("Refresh list functionality");
             // Update the listViews
             ListView<String> playerList = serverOptionsView.getListViews().get("PlayerList");
 
@@ -176,7 +178,7 @@ public class ApplicationView {
             // Fetch the player list and add them individually
         });
         serverOptionsView.getButtons().get("Subscribe").setOnAction(e -> {
-
+            System.out.println("Subscribe functionality");
             // Subscribe functionality
 
         });
