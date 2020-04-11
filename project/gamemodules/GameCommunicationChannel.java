@@ -13,8 +13,8 @@ public class GameCommunicationChannel implements CommunicationChannel {
 
     // Declare constants
     private final static int PORT = 7789;
-//    private String ipAddress = "145.33.225.170";
-    private String ipAddress = "localhost";
+    private String ipAddress = "145.33.225.170";
+//    private String ipAddress = "localhost";
 
     // Declare the networking variables
     private Socket socket;

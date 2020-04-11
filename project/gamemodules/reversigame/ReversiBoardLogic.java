@@ -12,9 +12,6 @@ public class ReversiBoardLogic extends GameBoardLogic {
     public void initBoard() {
         // 0 = unoccupied 1 = white 2 = black
         int[] defaultBoard = new int[64];
-        for(int i =0; i < defaultBoard.length; i++){
-            defaultBoard[0] = 0;
-        }
         defaultBoard[27] = 1;
         defaultBoard[28] = 2;
         defaultBoard[35] = 2;

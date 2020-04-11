@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-    private int depth = 6;
+    private int depth = 3;
 
     @Override
     public int getBestMove(GameBoardLogic board, int player) {
@@ -21,7 +21,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
         int bestEval;
         boolean isMax;
-
         if(player == 1){
             bestEval = -10000;
             isMax = true;

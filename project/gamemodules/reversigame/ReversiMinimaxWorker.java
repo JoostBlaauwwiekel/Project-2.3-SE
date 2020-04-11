@@ -1,6 +1,7 @@
 package project.gamemodules.reversigame;
 
 import project.gameframework.GameBoardLogic;
+
 import java.util.Map;
 
 public class ReversiMinimaxWorker implements Runnable{
@@ -15,7 +16,7 @@ public class ReversiMinimaxWorker implements Runnable{
     int temp2;
     int temp3;
 
-    public ReversiMinimaxWorker(GameBoardLogic board, int depth, boolean isMax, int move, Map<Integer, Integer> result){
+    ReversiMinimaxWorker(GameBoardLogic board, int depth, boolean isMax, int move, Map<Integer, Integer> result){
         this.board = board;
         this.depth = depth;
         this.isMax = isMax;
@@ -47,7 +48,9 @@ public class ReversiMinimaxWorker implements Runnable{
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
+        // TODO: test if it is better without returning if no moves
         if(depth == 0 || logic.getMoves(player).size() == 0){
+//        if(depth == 0){
             return evaluate(board);
         }
 
@@ -57,7 +60,13 @@ public class ReversiMinimaxWorker implements Runnable{
             ReversiGameLogic tempGame = new ReversiGameLogic();
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
-            int eval = minimax(newBoard, depth-1, !isMax, alpha, beta);
+
+            int eval;
+            if(depth == 1 && isThreat(move, board)){
+                eval = minimax(newBoard, depth, !isMax, alpha, beta);
+            } else {
+                eval = minimax(newBoard, depth-1, !isMax, alpha, beta);
+            }
 
             if(isMax){
                 if(eval > bestEval) bestEval = eval;
@@ -97,6 +106,33 @@ public class ReversiMinimaxWorker implements Runnable{
 //        temp3 = getBias(board) * 2;
         // These numbers have been found through 50000+ tests
         return (int)((stability * turn) / 12 + mobility * 1.9) + (getBias(board));
+    }
+
+    /**
+     * This method checks if a move is a threatening move. This is used by our AI to determine if it
+     * should search deeper.
+     * @param move the move that should be checked.
+     * @return whether a move is a threat or not.
+     */
+    private boolean isThreat(int move, GameBoardLogic board){
+        // Corners
+        if(move == 0 || move == 7 || move == 56 || move == 63){
+            return true;
+        }
+        // Adjacent to corners
+        if(move == 1 || move == 6 || move == 8 || move == 9|| move == 14|| move == 15 ||
+                move == 48 || move == 49 || move == 54 || move == 55|| move == 57|| move == 62){
+            return true;
+        }
+        // 1 or less moves left
+//        ReversiGameLogic logic = new ReversiGameLogic();
+//        logic.setBoard(board);
+//        if(logic.gameOver() == 0){
+//            if(logic.getMoves(1).size() <= 1 || logic.getMoves(0).size() <= 1){
+//                return true;
+//            }
+//        }
+        return false;
     }
 
     /**

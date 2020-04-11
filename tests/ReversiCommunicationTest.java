@@ -6,9 +6,6 @@ import project.gamemodules.GameCommunicationChannel;
 import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
-import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
-import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
-//import sun.plugin2.message.Message;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,7 +15,7 @@ public class ReversiCommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("bitm");
+        channel.setUsername(".");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
@@ -36,7 +33,7 @@ public class ReversiCommunicationTest {
         int player = 0;
         while (true) {
             String message = channel.readFormattedLine();
-//            System.out.println(message);
+            System.out.println(message);
             if (message.contains("PLAYER TO START")){
                 if(message.contains("OPPONENT")){
                     player = 1;

@@ -47,7 +47,7 @@ public class ReversiOldAI extends MinimaxStrategy {
 
         return bestMove;
     }
-    
+
     private int miniMax(GameBoardLogic board, int depth, boolean isMax) {
         int player;
         int bestEval;
