@@ -3,13 +3,14 @@ package project.gamemodules.reversigame;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-    private int depth = 7;
+    private int depth = 6;
 
     @Override
     public int getBestMove(GameBoardLogic board, int player) {
@@ -51,7 +52,10 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         while(results.size() != resultCount && !timeout){
             try {
                 Thread.sleep(10);
-                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.5){
+                // If it's taking to long we want to stop calculating moves and just work with
+                // the results we have gotten so far. This is not the best way of implementing time
+                // constraints, but it just acts as a fail-safe. Ideally we want this to never occur.
+                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.7){
                     System.err.println("A timeout occurred!");
                     timeout = true;
                 }
@@ -70,11 +74,12 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 }
             }
         } else {
-            bestMove = logic.getMoves(player).get(0);
+            ArrayList<Integer> moves = logic.getMoves(player);
+            if(moves.size() > 0) bestMove = logic.getMoves(player).get(0);
         }
         results.clear();
 
-        System.out.println("Calculating move took : " + (float)((System.currentTimeMillis() - startTime) / 1000.0) + " seconds");
+//        System.out.println("Calculating move took : " + (float)((System.currentTimeMillis() - startTime) / 1000.0) + " seconds");
         return bestMove;
     }
 }
