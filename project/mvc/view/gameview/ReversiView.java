@@ -43,6 +43,10 @@ public class ReversiView extends GameBoardView {
         super.getGameButtons().put(restart.getText(), restart);
         super.getButtons().getChildren().addAll(restart, exitGame);
 
+        setPlayers("test", "test");
+        setScores(0,0);
+        setTurn("");
+
         setCenter(centerLayout);
         setTop(super.getTopBar());
     }
