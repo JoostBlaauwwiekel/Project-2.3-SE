@@ -42,7 +42,7 @@ public class ChooseGameModeView extends ScreenView {
         pvs.setMinWidth(150);
         back.setMinWidth(150);
 
-        serverOptionsView = new ServerOptionsView(window,model);
+        serverOptionsView = new ServerOptionsView(window);
         serverOptionsScene = new Scene(serverOptionsView, 900,600);
 
         TicTacToeView ticTacToeView = new TicTacToeView(window, 500, model);

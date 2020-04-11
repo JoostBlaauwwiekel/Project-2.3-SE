@@ -3,6 +3,7 @@ package project.mvc.view.mainscreen;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.ApplicationView;
+import project.mvc.view.ScreenBorderPaneView;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,10 +14,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.Option;
+
 public class MainView extends ScreenView {
 
     private Scene chooseGameScene;
     private ChooseGameView chooseGameView;
+    private Scene optionsScene;
+    private OptionsView optionsView;
 
     public MainView(Stage window, ApplicationModel model) {
         super(window);
@@ -45,10 +50,17 @@ public class MainView extends ScreenView {
         chooseGameView = new ChooseGameView(window, model);
         chooseGameScene = new Scene(chooseGameView, 900, 600);
 
+        optionsView = new OptionsView(window);
+        optionsScene = new Scene(optionsView, 900, 600);
+
         getChildren().addAll(title, chooseGame, options, close);
     }
 
     public Scene getSceneUnderneath() { return chooseGameScene; }
 
     public ScreenView getViewUnderneath() { return chooseGameView; }
+
+    public ScreenBorderPaneView getBorderPaneViewUnderneath() {
+        return optionsView;
+    }
 }

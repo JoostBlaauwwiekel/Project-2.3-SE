@@ -26,6 +26,7 @@ public class ApplicationView {
     private Stage primaryStage;
 
     private Scene mainScene;
+    private Scene optionsScene;
     private Scene chooseGameScene;
     private Scene chooseGameModeScene;
     private Scene serverOptionsScene;
@@ -36,6 +37,7 @@ public class ApplicationView {
     private ScreenView chooseGameView;
     private ScreenView chooseGameModeView;
     private ScreenBorderPaneView serverOptionsView;
+    private ScreenBorderPaneView optionsView;
 
     private GameBoardView ticTacToeView;
     private GameBoardView reversiView;
@@ -69,6 +71,9 @@ public class ApplicationView {
         serverOptionsScene = chooseGameModeView.getSceneUnderneath();
         serverOptionsView = chooseGameModeView.getBorderPaneViewUnderneath();
 
+
+//        optionsView = mainView.getBorderPaneViewUnderneath();
+
         // Declare and initialize the Tic-tac-toe scene and view.
         ticTacToeScene = chooseGameModeView.getGameScenes().get(TICTACTOE);
         ticTacToeView = chooseGameModeView.getGameBoardViews().get(TICTACTOE);
@@ -95,6 +100,12 @@ public class ApplicationView {
         mainView.getButtons().get("Play").setOnAction(e -> {
             mainView.getWindow().setScene(chooseGameScene);
             mainView.getWindow().setTitle("Choose a game");
+        });
+
+        mainView.getButtons().get("Options").setOnAction(e -> {
+            System.out.println("tst");
+//            mainView.getWindow().setScene(optionsScene);
+//            mainView.getWindow().setTitle("Options");
         });
 
         mainView.getButtons().get("Exit").setOnAction(e -> mainView.closeApplication(mainView.getWindow()));

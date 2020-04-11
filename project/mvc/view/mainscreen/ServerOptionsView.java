@@ -30,7 +30,7 @@ public class ServerOptionsView extends ScreenBorderPaneView {
     public ListView<String> challengeList;
 
 
-    protected ServerOptionsView(Stage window,  ApplicationModel model) {
+    protected ServerOptionsView(Stage window) {
         super(window);
         setPadding(new Insets(20,20,20,20));
         setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #34cb8a, #50a480)");
@@ -82,7 +82,6 @@ public class ServerOptionsView extends ScreenBorderPaneView {
         super.getButtons().put(back.getText(), back);
 
         super.getButtons().forEach((k,v) -> v.setMinWidth(150));
-        super.getButtons().forEach((k,v) -> v.setAlignment(Pos.CENTER));
 
         leftMenu.getChildren().addAll(playerListLabel, playerList);
         rightMenu.getChildren().addAll(challengeListLabel, challengeList);
