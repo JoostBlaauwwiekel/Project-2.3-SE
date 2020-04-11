@@ -1,6 +1,8 @@
 package project.mvc.view;
 
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import org.w3c.dom.Text;
 import project.gamemodules.GameCommunicationChannel;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
@@ -71,8 +73,8 @@ public class ApplicationView {
         serverOptionsScene = chooseGameModeView.getSceneUnderneath();
         serverOptionsView = chooseGameModeView.getBorderPaneViewUnderneath();
 
-
-//        optionsView = mainView.getBorderPaneViewUnderneath();
+        optionsScene = mainView.getSceneOverhead();
+        optionsView = mainView.getBorderPaneViewUnderneath();
 
         // Declare and initialize the Tic-tac-toe scene and view.
         ticTacToeScene = chooseGameModeView.getGameScenes().get(TICTACTOE);
@@ -90,6 +92,7 @@ public class ApplicationView {
 
     private void setOnActionAllButtons(){
         setOnActionMainViewButtons();
+        setOnActionOptionsViewButtons();
         setOnActionChooseGameViewButtons();
         setOnActionChooseGameModeViewButtons();
         setOnActionServerOptionsViewButtons();
@@ -103,12 +106,29 @@ public class ApplicationView {
         });
 
         mainView.getButtons().get("Options").setOnAction(e -> {
-            System.out.println("tst");
-//            mainView.getWindow().setScene(optionsScene);
-//            mainView.getWindow().setTitle("Options");
+            mainView.getWindow().setScene(optionsScene);
+            mainView.getWindow().setTitle("Options");
         });
 
         mainView.getButtons().get("Exit").setOnAction(e -> mainView.closeApplication(mainView.getWindow()));
+    }
+
+    private void setOnActionOptionsViewButtons() {
+        optionsView.getButtons().get("Change details").setOnAction(e -> {
+            System.out.println("Verander instellingen");
+            TextField ip_address = optionsView.getTextFields().get("IP Address");
+            TextField port = optionsView.getTextFields().get("Port");
+            TextField username = optionsView.getTextFields().get("Username");
+
+            System.out.println("IP Address: " + ip_address.getText());
+            System.out.println("Port: " + port.getText());
+            System.out.println("Username: " + username.getText());
+
+        });
+        optionsView.getButtons().get("Go back").setOnAction(e -> {
+            optionsView.getWindow().setScene(mainScene);
+            optionsView.getWindow().setTitle("Main screen");
+        });
     }
 
     private void setOnActionChooseGameViewButtons(){
