@@ -2,6 +2,7 @@ package project.mvc.view.mainscreen;
 
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
+import project.mvc.view.ScreenBorderPaneView;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -63,6 +64,10 @@ public class ChooseGameModeView extends ScreenView {
     }
 
     public ScreenView getViewUnderneath(){
+        return null;
+    }
+
+    public ScreenBorderPaneView getBorderPaneViewUnderneath() {
         return serverOptionsView;
     }
 }

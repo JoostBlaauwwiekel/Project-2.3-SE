@@ -90,5 +90,7 @@ public abstract class ScreenView extends VBox {
      */
     public abstract ScreenView getViewUnderneath();
 
+    public ScreenBorderPaneView getBorderPaneViewUnderneath() { return null; };
+
     public HashMap<String, ListView<String>> getListViews() { return listViews; }
 }

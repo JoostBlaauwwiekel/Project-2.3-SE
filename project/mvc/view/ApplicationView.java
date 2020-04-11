@@ -1,11 +1,14 @@
 package project.mvc.view;
 
 import javafx.scene.control.ListView;
+import project.gamemodules.GameCommunicationChannel;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.MainView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * In the ApplicationView class all views be accessible. The primaryStage is set up and the necessary set-on-action
@@ -32,7 +35,7 @@ public class ApplicationView {
     private ScreenView mainView;
     private ScreenView chooseGameView;
     private ScreenView chooseGameModeView;
-    private ScreenView serverOptionsView;
+    private ScreenBorderPaneView serverOptionsView;
 
     private GameBoardView ticTacToeView;
     private GameBoardView reversiView;
@@ -64,7 +67,7 @@ public class ApplicationView {
         chooseGameModeView = chooseGameView.getViewUnderneath();
 
         serverOptionsScene = chooseGameModeView.getSceneUnderneath();
-        serverOptionsView = chooseGameModeView.getViewUnderneath();
+        serverOptionsView = chooseGameModeView.getBorderPaneViewUnderneath();
 
         // Declare and initialize the Tic-tac-toe scene and view.
         ticTacToeScene = chooseGameModeView.getGameScenes().get(TICTACTOE);
@@ -157,6 +160,10 @@ public class ApplicationView {
             String selectedChallange = challangeList.getSelectionModel().getSelectedItem();
 
             System.out.println("Selected player: " + selectedPlayer + "\n Selected challange: " + selectedChallange);
+        });
+
+        serverOptionsView.getButtons().get("Accept challenge").setOnAction(e -> {
+            System.out.println("test");
         });
 
         serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {

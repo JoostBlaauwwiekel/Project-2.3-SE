@@ -9,13 +9,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.mvc.model.ApplicationModel;
+import project.mvc.view.ScreenBorderPaneView;
 import project.mvc.view.ScreenView;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class ServerOptionsView extends ScreenView {
+public class ServerOptionsView extends ScreenBorderPaneView {
     /**
      * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
      *
@@ -28,47 +33,61 @@ public class ServerOptionsView extends ScreenView {
     protected ServerOptionsView(Stage window,  ApplicationModel model) {
         super(window);
         setPadding(new Insets(20,20,20,20));
-        setSpacing(10);
         setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #34cb8a, #50a480)");
+
+        VBox leftMenu = new VBox();
+        VBox rightMenu = new VBox();
+        VBox topHeader = new VBox();
+        VBox centerMenu = new VBox();
+
+        centerMenu.setAlignment(Pos.CENTER);
+        centerMenu.setSpacing(10);
+        setTop(topHeader);
+        setLeft(leftMenu);
+        setRight(rightMenu);
+        setCenter(centerMenu);
+
+        Label title = new Label("Titel of this shit");
+        title.setTextFill(Color.WHITE);
+        title.setFont(new Font("Arial", 30));
+
+        topHeader.setAlignment(Pos.CENTER);
+        topHeader.getChildren().add(title);
 
         Label playerListLabel = new Label("Player list");
 
         playerList = new ListView<String>();
+        playerList.setMaxWidth(200);
         playerList.getItems().add("Speler 1");
         playerList.getItems().add("Speler 2");
 
         Label challengeListLabel = new Label("Challenge list");
 
         challengeList = new ListView<String>();
+        challengeList.setMaxWidth(200);
         challengeList.getItems().add("je moeder");
 
         Button challengeButton = new Button("Challenge!");
+        Button acceptChallengeButton = new Button("Accept challenge");
         Button refreshButton = new Button("Refresh list");
         Button subscribeButton = new Button("Subscribe");
         Button back = new Button("Go back");
 
-        challengeButton.setAlignment(Pos.TOP_LEFT);
-        refreshButton.setAlignment(Pos.TOP_RIGHT);
-
         super.getButtons().put(challengeButton.getText(), challengeButton);
+        super.getButtons().put(acceptChallengeButton.getText(), acceptChallengeButton);
         super.getButtons().put(refreshButton.getText(), refreshButton);
         super.getButtons().put(subscribeButton.getText(), subscribeButton);
         super.getButtons().put(back.getText(), back);
 
+        super.getButtons().forEach((k,v) -> v.setMinWidth(150));
+        super.getButtons().forEach((k,v) -> v.setAlignment(Pos.CENTER));
+
+        leftMenu.getChildren().addAll(playerListLabel, playerList);
+        rightMenu.getChildren().addAll(challengeListLabel, challengeList);
+        centerMenu.getChildren().addAll(challengeButton, acceptChallengeButton, refreshButton, subscribeButton, back);
+
         super.getListViews().put("PlayerList", playerList);
         super.getListViews().put("ChallengeList", challengeList);
-
-        getChildren().addAll(playerListLabel, playerList, challengeListLabel, challengeList,  challengeButton, refreshButton, subscribeButton, back);
-    }
-
-    @Override
-    public Scene getSceneUnderneath() {
-        return null;
-    }
-
-    @Override
-    public ScreenView getViewUnderneath() {
-        return null;
     }
 
     public ListView<String> getPlayerListView() { return playerList; }
