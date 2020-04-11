@@ -1,15 +1,20 @@
 package project.mvc.view.gameview;
 
+import javafx.scene.control.Label;
 import project.gamemodules.GameData;
 import project.mvc.controller.ApplicationController;
+
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import project.mvc.view.gameboard.TicTacToeBoard;
+
 
 public class TicTacToeView extends GameBoardView {
 
@@ -43,10 +48,12 @@ public class TicTacToeView extends GameBoardView {
         super.getGameButtons().put(restart.getText(), restart);
         super.getButtons().getChildren().addAll(restart, exitGame);
 
+        setPlayers("test", "test");
+        setScores(0,0);
+        setTurn("");
         setCenter(centerLayout);
         setTop(super.getTopBar());
     }
-
     public void setMode(String mode){
         this.mode = mode;
     }

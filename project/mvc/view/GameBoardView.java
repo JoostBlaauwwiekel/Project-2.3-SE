@@ -16,6 +16,8 @@ public abstract class GameBoardView extends BorderPane {
     private Stage window;
     private VBox buttons;
     private HBox topBar;
+    private HBox players;
+    private HBox scores;
 
     private HashMap<String, Button> gameButtons = new HashMap<>();
     private Label turn;
@@ -34,30 +36,22 @@ public abstract class GameBoardView extends BorderPane {
 
         buttons = new VBox();
         buttons.setPrefSize(150, 200);
-        //
+
         turn = makeLabel("Turn: ", 300, 50, "left");
         turn.setPadding(new Insets(0, 0, 0, 10));
 
-            Label player1 = makeLabel("Player 1", 150, 75, "center");
-            Label versus = makeLabel("VS", 50, 75, "center");
-            Label player2 = makeLabel("Player 2", 150, 75, "center");
-            HBox players = new HBox();
-            players.setAlignment(Pos.CENTER);
-            players.getChildren().addAll(player1, versus, player2);
+        players = new HBox();
+        players.setAlignment(Pos.CENTER);
 
-            Label score1 = makeLabel("0", 150, 75, "center");
-            Label between = makeLabel("-", 50, 75, "center");
-            Label score2 = makeLabel("0", 150, 75, "center");
-            HBox scores = new HBox();
-            scores.setAlignment(Pos.CENTER);
-            scores.getChildren().addAll(score1, between, score2);
+        scores = new HBox();
+        scores.setAlignment(Pos.CENTER);
 
         VBox turnandwin = new VBox(turn, players, scores);
         buttons.setStyle("-fx-border-width: 2px;");
         topBar.getChildren().addAll(buttons, turnandwin);
     }
 
-    private Label makeLabel(String text, int width, int height, String allignment){
+    protected Label makeLabel(String text, int width, int height, String allignment){
         Label label = new Label(text);
         label.setPrefSize(width, height);
         switch(allignment){
@@ -87,7 +81,13 @@ public abstract class GameBoardView extends BorderPane {
         return window;
     }
 
-    public void setTurn(String playername){ turn.setText(playername); }
+    public Label getTurn(){
+        return turn;
+    }
+
+    public HBox getPlayers(){
+        return players;
+    };
 
     public HashMap<String, Button> getGameButtons(){
         return gameButtons;
@@ -95,5 +95,22 @@ public abstract class GameBoardView extends BorderPane {
 
     public abstract void setMode(String mode);
 
+    public void setTurn(String player){
+        getTurn().setText("Turn: " + player);
+    }
+    protected void setPlayers(String player1, String player2){
+        Label player1Label = makeLabel(player1, 150, 75, "center");
+        Label versus = makeLabel("VS", 50, 75, "center");
+        Label player2Label = makeLabel(player2, 150, 75, "center");
+        players.getChildren().clear();
+        players.getChildren().addAll(player1Label, versus, player2Label);
+    }
+    protected void setScores(int scorePlayer1, int scorePlayer2){
+        Label score1 = makeLabel(Integer.toString(scorePlayer1), 150, 75, "center");
+        Label between = makeLabel("-", 50, 75, "center");
+        Label score2 = makeLabel(Integer.toString(scorePlayer2), 150, 75, "center");
+        scores.getChildren().clear();
+        scores.getChildren().addAll(score1, between, score2);
+    }
     public abstract GameBoard getGameBoard();
 }

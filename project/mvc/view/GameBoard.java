@@ -32,6 +32,8 @@ public abstract class GameBoard extends FlowPane {
 
     private int turn;
     private int counter;
+    private String player1;
+    private String player2;
 
     private Button[] tiles;
     private BoardLogic BoardLogic;
@@ -161,7 +163,9 @@ public abstract class GameBoard extends FlowPane {
     public int getCounter(){
         return counter;
     }
-
+    public int getTurn(){
+        return turn;
+    }
     public Button[] getTiles(){
         return tiles;
     }
@@ -198,6 +202,19 @@ public abstract class GameBoard extends FlowPane {
 
     public double getGameButtonHeight() {
         return gameButtonHeight;
+    }
+
+    public String getPlayer1(){
+        return player1;
+    }
+
+    public String getPlayer2(){
+        return player2;
+    }
+
+    public void setPlayers(String player1, String player2){
+        this.player1 = player1;
+        this.player2 = player2;
     }
 }
 
