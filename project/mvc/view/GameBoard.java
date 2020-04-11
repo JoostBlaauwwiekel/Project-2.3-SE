@@ -101,8 +101,16 @@ public abstract class GameBoard extends FlowPane {
                             }
                         }
                     } else if(gameName.equals("Reversi")) {
-                        int ID = Integer.parseInt(btn.getId());
-                        //if(logic.isValid(ID, 2)) {
+                        ArrayList moves = logic.getMoves(1);
+
+                        if(moves.size() == 0) {
+                            System.out.println("No moves available");
+                            System.out.println("Let the ai make another move");
+                            setAIMove();
+                            boardLogic.updateReversiBoard();
+                            boardLogic.gameOver();
+                        } else {
+                            int ID = Integer.parseInt(btn.getId());
                             boardLogic.updateReversiBoard();
                             setMove(ID, 1, btn);
                             if (!boardLogic.gameOver()) {
@@ -110,7 +118,7 @@ public abstract class GameBoard extends FlowPane {
                                 boardLogic.updateReversiBoard();
                                 boardLogic.gameOver();
                             }
-                        //}
+                        }
                     }
                 });
                 gameLayout.add(tiles[id], column, row);

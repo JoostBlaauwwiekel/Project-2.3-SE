@@ -39,25 +39,6 @@ public class BoardLogic {
     public boolean gameOver() {
         tiles = board.getTiles();
 
-        if(gameName.equals("Reversi")) {
-            GameLogic logic = gameData.getGame(gameName);
-            ArrayList moves = logic.getMoves(1);
-
-            if(moves.size() == 0) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("End of round");
-                alert.setHeaderText(null);
-                alert.setContentText("No more available moves!");
-
-                alert.showAndWait();
-                System.out.println("No more available moves!");
-                gameData.getGame(gameName).getBoard().resetBoard();
-                resetBoard();
-            }
-        }
-
-        System.out.println(gameData.getGame(gameName).gameOver());
-
         if(gameData.getGame(gameName).gameOver() == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
