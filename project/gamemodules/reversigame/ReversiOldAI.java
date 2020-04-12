@@ -8,7 +8,7 @@ public class ReversiOldAI extends MinimaxStrategy {
      * This old AI is still here to test against.
      */
 
-    public int evaluate(GameBoardLogic board) {
+    private int evaluate(GameBoardLogic board) {
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
     }
@@ -48,7 +48,7 @@ public class ReversiOldAI extends MinimaxStrategy {
         return bestMove;
     }
 
-    public int miniMax(GameBoardLogic board, int depth, boolean isMax) {
+    private int miniMax(GameBoardLogic board, int depth, boolean isMax) {
         int player;
         int bestEval;
         if(isMax){

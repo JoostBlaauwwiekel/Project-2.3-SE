@@ -2,13 +2,10 @@ package project.gameframework.tests;
 
 import project.gameframework.CommunicationChannel;
 import project.gameframework.GameBoardLogic;
-import project.gamemodules.GameCommunicationChannel;
+import project.gamedata.GameCommunicationChannel;
 import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
-import project.gamemodules.tictactoegame.TicTacToeBoardLogic;
-import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
-//import sun.plugin2.message.Message;
 
 import java.io.IOException;
 import java.util.HashMap;

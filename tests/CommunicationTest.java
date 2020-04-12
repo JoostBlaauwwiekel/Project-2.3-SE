@@ -1,7 +1,7 @@
 package project.gameframework.tests;
 
 import project.gameframework.*;
-import project.gamemodules.GameCommunicationChannel;
+import project.gamedata.GameCommunicationChannel;
 import project.gamemodules.tictactoegame.*;
 
 

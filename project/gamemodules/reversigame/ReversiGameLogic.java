@@ -5,14 +5,24 @@ import project.gameframework.GameLogic;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains logic for the game Reversi.
+ */
 public class ReversiGameLogic extends GameLogic {
-    private ReversiBoardLogic reversiBoardLogic;
-
+    /**
+     * Constructor for ReversiGameLogic that sets a default board.
+     */
     public ReversiGameLogic() {
-        this.reversiBoardLogic = new ReversiBoardLogic();
-        setBoard(this.reversiBoardLogic);
+        ReversiBoardLogic reversiBoardLogic = new ReversiBoardLogic();
+        setBoard(reversiBoardLogic);
     }
 
+    /**
+     * Method that returns all available valid moves for a given player.
+     *
+     * @param player integer representing the player that should be checked for.
+     * @return ArrayList containing all valid moves.
+     */
     @Override
     public ArrayList<Integer> getMoves(int player){
         ArrayList<Integer> result = new ArrayList<>();
@@ -30,6 +40,13 @@ public class ReversiGameLogic extends GameLogic {
         return result;
     }
 
+    /**
+     * This method does a move on the gameboard and changes the board accordingly.
+     * The method assumes a move is correct.
+     *
+     * @param pos position of the move.
+     * @param player player that is making the move.
+     */
     @Override
     public void doMove(int pos, int player) {
         getBoard().setBoardPos(pos, player);
@@ -42,6 +59,7 @@ public class ReversiGameLogic extends GameLogic {
 
     /**
      * This method checks if the game is over and then returns the winner.
+     *
      * @return int representing the winner of the game, 3 means draw, 0 means the game is not over.
      */
     @Override
@@ -59,11 +77,25 @@ public class ReversiGameLogic extends GameLogic {
         return 0;
     }
 
+    /**
+     * This method checks whether a move is valid or not.
+     *
+     * @param move the move that should be checked for.
+     * @param player the player that should be checked for.
+     * @return false if move is invalid, true if move is valid.
+     */
     @Override
     public boolean isValid(int move, int player) {
         return getMoves(player).contains(move);
     }
 
+    /**
+     * This method finds the position of a target using a direction.
+     *
+     * @param dir direction to find adjacent position for.
+     * @param pos position to search for.
+     * @return the position of the target.
+     */
     private int getTarget(int dir, int pos){
         // Calculate position of target.
         int target = 0;
@@ -96,6 +128,13 @@ public class ReversiGameLogic extends GameLogic {
         return target;
     }
 
+    /**
+     * Recursive method that turns all discs that need to be turned in a given direction.
+     *
+     * @param pos position to start at.
+     * @param dir direction to check for.
+     * @param player the player that should be checked for.
+     */
     private void flipDir(int pos, int dir, int player){
         int target = getTarget(dir, pos);
         int targetState = getBoard().getBoardPos(target);
@@ -106,7 +145,7 @@ public class ReversiGameLogic extends GameLogic {
     }
 
     /**
-     * Method used to call checkDir function without having to pass a boolean.
+     * This method is used to call checkDir function without having to pass a boolean.
      * See next method for more.
      */
     private boolean checkDir(int dir, int pos, int color){
@@ -116,6 +155,7 @@ public class ReversiGameLogic extends GameLogic {
     /**
      * This is a recursive method that checks if there are any flippable discs in a specific direction of a position.
      * This is used to determine if a move is valid.
+     *
      * @param dir a integer representing a direction that needs to be checked.
      * @param pos integer of the position that needs to be checked.
      * @param player integer representing the color of the player we want to check for.
@@ -168,6 +208,7 @@ public class ReversiGameLogic extends GameLogic {
 
     /**
      * Method that calculates the total amount of opponent discs that can be flipped at this moment.
+     *
      * @param board the board that should be checked for.
      * @param player the player that should be checked for.
      * @return the amount of opponent discs that can be flipped.
@@ -196,6 +237,7 @@ public class ReversiGameLogic extends GameLogic {
      * This method returns the amount of stable discs for a given player.
      * Stable discs are discs that are stuck in position and cannot be changed for the entirety of
      * the game.
+     *
      * @param board the board that should be checked for.
      * @param player the player that should be checked for.
      * @return the amount of stable discs.
@@ -215,6 +257,7 @@ public class ReversiGameLogic extends GameLogic {
 
     /**
      * Method used by getStableDiscs to find all stable positions for a specific corner.
+     *
      * @param corner the corner that should be checked for.
      * @param board the board that should be checked for.
      * @param player the player that should be checked for.
