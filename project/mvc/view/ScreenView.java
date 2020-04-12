@@ -32,9 +32,10 @@ public abstract class ScreenView extends VBox {
      */
     protected void closeApplication(Stage window) {
         boolean answer = ConfirmBox.display("Are you sure?", "Are you sure you want to close the application?");
-        if(answer)
+        if(answer) {
             window.close();
             System.exit(0);
+        }
     }
 
     protected void showErrorWindow(ErrorBox errorBox){

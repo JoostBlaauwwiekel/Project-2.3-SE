@@ -17,6 +17,8 @@ public abstract class ScreenBorderPaneView extends BorderPane {
     private ApplicationController controller;
 
     private Label eventLabel;
+    private Label scoreLabel;
+
     private HashMap<String, Button> buttons;
     private HashMap<String, ListView<String>> listViews;
     private HashMap<String, TextField> textFields;
@@ -34,12 +36,20 @@ public abstract class ScreenBorderPaneView extends BorderPane {
         textFields = new HashMap<>();
     }
 
-    public void setEventLabel(Label eventLabel){
+    protected void setEventLabel(Label eventLabel){
         this.eventLabel = eventLabel;
+    }
+
+    protected void setScoreLabel(Label scoreLabel){
+        this.scoreLabel = scoreLabel;
     }
 
     public Label getEventLabel(){
         return eventLabel;
+    }
+
+    public Label getScoreLabel(){
+        return scoreLabel;
     }
 
     /**

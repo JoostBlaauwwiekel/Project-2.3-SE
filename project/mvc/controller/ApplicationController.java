@@ -31,6 +31,10 @@ public class ApplicationController {
         return applicationModel.getGameData().getGameLogic().gameOver();
     }
 
+    public boolean getOffline(){
+        return applicationModel.getGameData().getOffline();
+    }
+
     public void resetGame(){ applicationModel.getGameData().getGameLogic().getBoard().resetBoard(); }
 
     public int[] getBoard(){ return applicationModel.getGameData().getGameLogic().getBoard().getBoard(); }
@@ -70,16 +74,14 @@ public class ApplicationController {
     }
 
     public void challengePlayer(String player){
-        String currentPlayer = applicationModel.getGameData().getCurrentPlayer() + " (you)";
+        String currentPlayer = applicationModel.getGameData().getUsername() + " (you)";
         if(player == null){
             applicationView.getServerOptionsView().getEventLabel().setText("You did not choose a player to challenge!\nSelect a player and try again!");
         }
         else if(!currentPlayer.equals(player)) {
             applicationView.getServerOptionsView().getEventLabel().setText("You challenged: [" + player + "] at " + applicationModel.getCurrentGame() + "!\nWaiting for " + player + "'s response....");
             applicationModel.getGameData().challengePlayer(player);
-            applicationModel.getGameData().setChallengedPlayer(true);
-            applicationModel.getGameData().setChallengeAccepted(false);
-            applicationModel.getGameData().setSubscribed(false);
+            applicationModel.getGameData().setGameMode("challenged a player");
         }
         else
             applicationView.getServerOptionsView().getEventLabel().setText("You cannot challenge yourself!\nWhomst'd've thought that?!");
@@ -88,14 +90,12 @@ public class ApplicationController {
     public void acceptChallenge(String player, int challenge){
         applicationView.getServerOptionsView().getEventLabel().setText("You accepted: " + player + "'s challenge at " + applicationModel.getCurrentGame() + "!");
         applicationModel.getGameData().setCurrentChallengeNr(challenge);
-        applicationModel.getGameData().setChallengeAccepted(true);
-        applicationModel.getGameData().setSubscribed(false);
+        applicationModel.getGameData().setGameMode("got challenged");
     }
 
     public void subscribeToGame(){
         applicationView.getServerOptionsView().getEventLabel().setText("You are currently subscribed to: " + applicationModel.getCurrentGame() + "!");
-        applicationModel.getGameData().setChallengedPlayer(false);
-        applicationModel.getGameData().setSubscribed(true);
+        applicationModel.getGameData().setGameMode("subscribed");
         applicationModel.getGameData().subscribeToGame();
     }
 
@@ -111,7 +111,16 @@ public class ApplicationController {
         applicationModel.getGameData().setInLobby(inLobby);
     }
 
+    public void setInTournament(boolean inTournament){
+        applicationModel.getGameData().setInTournament(inTournament);
+    }
+
     public void joinLobby(){
         applicationModel.getGameData().sitInServerLobby();
     }
+
+    public void setBoardInitialized(boolean initialized){
+        applicationModel.getGameData().setBoardInitialized(initialized);
+    }
+
 }

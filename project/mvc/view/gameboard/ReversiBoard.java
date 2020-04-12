@@ -1,5 +1,6 @@
 package project.mvc.view.gameboard;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,11 +58,25 @@ public class ReversiBoard extends GameBoard {
         if (state == 1) {
             Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), super.getGameButtonWidth() - 15, super.getGameButtonWidth() - 15, false, false);
             ImageView imageView = new ImageView(image);
-            btn.setGraphic(imageView);
+            if(!super.getController().getOffline()){
+                Platform.runLater(() -> {
+                    btn.setGraphic(imageView);
+                });
+            }
+            else {
+                btn.setGraphic(imageView);
+            }
         } else if (state == 2) {
             Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), super.getGameButtonWidth() - 15, super.getGameButtonWidth() - 15, false, false);
             ImageView imageView = new ImageView(image);
-            btn.setGraphic(imageView);
+            if(!super.getController().getOffline()) {
+                Platform.runLater(() -> {
+                    btn.setGraphic(imageView);
+                });
+            }
+            else{
+                btn.setGraphic(imageView);
+            }
         }
     }
 

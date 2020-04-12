@@ -1,6 +1,5 @@
 package project.gamedata;
 
-import javafx.application.Platform;
 import project.gameframework.CommunicationChannel;
 import project.gameframework.GameAI;
 import project.gameframework.GameBoardLogic;
@@ -17,7 +16,7 @@ import java.util.*;
 public class GameData implements GameDataSubject{
 
     private String serverIpAddress = "145.33.225.170";
-    private String currentPlayer = "BITM";
+    private String username = "BITM";
 
     private ArrayList<Observer> observers;
     private HashMap<Integer, String> challenges;
@@ -27,25 +26,37 @@ public class GameData implements GameDataSubject{
     private GameLogic gameLogic;
     private GameBoardLogic gameBoardLogic;
 
+    private String gameResult;
+
+    private int wins;
+    private int losses;
+    private int draws;
+
+    private String currentOpponent;
     private String currentGame;
     private int currentMove;
     private int turn;
     private int player;
 
+    private String gameMode;
+
     private boolean inTournament;
     private boolean offline;
     private boolean inGame;
     private boolean inLobby;
+    private boolean boardInitialized = false;
+    private int gameFinished;
 
-    private boolean challengeAccepted;
-    private boolean challengedPlayer;
-    private boolean subscribed;
     private int currentChallengeNr = -1;
 
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
+        communicationChannel.setUsername(username);
         observers = new ArrayList<>();
         challenges = new HashMap<>();
+        gameMode = "idle";
+        inGame = false;
+        gameFinished = 0;
     }
 
     public void registerObserver(Observer o){
@@ -58,13 +69,13 @@ public class GameData implements GameDataSubject{
 
     public void notifyObservers(){
         for(Observer observer : observers){
-            observer.update(currentMove, turn);
+            observer.update(currentMove, turn, gameFinished);
         }
     }
 
     public void setUsernameIpAddressAndPort(String username, String ipAddress, int portnumber){
         if(!username.equals(""))
-            currentPlayer = username;
+            this.username = username;
             communicationChannel.setUsername(username);
         if(!ipAddress.equals(""))
             communicationChannel.setIpAddress(ipAddress);
@@ -73,7 +84,6 @@ public class GameData implements GameDataSubject{
     }
 
     public boolean registerToServer(){
-        communicationChannel.setUsername(currentPlayer);
         return communicationChannel.startServerAndPrepareLists();
     }
 
@@ -89,20 +99,16 @@ public class GameData implements GameDataSubject{
         this.inLobby = inLobby;
     }
 
-    public void setSubscribed(boolean subscribed){
-        this.subscribed = subscribed;
+    public void setBoardInitialized(boolean boardInitialized){
+        this.boardInitialized = boardInitialized;
+    }
+
+    public void setGameMode(String gameMode){
+        this.gameMode = gameMode;
     }
 
     public void setInTournament(boolean inTournament){
         this.inTournament = inTournament;
-    }
-
-    public void setChallengedPlayer(boolean challengedPlayer){
-        this.challengedPlayer = challengedPlayer;
-    }
-
-    public void setChallengeAccepted(boolean challengeAccepted){
-        this.challengeAccepted = challengeAccepted;
     }
 
     public void setCurrentChallengeNr(int currentChallengeNr){
@@ -121,8 +127,24 @@ public class GameData implements GameDataSubject{
         return currentGame;
     }
 
-    public String getCurrentPlayer(){
-        return currentPlayer;
+    public String getUsername(){
+        return username;
+    }
+
+    public String getGameResult(){
+        return gameResult;
+    }
+
+    public int getWins(){
+        return wins;
+    }
+
+    public int getLosses(){
+        return losses;
+    }
+
+    public int getDraws(){
+        return draws;
     }
 
     private void setGameAI(GameAI gameAI){
@@ -133,13 +155,28 @@ public class GameData implements GameDataSubject{
         this.gameLogic = gameLogic;
     }
 
-    public GameAI getGameAIStrategy(){
-        return gameAI;
+    public String getGameMode(){
+        return gameMode;
     }
 
     private void setGameBoardLogic(GameBoardLogic gameBoardLogic){
         this.gameBoardLogic = gameBoardLogic;
         gameLogic.setBoard(gameBoardLogic);
+    }
+
+    public String getFormattedGameResult(){
+        if (gameResult.contains("WIN")){
+            return "You just won a game of " + currentGame + " against " + currentOpponent + "!";
+        }
+        else if(gameResult.contains("LOSE")){
+            return "You just lost a game of " + currentGame + " against " + currentOpponent + "!";
+        }
+        else if(gameResult.contains("DRAW")){
+            return "It's a draw! You played against " + currentOpponent;
+        }
+        else{
+            return "";
+        }
     }
 
     public void challengePlayer(String player){
@@ -154,15 +191,20 @@ public class GameData implements GameDataSubject{
         return gameLogic;
     }
 
+    public boolean getBoardInitialized(){
+        return boardInitialized;
+    }
+
     public void sitInServerLobby(){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String message;
+                String message = "";
                 String currentChallenger;
                 int challengeNr;
+                gameMode = "idle";
                 while (inLobby) {
-                    if(communicationChannel.getInputReady() && !communicationChannel.getAcquiringACertainSet() && !inGame) {
+                    if(communicationChannel.getInputReady() && !communicationChannel.getAcquiringACertainSet() && !inGame && !inTournament) {
                         message = communicationChannel.readFormattedLine();
                         if(message.contains(currentGame) && message.contains("challenged you")) {
                             currentChallenger = message.substring(message.lastIndexOf('{') + 1, message.indexOf('}'));
@@ -176,88 +218,34 @@ public class GameData implements GameDataSubject{
                             notifyObservers();
                         }
                     }
-                    if(inGame){
-                        while(inGame){
-                            try{
-                                Thread.sleep(1000);
-                            }
-                            catch(InterruptedException ie){
-
-                            }
+                    if((gameMode.contains("challenged a player") && message.contains("PLAYER TO START") || (gameMode.contains("subscribed") && message.contains("PLAYER TO START")))){
+                        inGame = true;
+                        currentMove = -1;
+                        gameFinished = 1;
+                        notifyObservers();
+                        gameFinished = 0;
+                        while(inGame) {
+                            playWithOnlineGameLogic(message);
                         }
+                        boardInitialized = false;
+                        gameMode = "Idle";
+                        message = "";
                     }
-                    if(challengeAccepted && currentChallengeNr > 0){
+                    else if(gameMode.contains("got challenged")){
                         communicationChannel.challengeAccept(currentChallengeNr);
                         inGame = true;
-                        startOnlineGame();
+                        currentMove = -1;
+                        gameFinished = 1;
+                        notifyObservers();
+                        gameFinished = 0;
+                        while(inGame) {
+                            playWithOnlineGameLogic(message);
+                        }
                         challenges.remove(currentChallengeNr);
-                        challengeAccepted = false;
                         currentChallengeNr = -1;
-                    }
-                    else if(challengedPlayer && !challengeAccepted){
-                        inGame = true;
-                        startOnlineGame();
-                    }
-                    else if(subscribed && !challengeAccepted){
-                        inGame = true;
-                        startOnlineGame();
-                    }
-                }
-            }
-        });
-        Platform.runLater(() -> t.start());
-    }
-
-    public synchronized void startOnlineGame() {
-        Thread t = new Thread(new Runnable(){
-            @Override
-            public void run(){
-                String message = "";
-                gameBoardLogic.resetBoard();
-                while(inGame){
-                    if(communicationChannel.getInputReady())
-                        message = communicationChannel.readFormattedLine();
-                    if (message.contains("PLAYER TO START")){
-                        if(message.contains("OPPONENT")){
-                            player = 1;
-                        } else {
-                            player = 2;
-                        }
-                    } else if (message.contains("YOUR TURN")) {
-                        turn = player;
-                        int move = gameAI.getBestMove(gameBoardLogic, player);
-                        communicationChannel.move(move);
-                        gameLogic.doMove(move, player);
-                        currentMove = move;
-                        notifyObservers();
-                        System.out.println("HERE Our move " + move);
-                        gameBoardLogic.printBoard();
-                    } else if (message.contains("previous move") && !message.contains("YOU")) {
-                        turn = 3 - player;
-                        System.out.println("3 - player: " + (3 - player));
-                        int opponentHisMove;
-                        String s;
-                        try {
-                            s = message.substring(message.length() - 2);
-                            opponentHisMove = Integer.parseInt(s);
-                        } catch (java.lang.NumberFormatException e) {
-                            // Else get the last char of the string
-                            System.out.print("");
-                            s = message.substring(message.length() - 1);
-                            opponentHisMove = Integer.parseInt(s);
-                        }
-                        currentMove = opponentHisMove;
-                        notifyObservers();
-                        System.out.print("");
-                        System.out.println("Opponent's move: " + opponentHisMove);
-                        gameLogic.doMove(opponentHisMove, 3 - player);
-                        System.out.println("print current board: ");
-                        gameBoardLogic.printBoard();
-                    } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
-                        System.out.println(message);
-                        gameBoardLogic.resetBoard();
-                        if(!inTournament)
-                            inGame = false;
+                        boardInitialized = false;
+                        gameMode = "Idle";
+                        message = "";
                     }
                 }
             }
@@ -265,10 +253,100 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
+    public void startOnlineGame() {
+        Thread t = new Thread(new Runnable(){
+            @Override
+            public void run(){
+                String message = "";
+                gameBoardLogic.resetBoard();
+                while(inTournament){
+                    playWithOnlineGameLogic(message);
+                }
+                gameFinished = 2;
+                notifyObservers();
+                gameFinished = 0;
+            }
+        });
+        t.start();
+    }
+
+    private void playWithOnlineGameLogic(String message){
+        if(communicationChannel.getInputReady() && !inTournament)
+            message = communicationChannel.readFormattedLine();
+        else{
+            message = communicationChannel.readFormattedLine();
+        }
+        if (message.contains("PLAYER TO START")){
+            currentOpponent = message.substring(message.indexOf("[") + 1, message.lastIndexOf( "]"));
+            if(message.contains("OPPONENT")){
+                player = 1;
+            } else {
+                player = 2;
+            }
+        } else if (message.contains("YOUR TURN")) {
+            turn = player;
+            int move = gameAI.getBestMove(gameBoardLogic, player);
+            communicationChannel.move(move);
+            gameLogic.doMove(move, player);
+            for(int moveeee : gameLogic.getMoves(player)){
+                System.out.println("move: " + moveeee);
+            }
+            currentMove = move;
+            System.out.println("move " + move);
+            //gameBoardLogic.printBoard();
+        } else if (message.contains("previous move") && !message.contains("YOU")) {
+            turn = 3 - player;
+            System.out.println("3 - player: " + (3 - player));
+            int opponentHisMove;
+            String s;
+            try {
+                s = message.substring(message.length() - 2);
+                opponentHisMove = Integer.parseInt(s);
+            } catch (java.lang.NumberFormatException e) {
+                // Else get the last char of the string
+                System.out.print("");
+                s = message.substring(message.length() - 1);
+                opponentHisMove = Integer.parseInt(s);
+            }
+            currentMove = opponentHisMove;
+            System.out.print("");
+            System.out.println("Opponent's move: " + opponentHisMove);
+            gameLogic.doMove(opponentHisMove, 3 - player);
+            System.out.println("print current board: ");
+            //gameBoardLogic.printBoard();
+        } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
+            if(message.contains("LOSE")){
+                losses++;
+            }
+            else if(message.contains("WIN")){
+                wins++;
+            }
+            else{
+                draws++;
+            }
+            currentMove = -1;
+            gameBoardLogic.resetBoard();
+            System.out.println(inTournament);
+            gameResult = message;
+            if(!inTournament) {
+                inGame = false;
+                gameFinished = 2;
+                notifyObservers();
+                gameFinished = 0;
+            }
+            else{
+                gameFinished = 3;
+                notifyObservers();
+                gameFinished = 0;
+            }
+        }
+        notifyObservers();
+    }
+
     public void initializeGame(String gameName){
         this.currentGame = gameName;
         if(currentGame.equals("Tic-tac-toe")){
-            intitializeTicTacToe();
+            initializeTicTacToe();
         }
         else if(currentGame.equals("Reversi")){
             initializeReversi();
@@ -279,6 +357,7 @@ public class GameData implements GameDataSubject{
         if(gameLogic.isValid(move, turn) && gameLogic.gameOver() == 0){
             if(turn == 1){
                 gameLogic.doMove(move, turn);
+                notifyObservers();
             }
             return getAndDoBestAIMove();
         }
@@ -310,7 +389,7 @@ public class GameData implements GameDataSubject{
         notifyObservers();
     }
 
-    private void intitializeTicTacToe(){
+    private void initializeTicTacToe(){
         currentGame = "Tic-tac-toe";
         setGameLogic(new TicTacToeGameLogic());
         setGameBoardLogic(new TicTacToeBoardLogic());

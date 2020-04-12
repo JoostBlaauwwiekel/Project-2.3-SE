@@ -22,8 +22,6 @@ public class ServerOptionsView extends ScreenBorderPaneView {
     public ListView<String> playerList;
     public ListView<String> challengeList;
 
-    private Label actualAction;
-
     public ServerOptionsView(Stage window, ApplicationController controller) {
         super(window, controller);
         setPadding(new Insets(20,20,20,20));
@@ -52,18 +50,24 @@ public class ServerOptionsView extends ScreenBorderPaneView {
         title.setFont(Font.font("Cambria", 30));
         title.setTextFill(Color.WHITE);
 
+        Label scores = new Label("Wins: 0 Losses: 0 Draws: 0");
+        scores.setFont(Font.font("Cambria", 20));
+        scores.setTextFill(Color.WHITE);
+
         Text eventText =new Text("Current action:");
         eventText.setStyle("-fx-font-weight: bold");
         eventText.setFont(Font.font("Cambria", 20));
 
-        actualAction = new Label("Idle...");
+        Label actualAction = new Label("Idle...");
         actualAction.setFont(Font.font("Cambria", 18));
         actualAction.setPadding(new Insets(25));
 
         super.setEventLabel(actualAction);
+        super.setScoreLabel(scores);
 
         topHeader.setAlignment(Pos.CENTER);
         topHeader.getChildren().add(title);
+        topHeader.getChildren().add(scores);
 
         Label playerListLabel = new Label("Player list");
         playerListLabel.setFont(Font.font("Cambria", 20));

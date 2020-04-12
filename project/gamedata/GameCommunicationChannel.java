@@ -3,6 +3,7 @@ package project.gamedata;
 import project.gameframework.CommunicationChannel;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +11,8 @@ import java.util.HashSet;
 import java.util.regex.Pattern;
 
 public class GameCommunicationChannel implements CommunicationChannel {
+
+    private static final int TIMEOUT = 15000;
 
     private int port = 7789;
     private String ipAddress = "localhost";
@@ -24,7 +27,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
     private HashSet<String> gameSet;
     private HashSet<String> playerSet;
 
-    private String username;
+    private String username = "";
     private boolean acquiringACertainSet = false;
 
     /**
@@ -50,8 +53,8 @@ public class GameCommunicationChannel implements CommunicationChannel {
 
     private void setRightUsername(String[] usernames){
         int i = 0;
-        for(String player : usernames){
-            if(username.equals(player)){
+        for(String player : usernames) {
+            if (username.equals(player)) {
                 usernames[i] += " (you)";
                 break;
             }
@@ -108,9 +111,9 @@ public class GameCommunicationChannel implements CommunicationChannel {
         else if(line.contains("PLAYERTOMOVE")){
             betweenQuotes = line.split("\"");
             if(betweenQuotes[1].equals(username))
-                return "PLAYER TO START: YOU! " + username + "!";
+                return "PLAYER TO START: YOU! " + username + "! You're up against player: [" + betweenQuotes[5] + "]!";
             else
-                return "PLAYER TO START: OPPONENT " + betweenQuotes[1] + " starts!";
+                return "PLAYER TO START: OPPONENT [" + betweenQuotes[1] + "] starts!";
         }
         else if(line.contains("CHALLENGE CANCELLED")){
             betweenQuotes = line.split("\"");
@@ -145,13 +148,15 @@ public class GameCommunicationChannel implements CommunicationChannel {
         availableLists = new ArrayList<>();
         gameSet = new HashSet<>();
         playerSet = new HashSet<>();
-
         try {
-            // Create a socket with address: IP_ADDRESS and with port: PORT
-            socket = new Socket(ipAddress, port);
+            // Create an Internet Socket Address with address: ipAddress and with port: port, and the timeout TIMEOUT
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAddress, port), TIMEOUT);
+
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             skipLines(2);
+            System.out.println(username);
             login(this.username);
 
             // Acquire a game list and a player list from the server. Add the acquired data to the class' lists.
@@ -176,7 +181,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
     public String readLine() throws IOException{
-        return input.readLine();
+        if(socket.isConnected()) {
+            return input.readLine();
+        }
+        return "";
     }
 
     /**

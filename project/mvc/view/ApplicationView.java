@@ -1,7 +1,6 @@
 package project.mvc.view;
 
 import javafx.application.Platform;
-import javafx.scene.control.TextField;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.ErrorBox;
@@ -59,14 +58,64 @@ public class ApplicationView implements ObserverView {
         String game = applicationModel.getCurrentGame();
         int turn = applicationModel.getCurrentTurn();
 
-        if(applicationModel.isOffline()) {
+        if(applicationModel.getGameFinished() == 3) {
+            if(game.equals(REVERSI)) {
+                Platform.runLater(() -> {
+                    reversiView.getGameBoard().resetBoard();
+                });
+            }
+            else if(game.equals(TICTACTOE)){
+                Platform.runLater(() -> {
+                    ticTacToeView.getGameBoard().resetBoard();
+                });
+            }
+        }
+        if(applicationModel.getGameFinished() == 2){
+            Platform.runLater(() -> {
+                if(game.equals(REVERSI)){
+                    reversiView.getGameBoard().resetBoard();
+                    reversiView.getWindow().setScene(serverOptionsScene);
+                    reversiView.getWindow().setTitle("Configure your settings for an online Reversi game");
+                }
+                else if(game.equals(TICTACTOE)){
+                    ticTacToeView.getGameBoard().resetBoard();
+                    ticTacToeView.getWindow().setScene(serverOptionsScene);
+                    ticTacToeView.getWindow().setTitle("Configure your settings for an online Tic Tac Toe game");
+                }
+                serverOptionsView.getEventLabel().setText(applicationModel.getGameData().getFormattedGameResult());
+                serverOptionsView.getScoreLabel().setText("Wins: " + applicationModel.getGameData().getWins() + " Losses: " + applicationModel.getGameData().getLosses() + " Draws: " + applicationModel.getGameData().getDraws());
+            });
+        }
+        else if(applicationModel.getGameFinished() == 1){
+            games.get(game).getGameBoard().unSetButtons();
+            games.get(game).setRestartButton(true);
+            applicationController.setBoardInitialized(true);
+            Platform.runLater(() -> {
+                if(game.equals(REVERSI)) {
+                    serverOptionsView.getWindow().setScene(reversiScene);
+                    serverOptionsView.getWindow().setTitle(REVERSI + " game");
+                    reversiView.getGameBoard().resetBoard();
+                }
+                else if(game.equals(TICTACTOE)) {
+                    serverOptionsView.getWindow().setScene(ticTacToeScene);
+                    serverOptionsView.getWindow().setTitle(TICTACTOE + " game");
+                    ticTacToeView.getGameBoard().resetBoard();
+
+                }
+            });
+        }
+        else if(!applicationModel.getGameData().getGameMode().equals("idle") && !applicationModel.getGameData().getBoardInitialized()) {
+            games.get(game).getGameBoard().unSetButtons();
+            games.get(game).setRestartButton(true);
+            applicationController.setBoardInitialized(true);
+        }
+        else if (applicationModel.isOffline()) {
             games.get(game).getGameBoard().setAImove(currentMove);
+        } else {
+            if(currentMove != -1) {
+                games.get(game).getGameBoard().setMoveForEitherParty(currentMove, turn);
+            }
         }
-        else {
-            games.get(game).getGameBoard().setMoveForEitherParty(currentMove, turn);
-
-        }
-
     }
 
     public void initializeApplicationScreens(Stage primaryStage){
@@ -260,6 +309,14 @@ public class ApplicationView implements ObserverView {
                 String regex = ". Challenge number is: ";
                 String challenger = challenge.substring(0, challenge.indexOf(regex));
                 int challengeNr = Integer.parseInt((challenge.substring(challenge.lastIndexOf(": ") + 2)));
+                if(serverOptionsView.getWindow().getTitle().contains(REVERSI)){
+                    serverOptionsView.getWindow().setScene(reversiScene);
+                    serverOptionsView.getWindow().setTitle(REVERSI + " accepted match");
+                }
+                else if(serverOptionsView.getWindow().getTitle().contains("Tic Tac Toe")){
+                    serverOptionsView.getWindow().setScene(ticTacToeScene);
+                    serverOptionsView.getWindow().setTitle("Tic Tac Toe accepted match");
+                }
                 applicationController.acceptChallenge(challenger, challengeNr);
             }
             else{
@@ -268,8 +325,8 @@ public class ApplicationView implements ObserverView {
         });
 
         serverOptionsView.getButtons().get("Join Tournament Lobby").setOnAction(e -> {
-            applicationController.setInGame(true);
-            if(serverOptionsView.getWindow().getTitle().contains(TICTACTOE)) {
+            applicationController.setInTournament(true);
+            if(serverOptionsView.getWindow().getTitle().contains("Tic Tac Toe")) {
                 ticTacToeView.getGameBoard().unSetButtons();
                 ticTacToeView.setRestartButton(true);
                 serverOptionsView.getWindow().setScene(ticTacToeScene);
@@ -292,9 +349,16 @@ public class ApplicationView implements ObserverView {
     private void setOnActionGameViewButtons(){
         ticTacToeView.getGameButtons().get("Exit " + TICTACTOE).setOnAction(e -> {
             ticTacToeView.getGameBoard().resetBoard();
-            ticTacToeView.getWindow().setScene(chooseGameModeScene);
-            ticTacToeView.getWindow().setTitle(TICTACTOE);
-            applicationController.setInGame(false);
+            if(ticTacToeView.getWindow().getTitle().contains("tournament lobby")){
+                applicationController.setInGame(false);
+                applicationController.setInTournament(false);
+                chooseGameModeView.getWindow().setScene(serverOptionsScene);
+                chooseGameModeView.getWindow().setTitle("Configure your settings for an online Tic Tac Toe game");
+            }
+            else {
+                ticTacToeView.getWindow().setScene(chooseGameModeScene);
+                ticTacToeView.getWindow().setTitle(TICTACTOE);
+            }
         });
 
         ticTacToeView.getGameButtons().get("Restart " + TICTACTOE).setOnAction(e -> ticTacToeView.getGameBoard().gameOver(4));
@@ -302,9 +366,16 @@ public class ApplicationView implements ObserverView {
 
         reversiView.getGameButtons().get("Exit " + REVERSI).setOnAction(e -> {
             reversiView.getGameBoard().resetBoard();
-            reversiView.getWindow().setScene(chooseGameModeScene);
-            reversiView.getWindow().setTitle(REVERSI);
-            applicationController.setInGame(false);
+            if(ticTacToeView.getWindow().getTitle().contains(" tournament lobby")){
+                applicationController.setInGame(false);
+                applicationController.setInTournament(false);
+                chooseGameModeView.getWindow().setScene(serverOptionsScene);
+                chooseGameModeView.getWindow().setTitle("Configure your settings for an online Reversi game");
+            }
+            else {
+                reversiView.getWindow().setScene(chooseGameModeScene);
+                reversiView.getWindow().setTitle(REVERSI);
+            }
         });
 
 

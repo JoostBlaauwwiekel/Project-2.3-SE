@@ -5,7 +5,6 @@ import project.gamedata.Observer;
 import project.mvc.view.ObserverView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ApplicationModel implements ModelInterface, Observer{
 
@@ -14,6 +13,7 @@ public class ApplicationModel implements ModelInterface, Observer{
 
     private int currentMove;
     private int turn;
+    private int gameFinished;
 
     public ApplicationModel(){
         modelObservers = new ArrayList<>();
@@ -41,9 +41,14 @@ public class ApplicationModel implements ModelInterface, Observer{
         return gameData;
     }
 
-    public void update(int currentMove, int turn){
+    public int getGameFinished(){
+        return gameFinished;
+    }
+
+    public void update(int currentMove, int turn, int gameFinished){
         this.currentMove = currentMove;
         this.turn = turn;
+        this.gameFinished = gameFinished;
         notifyObservers();
     }
 
