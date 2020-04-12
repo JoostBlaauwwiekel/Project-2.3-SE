@@ -47,6 +47,7 @@ public class ReversiBoardLogic extends GameBoardLogic {
 
     /**
      * This method returns the name of the game.
+     *
      * @return the name of the game.
      */
     @Override
@@ -122,7 +123,7 @@ public class ReversiBoardLogic extends GameBoardLogic {
 
     /**
      * This method returns the amount of discs on the board with the specified state.
-     * 
+     *
      * @param state of the discs we want to count.
      * @return the amount of discs with specified state.
      */

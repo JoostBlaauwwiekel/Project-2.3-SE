@@ -13,7 +13,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
 
     // Maximimum depth for the minimax algorithm.
-    private final static int DEPTH = 3;
+    private final static int DEPTH = 5;
 
     /**
      * This method iterates the valid moves and it it determines which move currently is the best move
@@ -24,6 +24,12 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      */
     @Override
     public int getBestMove(GameBoardLogic board, int player) {
+        // Board and logic to use later.
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(reversiBoard);
+        ArrayList<Integer> moves = logic.getMoves(player);
+
         // Start the timeout timer.
         long startTime = System.currentTimeMillis();
 
@@ -38,11 +44,16 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             bestEval = 10000;
         }
 
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
-        ReversiGameLogic logic = new ReversiGameLogic();
-        logic.setBoard(reversiBoard);
+        // If there's to much moves use less depth.
+        int depth;
+        if(moves.size() > 10){
+            depth = DEPTH - 1;
+        } else {
+            depth = DEPTH;
+        }
+
         int resultCount = 0;
-        for(int move : logic.getMoves(player)){
+        for(int move : moves){
             // Generate a temp board and do the move.
             ReversiBoardLogic newBoard = new ReversiBoardLogic();
             newBoard.setBoard(reversiBoard.getBoard());
@@ -51,7 +62,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             newLogic.doMove(move, player);
 
             // Give the new board to a minimax worker.
-            ReversiMinimaxWorker worker = new ReversiMinimaxWorker(newBoard, DEPTH, !isMax, move, results);
+            ReversiMinimaxWorker worker = new ReversiMinimaxWorker(newBoard, depth, !isMax, move, results);
             Thread thread = new Thread(worker);
             thread.start();
 
@@ -85,8 +96,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 }
             }
         } else {
-            ArrayList<Integer> moves = logic.getMoves(player);
-            if(moves.size() > 0) bestMove = logic.getMoves(player).get(0);
+            if(moves.size() > 0) bestMove = moves.get(0);
         }
         results.clear();
 
