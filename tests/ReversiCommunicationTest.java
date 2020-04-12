@@ -15,7 +15,7 @@ public class ReversiCommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername(".");
+        channel.setUsername("bitm");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);

@@ -9,16 +9,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
+    // Map that stores the calculated scores for valid moves.
     private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-    private int depth = 3;
 
+    // Maximimum depth for the minimax algorithm.
+    private final static int DEPTH = 3;
+
+    /**
+     * This method iterates the valid moves and it it determines which move currently is the best move
+     * to make. This method uses our own version of a minimax algorithm with alpha-beta pruning and
+     * quiescence search. It also uses multithreading for even better performance.
+     *
+     * @return the best move.
+     */
     @Override
     public int getBestMove(GameBoardLogic board, int player) {
+        // Start the timeout timer.
         long startTime = System.currentTimeMillis();
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
-        ReversiGameLogic logic = new ReversiGameLogic();
-        logic.setBoard(reversiBoard);
 
+        // Choose if player should be maximizing our minimizing.
         int bestEval;
         boolean isMax;
         if(player == 1){
@@ -29,24 +38,27 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             bestEval = 10000;
         }
 
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(reversiBoard);
         int resultCount = 0;
         for(int move : logic.getMoves(player)){
-            // Generate a temp board and do the move
+            // Generate a temp board and do the move.
             ReversiBoardLogic newBoard = new ReversiBoardLogic();
             newBoard.setBoard(reversiBoard.getBoard());
             ReversiGameLogic newLogic = new ReversiGameLogic();
             newLogic.setBoard(newBoard);
             newLogic.doMove(move, player);
 
-            // Give the new board to a minimax worker
-            ReversiMinimaxWorker worker = new ReversiMinimaxWorker(newBoard, depth, !isMax, move, results);
+            // Give the new board to a minimax worker.
+            ReversiMinimaxWorker worker = new ReversiMinimaxWorker(newBoard, DEPTH, !isMax, move, results);
             Thread thread = new Thread(worker);
             thread.start();
 
             resultCount++;
         }
 
-        // Wait until all results are back
+        // Wait until all results are back.
         boolean timeout = false;
         while(results.size() != resultCount && !timeout){
             try {
