@@ -2,20 +2,28 @@ package project.gamemodules.reversigame;
 
 import project.gameframework.GameBoardLogic;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ReversiMinimaxWorker implements Runnable{
 
+    // Parameters for minimax algorithm.
     private GameBoardLogic board;
     private int depth;
     private boolean isMax;
     private int move;
+
+    // Map that stores the calculated scores for valid moves.
     private Map<Integer, Integer> result;
 
-    int temp1;
-    int temp2;
-    int temp3;
-
+    /**
+     * Constructor for ReversiMinimaxWorker class.
+     * @param board the gameBoard that should be calculated a score for.
+     * @param depth the maximum depth of the search tree.
+     * @param isMax if the player is maximizing or minimizing.
+     * @param move the move that we are calculating a score for.
+     * @param result results Map to store results.
+     */
     ReversiMinimaxWorker(GameBoardLogic board, int depth, boolean isMax, int move, Map<Integer, Integer> result){
         this.board = board;
         this.depth = depth;
@@ -24,17 +32,32 @@ public class ReversiMinimaxWorker implements Runnable{
         this.result = result;
     }
 
+    /**
+     * Run method that calls our minimax algorithm and puts the result in the results map.
+     */
     @Override
     public void run() {
-        int eval = minimax(board, depth, isMax, -10000, 10000);
+        int eval = minimax(board, depth, isMax, -10000, 10000, false);
         result.put(move, eval);
-//        System.out.println("Thread for move : " + move + " finished");
-//        System.out.println("Stability : " + temp1);
-//        System.out.println("Mobility : " + temp2);
-//        System.out.println("Bias : " + temp3);
     }
 
-    private int minimax(GameBoardLogic board, int depth, boolean isMax, int alpha, int beta) {
+    /**
+     * This method iterates the valid moves and it it calculates a score for the gameboard. This method uses our own
+     * version of a minimax algorithm with alpha-beta pruning and quiescence search. Because of time and computation
+     * constraints our quiescence search functionality only deepens the search tree once if a threatening move is found
+     * on a leaf. Ideally it should deepen until the board has no more threatening moves, but we have found this
+     * to take to much computation to fit within a 10 second move limit.
+     *
+     * @param board the gameBoard that should be calculated a score for.
+     * @param depth the maximum depth of the search tree.
+     * @param isMax if the player is maximizing or minimizing.
+     * @param alpha alpha value for alpha-beta pruning.
+     * @param beta beta value for alpha-beta pruning.
+     * @param deepen should be set to false, quiescence search sets this to true when the search tree needs to be deepened.
+     *
+     * @return a score for the given gameBoard.
+     */
+    private int minimax(GameBoardLogic board, int depth, boolean isMax, int alpha, int beta, boolean deepen) {
         int player;
         int bestEval;
         if(isMax){
@@ -47,26 +70,25 @@ public class ReversiMinimaxWorker implements Runnable{
 
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
+        ArrayList<Integer> moves = logic.getMoves(player);
 
-        // TODO: test if it is better without returning if no moves
         if(depth == 0 || logic.getMoves(player).size() == 0){
-//        if(depth == 0){
+            for(int move : moves){
+                if(!deepen && isThreat(move, board)){
+//                    return minimax(board, 1, isMax, alpha, beta, true);
+                }
+            }
             return evaluate(board);
         }
 
-        for(int move : logic.getMoves(player)){
+        for(int move : moves){
             ReversiBoardLogic newBoard = new ReversiBoardLogic();
             newBoard.setBoard(board.getBoard());
             ReversiGameLogic tempGame = new ReversiGameLogic();
             tempGame.setBoard(newBoard);
             tempGame.doMove(move, player);
 
-            int eval;
-            if(depth == 1 && isThreat(move, board)){
-                eval = minimax(newBoard, depth, !isMax, alpha, beta);
-            } else {
-                eval = minimax(newBoard, depth-1, !isMax, alpha, beta);
-            }
+            int eval = minimax(newBoard, depth-1, !isMax, alpha, beta, deepen);
 
             if(isMax){
                 if(eval > bestEval) bestEval = eval;
@@ -80,11 +102,19 @@ public class ReversiMinimaxWorker implements Runnable{
         return bestEval;
     }
 
+    /**
+     * This method evaluates the board passed as a parameter. The current state of the board will be scored based on
+     * stability, mobility and bias. If this is the end of the game we return the result instead.
+     *
+     * @param board the board about to be checked.
+     * @return a given value which indicates the score of the board.
+     */
     private int evaluate(GameBoardLogic board){
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
+        // If this is the end of the game return the outcome of the game.
         int turn = reversiBoard.getDiscCount(1) + reversiBoard.getDiscCount(2);
         if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0 && turn > 50){
             int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
@@ -96,48 +126,59 @@ public class ReversiMinimaxWorker implements Runnable{
             return result;
         }
 
+        // Calculate the stability and mobility.
         int stability = logic.getStableDiscs(board, 1) - logic.getStableDiscs(board, 2);
         int mobility = logic.getPossibleFlips(board, 1) - logic.getPossibleFlips(board, 2);
-        // int mobility = logic.getMoves(1).size() - logic.getMoves(2).size();
 
-//        return (int)(stability * 5.5 + mobility * 1.9) + getBias(board);
-//        temp1 = (int)((stability * turn) / 20.0);
-//        temp2 = mobility * 20;
-//        temp3 = getBias(board) * 2;
-        // These numbers have been found through 50000+ tests
+        // These numbers have been found through 70000+ tests.
         return (int)((stability * turn) / 12 + mobility * 1.9) + (getBias(board));
     }
 
     /**
      * This method checks if a move is a threatening move. This is used by our AI to determine if it
      * should search deeper.
+     *
      * @param move the move that should be checked.
      * @return whether a move is a threat or not.
      */
     private boolean isThreat(int move, GameBoardLogic board){
-        // Corners
-        if(move == 0 || move == 7 || move == 56 || move == 63){
-            return true;
+        // Move adjacent to corners while the corners hasn't been taken yet. This is dangerous because it can give away
+        // a corner.
+        if(move == 1 || move == 8 || move == 9){
+            if(board.getBoardPos(0) == 0){
+                return true;
+            }
         }
-        // Adjacent to corners
-        if(move == 1 || move == 6 || move == 8 || move == 9|| move == 14|| move == 15 ||
-                move == 48 || move == 49 || move == 54 || move == 55|| move == 57|| move == 62){
-            return true;
+        if(move == 6 || move == 14 || move == 15){
+            if(board.getBoardPos(7) == 0){
+                return true;
+            }
         }
-        // 1 or less moves left
-//        ReversiGameLogic logic = new ReversiGameLogic();
-//        logic.setBoard(board);
-//        if(logic.gameOver() == 0){
-//            if(logic.getMoves(1).size() <= 1 || logic.getMoves(0).size() <= 1){
-//                return true;
-//            }
-//        }
+        if(move == 48 || move == 49 || move == 57){
+            if(board.getBoardPos(56) == 0){
+                return true;
+            }
+        }
+        if(move == 54 || move == 55 || move == 62){
+            if(board.getBoardPos(63) == 0){
+                return true;
+            }
+        }
+
+        // 1 or less moves left. This is dangerous because it can force our AI to give away a strong position.
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+        if(logic.gameOver() == 0){
+            if(logic.getMoves(1).size() <= 1 || logic.getMoves(0).size() <= 1){
+                return true;
+            }
+        }
         return false;
     }
 
     /**
      * This method calculates a bias value. The bias value is used to add weight
-     * to the evaluation of certain moves.
+     * to the evaluation of certain moves. For now we only use a bias for the corner positions.
      * @return the bias value
      */
     private int getBias(GameBoardLogic board){
