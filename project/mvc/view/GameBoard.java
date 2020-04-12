@@ -2,12 +2,15 @@ package project.mvc.view;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import project.gameframework.GameBoardLogic;
 import project.gameframework.GameLogic;
@@ -34,25 +37,33 @@ public abstract class GameBoard extends FlowPane {
     private int counter;
     private String player1;
     private String player2;
+    private int scorePlayer1;
+    private int scorePlayer2;
 
     private Button[] tiles;
+    private HBox players = new HBox();
+    private HBox scores = new HBox();
+    private VBox gameStats = new VBox();
     private BoardLogic BoardLogic;
 
     private GameData gameData;
     private GridPane gameLayout;
+    private HBox gameTopBar;
+
     private String gameName;
     private GameBoardLogic gameBoardLogic;
     private BoardLogic boardLogic;
 
     private MinimaxStrategy minimaxStrategy;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String name, GridPane layout) {
+    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String name, GridPane layout, HBox topbar) {
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
         gameButtonWidth = buttonWidth;
         gameButtonHeight = buttonHeight;
         gameLayout = layout;
+        gameTopBar = topbar;
         gameName = name;
         gameData = model.getGameData();
 
@@ -79,6 +90,8 @@ public abstract class GameBoard extends FlowPane {
     }
 
     public void drawBoard() {
+        setPlayers("Player", "AI");
+        setGameStats();
         int id = 0;
         System.out.println(gameName);
         for (int row = 0; row < gameBoardHeight; row++) {
@@ -97,8 +110,13 @@ public abstract class GameBoard extends FlowPane {
                         int ID = Integer.parseInt(btn.getId());
                         if(logic.isValid(ID, turn)) {
                             setMove(ID, turn, btn);
+                            turn = 2;
+                            setGameStats();
+
                             if (!boardLogic.gameOver()) {
                                 setAIMove();
+                                turn = 1;
+                                setGameStats();
                                 boardLogic.gameOver();
                             }
                         }
@@ -168,6 +186,66 @@ public abstract class GameBoard extends FlowPane {
         counter++;
     }
 
+    public void setGameStats(){
+        setPlayersHBox();
+        setScoresHBox();
+        String turnPlayer;
+        if(getTurn() == 1){
+            turnPlayer = player1;
+        }
+        else{
+            turnPlayer = player2;
+        }
+        Label turnLabel = makeLabel("Turn: " + turnPlayer, 300, 50, "left");;
+        gameStats.getChildren().clear();
+        gameStats.getChildren().addAll(turnLabel, players, scores);
+        gameTopBar.getChildren().removeAll(gameStats);
+        gameTopBar.getChildren().add(gameStats);
+    }
+
+    private void setScoresHBox(){
+        Label score1 = makeLabel(Integer.toString(scorePlayer1), 150, 75, "center");
+        Label between = makeLabel("-", 50, 75, "center");
+        Label score2 = makeLabel(Integer.toString(scorePlayer2), 150, 75, "center");
+        scores.getChildren().clear();
+        scores.getChildren().addAll(score1, between, score2);
+    }
+
+    private void setPlayersHBox(){
+        Label player1Label = makeLabel(player1, 150, 75, "center");
+        Label versus = makeLabel("VS", 50, 75, "center");
+        Label player2Label = makeLabel(player2, 150, 75, "center");
+        players.getChildren().clear();
+        players.getChildren().addAll(player1Label, versus, player2Label);
+    }
+
+    protected Label makeLabel(String text, int width, int height, String allignment){
+        Label label = new Label(text);
+        label.setPrefSize(width, height);
+        switch(allignment){
+            case "center":
+                label.setAlignment(Pos.CENTER);
+                break;
+            case "left":
+                label.setAlignment(Pos.BASELINE_LEFT);
+                break;
+            case "right":
+                label.setAlignment(Pos.BASELINE_RIGHT);
+                break;
+            default:
+        }
+        return label;
+    }
+
+    public void setScorePlayer(int player){
+        if(player == 1){
+            scorePlayer1++;
+        }
+        if(player == 2){
+            scorePlayer2++;
+        }
+    }
+
     public int getCounter(){
         return counter;
     }
@@ -191,7 +269,6 @@ public abstract class GameBoard extends FlowPane {
         }
         return result;
     }
-
     public int getGameBoardWidth() {
         return gameBoardWidth;
     }

@@ -25,7 +25,7 @@ public class ReversiView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/8;
-        reversiGameBoard = new ReversiBoard(tileSize, tileSize, model, centerLayout);
+        reversiGameBoard = new ReversiBoard(tileSize, tileSize, model, centerLayout, super.getTopBar());
         Button[] gameBoardButtons = reversiGameBoard.getTiles();
         for(int i = 0; i < reversiGameBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
@@ -42,10 +42,6 @@ public class ReversiView extends GameBoardView {
         super.getGameButtons().put(exitGame.getText(), exitGame);
         super.getGameButtons().put(restart.getText(), restart);
         super.getButtons().getChildren().addAll(restart, exitGame);
-
-        setPlayers("test", "test");
-        setScores(0,0);
-        setTurn("");
 
         setCenter(centerLayout);
         setTop(super.getTopBar());

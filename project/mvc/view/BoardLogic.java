@@ -43,10 +43,13 @@ public class BoardLogic {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
             alert.setHeaderText(null);
-            alert.setContentText("player 1 Won!");
+            alert.setContentText(board.getPlayer1() + " Won!");
+            board.setScorePlayer(1);
+            board.setGameStats();
 
             alert.showAndWait();
             System.out.println("Player 1 won!");
+
             gameData.getGame(gameName).getBoard().resetBoard();
             resetBoard();
             return true;
@@ -54,7 +57,9 @@ public class BoardLogic {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("End of round");
             alert.setHeaderText(null);
-            alert.setContentText("player 2 Won!");
+            alert.setContentText(board.getPlayer2() + " Won!");
+            board.setScorePlayer(2);
+            board.setGameStats();
 
             alert.showAndWait();
             System.out.println("Player 2 won!");

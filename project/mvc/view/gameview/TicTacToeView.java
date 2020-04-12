@@ -30,7 +30,8 @@ public class TicTacToeView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/3;
-        ticTacToeBoard = new TicTacToeBoard(tileSize, tileSize, model, centerLayout);
+
+        ticTacToeBoard = new TicTacToeBoard(tileSize, tileSize, model, centerLayout, super.getTopBar());
         Button[] gameBoardButtons = ticTacToeBoard.getTiles();
         for(int i = 0; i < ticTacToeBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2px;");
@@ -48,9 +49,9 @@ public class TicTacToeView extends GameBoardView {
         super.getGameButtons().put(restart.getText(), restart);
         super.getButtons().getChildren().addAll(restart, exitGame);
 
-        setPlayers("test", "test");
-        setScores(0,0);
-        setTurn("");
+        //setPlayers("test", "test");
+        //setScores(0,0);
+        //setTurn("");
         setCenter(centerLayout);
         setTop(super.getTopBar());
     }
@@ -61,5 +62,7 @@ public class TicTacToeView extends GameBoardView {
     public GameBoard getGameBoard(){
         return ticTacToeBoard;
     }
+
+
 
 }

@@ -151,14 +151,12 @@ public class ApplicationView {
     private void setOnActionChooseGameModeViewButtons(){
         chooseGameModeView.getButtons().get("Player vs AI").setOnAction(e -> {
             if(chooseGameModeView.getWindow().getTitle().equals(TICTACTOE)) {
-                ticTacToeView.setPlayers("Player", "AI");
                 ticTacToeView.setMode("Player vs AI");
                 chooseGameModeView.getWindow().setScene(ticTacToeScene);
                 chooseGameModeView.getWindow().setTitle(TICTACTOE + "Player vs AI");
             }
             else{
                 reversiView.setMode("Player vs AI");
-                reversiView.setPlayers("Player", "AI");
                 chooseGameModeView.getWindow().setScene(reversiScene);
                 chooseGameModeView.getWindow().setTitle(REVERSI + "Player vs AI");
             }
