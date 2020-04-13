@@ -5,15 +5,22 @@ import project.gameframework.aistrategies.MinimaxStrategy;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     // Maximimum depth for the minimax algorithm.
-    private int maxDepth = 5;
+    private int maxDepth;
 
-    // Maximum time per move
+    // Maximum time per move.
     private float maxTime = 10;
+
+    // Difficulty for our AI.
+    private int difficulty = 2;
+
+    // Used for generating random moves.
+    private Random random = new Random();
 
     /**
      * This method iterates the valid moves and it it determines which move currently is the best move
@@ -24,6 +31,23 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      */
     @Override
     public synchronized int getBestMove(GameBoardLogic board, int player) {
+        // Change AI behaviour according to difficulty
+        switch(difficulty){
+            // EASY - just random moves.
+            case 0:
+                return getRandomValidMove(board, player);
+            // MEDIUM - minimax but very low depth.
+            case 1:
+                maxDepth = 1;
+                break;
+            // HARD - minimax on highest possible depth.
+            case 2:
+                maxDepth = 5;
+                break;
+            default:
+                maxDepth = 5;
+        }
+
         // Map that stores the calculated scores for valid moves.
         Map<Integer, Integer> results = new ConcurrentHashMap<>();
 
@@ -80,7 +104,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 // If it's taking to long we want to stop calculating moves and just work with
                 // the results we have gotten so far. This is not the best way of implementing time
                 // constraints, but it just acts as a fail-safe. Ideally we want this to never occur.
-                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.8){
+                if((System.currentTimeMillis() - startTime) / 1000.0 > (maxTime - 0.2)){
                     System.err.println("A timeout occurred!");
                     timeout = true;
                 }
@@ -103,26 +127,45 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         }
         results.clear();
 
-//        System.out.println("Calculating move took : " + (float)((System.currentTimeMillis() - startTime) / 1000.0) + " seconds");
         return bestMove;
     }
 
     /**
-     * Method to get maximum depth for the minimax algorithm.
+     * This method returns a random valid move.
      *
-     * @return maximum depth.
+     * @param board the board that is used.
+     * @param player the player to find for.
+     * @return the random move.
      */
-    public int getMaxDepth() {
-        return maxDepth;
+    private int getRandomValidMove(GameBoardLogic board, int player){
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+        ArrayList<Integer> moves = logic.getMoves(player);
+
+        if(moves.size() > 0){
+            int choice = random.nextInt(moves.size());
+            return moves.get(choice);
+        } else {
+            return -1;
+        }
     }
 
     /**
-     * Method to change maximum depth for the minimax algorithm.
+     * Method to get the difficulty of our AI.
      *
-     * @param maxDepth maximum depth.
+     * @return the difficulty.
      */
-    public void setMaxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    /**
+     * Method to change the difficulty of our AI.
+     *
+     * @param difficulty the difficulty.
+     */
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     /**
