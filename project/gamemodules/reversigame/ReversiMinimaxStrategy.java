@@ -68,7 +68,11 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                         depth = 5;
                     }
                 } else{
-                    depth = 4;
+                    if(moves.size() > 6){
+                        depth = 3;
+                    } else {
+                        depth = 4;
+                    }
                 }
                 break;
         }
