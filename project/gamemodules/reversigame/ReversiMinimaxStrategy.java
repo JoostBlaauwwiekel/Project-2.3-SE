@@ -10,9 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
-    // Maximimum depth for the minimax algorithm.
-    private int maxDepth;
-
     // Used for generating random moves.
     private Random random = new Random();
 
@@ -25,6 +22,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      */
     @Override
     public synchronized int getBestMove(GameBoardLogic board, int player) {
+        // Start the timeout timer.
+        long startTime = System.currentTimeMillis();
+
         // Map that stores the calculated scores for valid moves.
         Map<Integer, Integer> results = new ConcurrentHashMap<>();
 
@@ -34,32 +34,42 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         logic.setBoard(reversiBoard);
         ArrayList<Integer> moves = logic.getMoves(player);
 
-        // Start the timeout timer.
-        long startTime = System.currentTimeMillis();
-
         // Change AI behaviour according to difficulty
+        int depth = 0;
         switch(super.getDifficulty()){
             // EASY - just random moves.
             case 0:
                 return getRandomValidMove(board, player);
             // MEDIUM - minimax but very low depth.
             case 1:
-                maxDepth = 1;
+                depth = 1;
                 break;
             // HARD - minimax on highest possible depth.
             case 2:
-                maxDepth = super.getMaxTime() > 9.0 ? 5 : 4;
+                float maxTime = getMaxTime();
+                // Change depth dynamically.
+                if(maxTime > 9.0){
+                    if(moves.size() > 6){
+                        depth = 4;
+                    }else if(moves.size() > 3){
+                        depth = 5;
+                    }else {
+                        depth = 6;
+                    }
+                } else if(maxTime > 4.0){
+                    if(moves.size() > 2){
+                        depth = 4;
+                    } else {
+                        depth = 5;
+                    }
+                } else{
+                    if(moves.size() > 6){
+                        depth = 3;
+                    } else {
+                        depth = 4;
+                    }
+                }
                 break;
-        }
-
-        // Change depth dynamically.
-        int depth;
-        if(moves.size() > 6){
-            depth = maxDepth - 1;
-        } else if(moves.size() > 3){
-            depth = maxDepth;
-        }else {
-            depth = maxDepth + 1;
         }
 
         // Choose if player should be maximizing our minimizing.
@@ -117,7 +127,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 }
             }
         } else {
-            bestMove = moves.size() > 0 ? moves.get(0) : -1;
+            if(moves.size() > 0){
+                bestMove = moves.get(0);
+            }
         }
         results.clear();
 
