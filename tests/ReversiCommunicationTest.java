@@ -27,7 +27,7 @@ public class ReversiCommunicationTest {
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
-        channel.subscribe("Reversi");
+//        channel.subscribe("Reversi");
 //        channel.challenge("computer", "Reversi");
 
         int player = 0;

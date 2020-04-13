@@ -9,9 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
-    // Map that stores the calculated scores for valid moves.
-    private Map<Integer, Integer> results = new ConcurrentHashMap<>();
-
     // Maximimum depth for the minimax algorithm.
     private final static int DEPTH = 5;
 
@@ -23,7 +20,10 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      * @return the best move.
      */
     @Override
-    public int getBestMove(GameBoardLogic board, int player) {
+    public synchronized int getBestMove(GameBoardLogic board, int player) {
+        // Map that stores the calculated scores for valid moves.
+        Map<Integer, Integer> results = new ConcurrentHashMap<>();
+
         // Board and logic to use later.
         ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
@@ -46,7 +46,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
         // If there's to much moves use less depth.
         int depth;
-        if(moves.size() > 10){
+        if(moves.size() > 6){
             depth = DEPTH - 1;
         } else {
             depth = DEPTH;
@@ -77,7 +77,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 // If it's taking to long we want to stop calculating moves and just work with
                 // the results we have gotten so far. This is not the best way of implementing time
                 // constraints, but it just acts as a fail-safe. Ideally we want this to never occur.
-                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.7){
+                if((System.currentTimeMillis() - startTime) / 1000.0 > 9.8){
                     System.err.println("A timeout occurred!");
                     timeout = true;
                 }
