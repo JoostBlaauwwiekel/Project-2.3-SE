@@ -4,11 +4,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenBorderPaneView;
@@ -38,20 +40,49 @@ public class OptionsView extends ScreenBorderPaneView {
         centerLayout.setSpacing(10);
 
         Label title = new Label("Options");
+        title.setFont(Font.font("Calibri", 22));
         title.setTextFill(Color.WHITE);
         title.setAlignment(Pos.CENTER);
-        Label ip_address_label = new Label("IP Address");
-        ip_address_label.setTextFill(Color.WHITE);
-        TextField ip_address = new TextField("localhost");
-        ip_address.setId("IP Address");
-        Label port_label = new Label("Port");
-        port_label.setTextFill(Color.WHITE);
+
+        Label ipAddressLabel = new Label("IP Address");
+        ipAddressLabel.setTextFill(Color.WHITE);
+        ipAddressLabel.setFont(Font.font("Calibri", 18));
+        TextField ipAddress = new TextField("localhost");
+        ipAddress.setId("IP Address");
+
+        Label portLabel = new Label("Port");
+        portLabel.setTextFill(Color.WHITE);
+        portLabel.setFont(Font.font("Calibri", 18));
         TextField port = new TextField("7789");
         port.setId("Port");
-        Label username_label = new Label("Username");
-        username_label.setTextFill(Color.WHITE);
+
+        Label usernameLabel = new Label("Username");
+        usernameLabel.setTextFill(Color.WHITE);
+        usernameLabel.setFont(Font.font("Calibri", 18));
         TextField username = new TextField("BITM");
         username.setId("Username");
+
+        Label aiTimeoutLabel = new Label("AI timeout:");
+        aiTimeoutLabel.setTextFill(Color.WHITE);
+        aiTimeoutLabel.setFont(Font.font("Calibri", 18));
+        TextField aiTimeout = new TextField("10");
+        aiTimeout.setId("Timeout");
+
+        Label aiDifficultyLevelLabel = new Label("Set AI difficulty level:");
+        aiDifficultyLevelLabel.setTextFill(Color.WHITE);
+        aiDifficultyLevelLabel.setFont(Font.font("Calibri", 18));
+
+        Label aiDifficultyExplained = new Label(
+                "<-- easy                                                                                   " +
+                "medium                                                                                        " +
+                "hard -->");
+        aiDifficultyExplained.setTextFill(Color.WHITE);
+        aiDifficultyExplained.setFont(Font.font("Calibri", 18));
+
+        ScrollBar sc = new ScrollBar();
+        sc.setMin(1);
+        sc.setMax(3);
+        sc.setValue(3);
 
         Button back = new Button("Go back");
         back.setMaxWidth(Double.MAX_VALUE);
@@ -61,11 +92,14 @@ public class OptionsView extends ScreenBorderPaneView {
 
         super.getButtons().put(change_details.getText(), change_details);
         super.getButtons().put(back.getText(), back);
-        super.getTextFields().put(ip_address.getId(), ip_address);
+
+        super.getTextFields().put(ipAddress.getId(), ipAddress);
         super.getTextFields().put(port.getId(), port);
         super.getTextFields().put(username.getId(), username);
+        super.getTextFields().put(aiTimeout.getId(), aiTimeout);
 
         header.getChildren().add(title);
-        centerLayout.getChildren().addAll(ip_address_label, ip_address, port_label, port, username_label, username, change_details, back);
+        centerLayout.setAlignment(Pos.CENTER);
+        centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, sc, new Label(), change_details, back);
     }
 }
