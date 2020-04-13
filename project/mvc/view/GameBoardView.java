@@ -24,6 +24,9 @@ public abstract class GameBoardView extends BorderPane {
         intializeSideBarAndTopBar();
     }
 
+    /**
+     * This method initializes the layout in the window.
+     */
     private void intializeSideBarAndTopBar(){
         topBar = new HBox();
         topBar.setPadding(new Insets(0,0,0,0));
@@ -37,6 +40,14 @@ public abstract class GameBoardView extends BorderPane {
         topBar.getChildren().addAll(buttons);
     }
 
+    /**
+     * This method is used to create Labels with given params.
+     * @param text
+     * @param width
+     * @param height
+     * @param allignment
+     * @return
+     */
     public static Label makeLabel(String text, int width, int height, String allignment){
         Label label = new Label(text);
         label.setPrefSize(width, height);
@@ -55,18 +66,34 @@ public abstract class GameBoardView extends BorderPane {
         return label;
     }
 
+    /**
+     * This method returns the buttons exit and restart.
+     * @return
+     */
     protected VBox getButtons(){
         return buttons;
     }
 
+    /**
+     * This method returns the topbar.
+     * @return
+     */
     protected HBox getTopBar(){
         return topBar;
     }
 
+    /**
+     * This method returns the window.
+     * @return
+     */
     public Stage getWindow(){
         return window;
     }
 
+    /**
+     * This method is used to return the gameButtons.
+     * @return
+     */
     public HashMap<String, Button> getGameButtons(){
         return gameButtons;
     }
