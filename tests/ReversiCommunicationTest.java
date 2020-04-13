@@ -15,7 +15,7 @@ public class ReversiCommunicationTest {
 
     public static void main(String[] args) throws IOException {
         CommunicationChannel channel = new GameCommunicationChannel();
-        channel.setUsername("bitm");
+        channel.setUsername("bitm2");
 
         HashMap<String, String> map;
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +27,7 @@ public class ReversiCommunicationTest {
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
-        channel.subscribe("Reversi");
+//        channel.subscribe("Reversi");
 //        channel.challenge("computer", "Reversi");
 
         int player = 0;
