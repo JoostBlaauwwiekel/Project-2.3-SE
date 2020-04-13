@@ -15,10 +15,21 @@ public class TicTacToeBoard extends GameBoard {
     private int turn;
     private int counter;
 
+    /**
+     * This constructor creates a tictactoeboard with the given params.
+     * @param buttonHeight
+     * @param buttonWidth
+     * @param layout
+     * @param topBar
+     * @param controller
+     */
     public TicTacToeBoard(double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller) {
         super(3, 3, buttonHeight, buttonWidth, layout, topBar, controller);
     }
 
+    /**
+     * This method sets the buttons on the tictactoeboard.
+     */
     public void setButtons(){
         turn = 1;
         Button[] tiles = super.getTiles();
@@ -34,6 +45,9 @@ public class TicTacToeBoard extends GameBoard {
         }
     }
 
+    /**
+     * This method is used to update the tictactoeboard.
+     */
     private void updateTicTacToeBoard(){
         int[] board = getController().getBoard();
         int counter = 0;
@@ -67,6 +81,9 @@ public class TicTacToeBoard extends GameBoard {
         }
     }
 
+    /**
+     * This method is used to make an AI move.
+     */
     public void setAImove(){
         updateTicTacToeBoard();
     }
@@ -76,6 +93,9 @@ public class TicTacToeBoard extends GameBoard {
         updateTicTacToeBoard();
     }
 
+    /**
+     * This method resets the tictactoeboard.
+     */
     public void resetBoard(){
         super.getController().resetGame();
         Button[] tiles = super.getTiles();
