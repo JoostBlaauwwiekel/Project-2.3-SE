@@ -222,15 +222,15 @@ public class GameData implements GameDataSubject{
     }
 
     public void sitInServerLobby(){
-        java.util.Timer timer = new java.util.Timer();
-        timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                playerSet = communicationChannel.getPlayerSet();
-                notifyObserversGameStatus(5);
-            }
-        }, 1000, 1000);
+//        java.util.Timer timer = new java.util.Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                playerSet = communicationChannel.getPlayerSet();
+//                notifyObserversGameStatus(5);
+//            }
+//        }, 1000, 1000);
 
         Thread t = new Thread(new Runnable() {
             @Override

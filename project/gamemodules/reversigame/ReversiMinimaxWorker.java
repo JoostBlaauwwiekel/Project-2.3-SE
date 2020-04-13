@@ -75,7 +75,7 @@ public class ReversiMinimaxWorker implements Runnable{
         if(depth == 0 || logic.getMoves(player).size() == 0){
             for(int move : moves){
                 if(!deepen && isThreat(move, board)){
-//                    return minimax(board, 1, isMax, alpha, beta, true);
+                    return minimax(board, 1, isMax, alpha, beta, true);
                 }
             }
             return evaluate(board);
