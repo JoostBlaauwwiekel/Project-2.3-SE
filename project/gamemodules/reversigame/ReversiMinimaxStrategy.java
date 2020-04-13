@@ -10,7 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     // Maximimum depth for the minimax algorithm.
-    private final static int DEPTH = 5;
+    private int maxDepth = 5;
+
+    // Maximum time per move
+    private float maxTime = 10;
 
     /**
      * This method iterates the valid moves and it it determines which move currently is the best move
@@ -47,9 +50,9 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         // If there's to much moves use less depth.
         int depth;
         if(moves.size() > 6){
-            depth = DEPTH - 1;
+            depth = maxDepth - 1;
         } else {
-            depth = DEPTH;
+            depth = maxDepth;
         }
 
         int resultCount = 0;
@@ -102,5 +105,41 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
 //        System.out.println("Calculating move took : " + (float)((System.currentTimeMillis() - startTime) / 1000.0) + " seconds");
         return bestMove;
+    }
+
+    /**
+     * Method to get maximum depth for the minimax algorithm.
+     *
+     * @return maximum depth.
+     */
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    /**
+     * Method to change maximum depth for the minimax algorithm.
+     *
+     * @param maxDepth maximum depth.
+     */
+    public void setMaxDepth(int maxDepth) {
+        this.maxDepth = maxDepth;
+    }
+
+    /**
+     * Method to get the maximum time to calculate a move.
+     *
+     * @return maximum time.
+     */
+    public float getMaxTime() {
+        return maxTime;
+    }
+
+    /**
+     * Method to change the maximum time to calculate a move.
+     *
+     * @param maxTime maximum time.
+     */
+    public void setMaxTime(float maxTime) {
+        this.maxTime = maxTime;
     }
 }
