@@ -17,7 +17,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     private float maxTime = 10;
 
     // Difficulty for our AI.
-    private int difficulty = 2;
+    private int difficulty = 1;
 
     // Used for generating random moves.
     private Random random = new Random();
@@ -31,6 +31,18 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      */
     @Override
     public synchronized int getBestMove(GameBoardLogic board, int player) {
+        // Map that stores the calculated scores for valid moves.
+        Map<Integer, Integer> results = new ConcurrentHashMap<>();
+
+        // Board and logic to use later.
+        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(reversiBoard);
+        ArrayList<Integer> moves = logic.getMoves(player);
+
+        // Start the timeout timer.
+        long startTime = System.currentTimeMillis();
+
         // Change AI behaviour according to difficulty
         switch(difficulty){
             // EASY - just random moves.
@@ -44,21 +56,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
             case 2:
                 maxDepth = 5;
                 break;
-            default:
-                maxDepth = 5;
         }
-
-        // Map that stores the calculated scores for valid moves.
-        Map<Integer, Integer> results = new ConcurrentHashMap<>();
-
-        // Board and logic to use later.
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
-        ReversiGameLogic logic = new ReversiGameLogic();
-        logic.setBoard(reversiBoard);
-        ArrayList<Integer> moves = logic.getMoves(player);
-
-        // Start the timeout timer.
-        long startTime = System.currentTimeMillis();
 
         // Choose if player should be maximizing our minimizing.
         int bestEval;
@@ -165,7 +163,11 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      * @param difficulty the difficulty.
      */
     public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
+        if(difficulty > 2 || difficulty < 0){
+            System.err.println("Not a valid difficulty");
+        } else {
+            this.difficulty = difficulty;
+        }
     }
 
     /**
