@@ -15,7 +15,7 @@ import java.util.*;
 
 public class GameData implements GameDataSubject{
 
-    private String serverIpAddress = "145.33.225.170";
+    private String serverIpAddress = "82.72.41.143";
     private String username = "BITM";
 
     private ArrayList<Observer> observers;
@@ -270,7 +270,7 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
-    private void playWithOnlineGameLogic(String message){
+    private boolean playWithOnlineGameLogic(String message){
         if(communicationChannel.getInputReady() && !inTournament)
             message = communicationChannel.readFormattedLine();
         else if(communicationChannel.getInputReady()){
@@ -287,10 +287,12 @@ public class GameData implements GameDataSubject{
         } else if (message.contains("YOUR TURN")) {
             turn = player;
             int move = gameAI.getBestMove(gameBoardLogic, player);
-            communicationChannel.move(move);
-            gameLogic.doMove(move, player);
-            currentMove = move;
-            notifyObservers();
+            if(move != -1){
+                communicationChannel.move(move);
+                gameLogic.doMove(move, player);
+                currentMove = move;
+                notifyObservers();
+            }
         } else if (message.contains("previous move") && !message.contains("YOU")) {
             turn = 3 - player;
             System.out.println("3 - player: " + (3 - player));
@@ -331,6 +333,7 @@ public class GameData implements GameDataSubject{
                 notifyObserversGameStatus(3);
             }
         }
+        return true;
     }
 
     public void initializeGame(String gameName){
