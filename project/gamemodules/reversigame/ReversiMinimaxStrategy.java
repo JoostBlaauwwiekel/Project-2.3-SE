@@ -10,11 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
-    // Maximimum depth for the minimax algorithm.
-    private int maxDepth;
-
     // Maximum time per move.
-    private float maxTime = 3;
+    private double maxTime = 3.0;
 
     // Difficulty for our AI.
     private int difficulty = 2;
@@ -44,28 +41,36 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         long startTime = System.currentTimeMillis();
 
         // Change AI behaviour according to difficulty
+        int depth = 0;
         switch(difficulty){
             // EASY - just random moves.
             case 0:
                 return getRandomValidMove(board, player);
             // MEDIUM - minimax but very low depth.
             case 1:
-                maxDepth = 1;
+                depth = 1;
                 break;
             // HARD - minimax on highest possible depth.
             case 2:
-                maxDepth = maxTime > 9.0 ? 5 : 4;
+                // Change depth dynamically.
+                if(maxTime > 9.0){
+                    if(moves.size() > 6){
+                        depth = 4;
+                    }else if(moves.size() > 3){
+                        depth = 5;
+                    }else {
+                        depth = 6;
+                    }
+                } else if(maxTime > 4.0){
+                    if(moves.size() > 2){
+                        depth = 4;
+                    } else {
+                        depth = 5;
+                    }
+                } else{
+                    depth = 4;
+                }
                 break;
-        }
-
-        // Change depth dynamically.
-        int depth;
-        if(moves.size() > 6){
-            depth = maxDepth - 1;
-        } else if(moves.size() > 3){
-            depth = maxDepth;
-        }else {
-            depth = maxDepth + 1;
         }
 
         // Choose if player should be maximizing our minimizing.
@@ -179,7 +184,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      *
      * @return maximum time.
      */
-    public float getMaxTime() {
+    public double getMaxTime() {
         return maxTime;
     }
 
@@ -188,7 +193,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
      *
      * @param maxTime maximum time.
      */
-    public void setMaxTime(float maxTime) {
+    public void setMaxTime(double maxTime) {
         this.maxTime = maxTime;
     }
 }

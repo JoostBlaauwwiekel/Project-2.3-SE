@@ -152,8 +152,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
         playerSet = new HashSet<>();
         try {
             // Create an Internet Socket Address with address: ipAddress and with port: port, and the timeout TIMEOUT
-            socket = new Socket();
-            socket.connect(new InetSocketAddress(ipAddress, port), TIMEOUT);
+//            socket = new Socket();
+            socket = new Socket(ipAddress, port);
+            socket.setKeepAlive(true);
+//            socket.connect(new InetSocketAddress(ipAddress, port), TIMEOUT);
 
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
