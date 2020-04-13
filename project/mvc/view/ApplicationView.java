@@ -58,9 +58,15 @@ public class ApplicationView implements ObserverView {
         String game = applicationModel.getCurrentGame();
         int turn = applicationModel.getCurrentTurn();
 
-        if((applicationModel.getGameStatus() == 5) && (!applicationController.getOffline())){
+        if((applicationModel.getGameStatus() == 6) && (!applicationController.getOffline())){
             Platform.runLater(() -> {
                 serverOptionsView.getListViews().get("ChallengeList").getItems().remove(applicationModel.getCurrentChallenger() + ". Challenge number is: " + applicationModel.getCurrentChallengerNr());
+            });
+        }
+        else if(applicationModel.getGameStatus() == 5){
+            Platform.runLater(() -> {
+                serverOptionsView.getListViews().get("PlayerList").getItems().clear();
+                serverOptionsView.getListViews().get("PlayerList").getItems().addAll(applicationController.getPlayerSet());
             });
         }
         else if((applicationModel.getGameStatus() == 4) && (!applicationController.getOffline())) {
@@ -190,13 +196,18 @@ public class ApplicationView implements ObserverView {
 
     private void setOnActionOptionsViewButtons() {
         optionsView.getButtons().get("Change details").setOnAction(e -> {
-            int port = parsePortNumber();
-            applicationController.setSettings(optionsView.getTextFields().get("Username").getText().strip(), optionsView.getTextFields().get("IP Address").getText().strip(), port);
+            int port = parseStringToInteger(optionsView.getTextFields().get("Port").getText());
+            float timeOut = parseStringToFloat(optionsView.getTextFields().get("Timeout").getText().strip());
+            applicationController.setSettings(optionsView.getTextFields().get("Username").getText().strip(), optionsView.getTextFields().get("IP Address").getText().strip(), port, timeOut);
         });
 
         optionsView.getButtons().get("Go back").setOnAction(e -> {
             optionsView.getWindow().setScene(mainScene);
             optionsView.getWindow().setTitle("Main screen");
+        });
+
+        optionsView.getSlider().setOnMouseReleased(e -> {
+            applicationController.setAIDifficulty((int) optionsView.getSlider().getValue());
         });
     }
 
@@ -291,10 +302,6 @@ public class ApplicationView implements ObserverView {
             else if(serverOptionsView.getWindow().getTitle().contains(REVERSI)) {
                 serverOptionsView.getWindow().setTitle(REVERSI);
             }
-        });
-
-        serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {
-            applicationController.fillPlayerSet();
         });
 
         serverOptionsView.getButtons().get("Challenge!").setOnAction(e -> applicationController.challengePlayer(serverOptionsView.getListViews().get("PlayerList").getSelectionModel().getSelectedItem()));
@@ -399,14 +406,25 @@ public class ApplicationView implements ObserverView {
 
     }
 
-    private int parsePortNumber(){
-        int port;
+    private int parseStringToInteger(String text){
+        int temp;
         try {
-            port = Integer.parseInt(optionsView.getTextFields().get("Port").getText());
+            temp = Integer.parseInt(text);
         }
         catch(NumberFormatException nm){
-            port = 0;
+            temp = 0;
         }
-        return port;
+        return temp;
+    }
+
+    private float parseStringToFloat(String text){
+        float temp;
+        try{
+            temp = Float.parseFloat(text);
+        }
+        catch(NumberFormatException nm){
+            temp = 0;
+        }
+        return temp;
     }
 }

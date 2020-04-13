@@ -15,11 +15,11 @@ import java.util.*;
 
 public class GameData implements GameDataSubject{
 
-    private String serverIpAddress = "82.72.41.143";
     private String username = "BITM";
 
     private ArrayList<Observer> observers;
     private HashMap<Integer, String> challenges;
+    private HashSet<String> playerSet;
 
     private CommunicationChannel communicationChannel;
     private GameAI gameAI;
@@ -52,11 +52,15 @@ public class GameData implements GameDataSubject{
 
     private int currentChallengeNr = -1;
 
+    private int aiDifficulty = 3;
+    private float timeOut = 2;
+
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
         communicationChannel.setUsername(username);
         observers = new ArrayList<>();
         challenges = new HashMap<>();
+        playerSet = new HashSet<>();
         gameMode = "idle";
         gameResult = "";
         inGame = false;
@@ -85,6 +89,14 @@ public class GameData implements GameDataSubject{
             communicationChannel.setIpAddress(ipAddress);
         if(portnumber > 0)
             communicationChannel.setPort(portnumber);
+    }
+
+    public void setAiDifficulty(int aiDifficulty){
+        this.aiDifficulty = aiDifficulty;
+    }
+
+    public void setTimeOut(float timeOut){
+        this.timeOut = timeOut;
     }
 
     public boolean registerToServer(){
@@ -195,6 +207,10 @@ public class GameData implements GameDataSubject{
         return gameLogic;
     }
 
+    public GameAI getGameAI(){
+        return gameAI;
+    }
+
     public boolean getBoardInitialized(){
         return boardInitialized;
     }
@@ -206,6 +222,16 @@ public class GameData implements GameDataSubject{
     }
 
     public void sitInServerLobby(){
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                playerSet = communicationChannel.getPlayerSet();
+                notifyObserversGameStatus(5);
+            }
+        }, 1000, 1000);
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -222,7 +248,7 @@ public class GameData implements GameDataSubject{
                         }
                         else if(message.contains("CHALLENGE CANCELLED")){
                             challengeNr = Integer.parseInt(message.substring(52));
-                            notifyObserversGameStatus(5);
+                            notifyObserversGameStatus(6);
                             challenges.remove(challengeNr);
                         }
                     }
@@ -247,7 +273,7 @@ public class GameData implements GameDataSubject{
                             playWithOnlineGameLogic(message);
                         }
                         challenges.remove(currentChallengeNr);
-                        notifyObserversGameStatus(5);
+                        notifyObserversGameStatus(6);
                         currentChallengeNr = -1;
                         boardInitialized = false;
                         gameMode = "Idle";
@@ -358,6 +384,8 @@ public class GameData implements GameDataSubject{
         else if(currentGame.equals("Reversi")){
             initializeReversi();
         }
+        gameAI.setMaxTime(timeOut);
+        gameAI.setDifficulty(aiDifficulty);
     }
 
     public boolean playOfflineGame(int move, int turn){
@@ -406,11 +434,7 @@ public class GameData implements GameDataSubject{
     }
 
     public HashSet<String> getPlayerSet(){
-        return communicationChannel.getPlayerSet();
-    }
-
-    public HashMap<Integer, String> getChallenges(){
-        return challenges;
+        return playerSet;
     }
 
 }

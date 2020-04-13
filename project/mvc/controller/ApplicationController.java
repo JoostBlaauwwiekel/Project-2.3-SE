@@ -1,9 +1,10 @@
 package project.mvc.controller;
 
-import project.gameframework.GameBoardLogic;
+import project.gameframework.GameAI;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.ApplicationView;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ApplicationController {
 
@@ -50,8 +51,9 @@ public class ApplicationController {
         applicationModel.getGameData().logoutFromServer();
     }
 
-    public void setSettings(String username, String ipAdddress, int portnumber){
+    public void setSettings(String username, String ipAdddress, int portnumber, float timeOut){
         applicationModel.getGameData().setUsernameIpAddressAndPort(username, ipAdddress, portnumber);
+        applicationModel.getGameData().setTimeOut(timeOut);
     }
 
     public void fillPlayerSet(){
@@ -118,4 +120,11 @@ public class ApplicationController {
         applicationModel.getGameData().setBoardInitialized(initialized);
     }
 
+    public void setAIDifficulty(int aiDifficulty){
+        applicationModel.getGameData().setAiDifficulty(aiDifficulty);
+    }
+
+    public HashSet<String> getPlayerSet(){
+        return applicationModel.getGameData().getPlayerSet();
+    }
 }

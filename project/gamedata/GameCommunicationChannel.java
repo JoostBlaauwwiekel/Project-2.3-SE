@@ -8,11 +8,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 public class GameCommunicationChannel implements CommunicationChannel {
 
-    private static final int TIMEOUT = 15000;
+    private static final int TIMEOUT = 100000;
 
     private int port = 7789;
     private String ipAddress = "localhost";
@@ -152,8 +153,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
         playerSet = new HashSet<>();
         try {
             // Create an Internet Socket Address with address: ipAddress and with port: port, and the timeout TIMEOUT
-            socket = new Socket();
-            socket.connect(new InetSocketAddress(ipAddress, port), TIMEOUT);
+            socket = new Socket(ipAddress, port);
 
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -227,7 +227,6 @@ public class GameCommunicationChannel implements CommunicationChannel {
             acquireSet("playerlist", playerSet);
         }
         catch(IOException ioe){
-            ioe.printStackTrace();
         }
         return playerSet;
     }

@@ -13,12 +13,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     // Maximimum depth for the minimax algorithm.
     private int maxDepth;
 
-    // Maximum time per move.
-    private float maxTime = 3;
-
-    // Difficulty for our AI.
-    private int difficulty = 2;
-
     // Used for generating random moves.
     private Random random = new Random();
 
@@ -44,7 +38,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         long startTime = System.currentTimeMillis();
 
         // Change AI behaviour according to difficulty
-        switch(difficulty){
+        switch(super.getDifficulty()){
             // EASY - just random moves.
             case 0:
                 return getRandomValidMove(board, player);
@@ -54,7 +48,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 break;
             // HARD - minimax on highest possible depth.
             case 2:
-                maxDepth = maxTime > 9.0 ? 5 : 4;
+                maxDepth = super.getMaxTime() > 9.0 ? 5 : 4;
                 break;
         }
 
@@ -104,7 +98,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 // If it's taking to long we want to stop calculating moves and just work with
                 // the results we have gotten so far. This is not the best way of implementing time
                 // constraints, but it just acts as a fail-safe. Ideally we want this to never occur.
-                if((System.currentTimeMillis() - startTime) / 1000.0 > (maxTime - 0.2)){
+                if((System.currentTimeMillis() - startTime) / 1000.0 > (super.getMaxTime() - 0.2)){
                     System.err.println("A timeout occurred!");
                     timeout = true;
                 }
@@ -148,47 +142,5 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         } else {
             return -1;
         }
-    }
-
-    /**
-     * Method to get the difficulty of our AI.
-     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
-     *
-     * @return the difficulty.
-     */
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    /**
-     * Method to change the difficulty of our AI.
-     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
-     *
-     * @param difficulty the difficulty.
-     */
-    public void setDifficulty(int difficulty) {
-        if(difficulty > 2 || difficulty < 0){
-            System.err.println("Not a valid difficulty");
-        } else {
-            this.difficulty = difficulty;
-        }
-    }
-
-    /**
-     * Method to get the maximum time to calculate a move.
-     *
-     * @return maximum time.
-     */
-    public float getMaxTime() {
-        return maxTime;
-    }
-
-    /**
-     * Method to change the maximum time to calculate a move.
-     *
-     * @param maxTime maximum time.
-     */
-    public void setMaxTime(float maxTime) {
-        this.maxTime = maxTime;
     }
 }

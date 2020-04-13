@@ -2,10 +2,7 @@ package project.mvc.view.mainscreen;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,6 +13,9 @@ import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenBorderPaneView;
 
 public class OptionsView extends ScreenBorderPaneView {
+
+    private Slider slider;
+
     /**
      * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
      *
@@ -73,16 +73,18 @@ public class OptionsView extends ScreenBorderPaneView {
         aiDifficultyLevelLabel.setFont(Font.font("Calibri", 18));
 
         Label aiDifficultyExplained = new Label(
-                "<-- easy                                                                                   " +
-                "medium                                                                                        " +
+                "<-- easy                                                                                     " +
+                "medium                                                                                      " +
                 "hard -->");
         aiDifficultyExplained.setTextFill(Color.WHITE);
         aiDifficultyExplained.setFont(Font.font("Calibri", 18));
 
-        ScrollBar sc = new ScrollBar();
-        sc.setMin(1);
-        sc.setMax(3);
-        sc.setValue(3);
+        slider = new Slider(0, 2, 2);
+        slider.setBlockIncrement(1);
+        slider.setMajorTickUnit(1);
+        slider.setMinorTickCount(0);
+        slider.setShowTickLabels(true);
+        slider.setSnapToTicks(true);
 
         Button back = new Button("Go back");
         back.setMaxWidth(Double.MAX_VALUE);
@@ -100,6 +102,11 @@ public class OptionsView extends ScreenBorderPaneView {
 
         header.getChildren().add(title);
         centerLayout.setAlignment(Pos.CENTER);
-        centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, sc, new Label(), change_details, back);
+        centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, slider, new Label(), change_details, back);
+    }
+
+    @Override
+    public Slider getSlider(){
+        return slider;
     }
 }
