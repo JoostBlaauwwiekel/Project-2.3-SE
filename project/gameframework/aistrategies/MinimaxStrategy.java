@@ -6,7 +6,7 @@ import project.gameframework.GameBoardLogic;
 public abstract class MinimaxStrategy implements GameAI {
 
     // Maximum time per move.
-    private float maxTime = 3;
+    private float maxTime = 10;
 
     // Difficulty for our AI.
     private int difficulty = 2;
@@ -38,9 +38,10 @@ public abstract class MinimaxStrategy implements GameAI {
      */
     public void setDifficulty(int difficulty) {
         if(difficulty > 2 || difficulty < 0){
-            System.err.println("Not a valid difficulty");
+            System.err.println("Not a valid difficulty : " + difficulty);
         } else {
             this.difficulty = difficulty;
+            System.out.println("Difficulty is now set to : " + difficulty);
         }
     }
 

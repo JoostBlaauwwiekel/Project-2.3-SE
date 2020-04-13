@@ -52,8 +52,8 @@ public class GameData implements GameDataSubject{
 
     private int currentChallengeNr = -1;
 
-    private int aiDifficulty = 3;
-    private float timeOut = 2;
+    private int aiDifficulty = 2;
+    private float timeOut = 10;
 
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
