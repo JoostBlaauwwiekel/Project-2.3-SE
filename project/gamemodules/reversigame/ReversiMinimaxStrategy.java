@@ -14,10 +14,10 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
     private int maxDepth;
 
     // Maximum time per move.
-    private float maxTime = 10;
+    private float maxTime = 3;
 
     // Difficulty for our AI.
-    private int difficulty = 1;
+    private int difficulty = 2;
 
     // Used for generating random moves.
     private Random random = new Random();
@@ -54,8 +54,18 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 break;
             // HARD - minimax on highest possible depth.
             case 2:
-                maxDepth = 5;
+                maxDepth = maxTime > 9.0 ? 5 : 4;
                 break;
+        }
+
+        // Change depth dynamically.
+        int depth;
+        if(moves.size() > 6){
+            depth = maxDepth - 1;
+        } else if(moves.size() > 3){
+            depth = maxDepth;
+        }else {
+            depth = maxDepth + 1;
         }
 
         // Choose if player should be maximizing our minimizing.
@@ -67,14 +77,6 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
         } else {
             isMax = false;
             bestEval = 10000;
-        }
-
-        // If there's to much moves use less depth.
-        int depth;
-        if(moves.size() > 6){
-            depth = maxDepth - 1;
-        } else {
-            depth = maxDepth;
         }
 
         int resultCount = 0;
@@ -121,7 +123,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
                 }
             }
         } else {
-            if(moves.size() > 0) bestMove = moves.get(0);
+            bestMove = moves.size() > 0 ? moves.get(0) : -1;
         }
         results.clear();
 
@@ -150,6 +152,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     /**
      * Method to get the difficulty of our AI.
+     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
      *
      * @return the difficulty.
      */
@@ -159,6 +162,7 @@ public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     /**
      * Method to change the difficulty of our AI.
+     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
      *
      * @param difficulty the difficulty.
      */

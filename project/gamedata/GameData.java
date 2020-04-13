@@ -282,6 +282,12 @@ public class GameData implements GameDataSubject{
             message = communicationChannel.readFormattedLine();
         }
 
+        if(message.isBlank() || message.isEmpty()){
+            return true;
+        } else {
+            System.out.println(message);
+        }
+
         if (message.contains("PLAYER TO START")){
             currentOpponent = message.substring(message.indexOf("[") + 1, message.lastIndexOf( "]"));
             if(message.contains("OPPONENT")){
@@ -290,14 +296,16 @@ public class GameData implements GameDataSubject{
                 player = 2;
             }
         } else if (message.contains("YOUR TURN")) {
+            if(player == 0){
+                player = 2;
+            }
             turn = player;
             int move = gameAI.getBestMove(gameBoardLogic, player);
-            if(move != -1){
-                communicationChannel.move(move);
-                gameLogic.doMove(move, player);
-                currentMove = move;
-                notifyObservers();
-            }
+            communicationChannel.move(move);
+            gameLogic.doMove(move, player);
+            currentMove = move;
+            notifyObservers();
+            System.out.println("We made mode : " + move + " and are player " + player);
         } else if (message.contains("previous move") && !message.contains("YOU")) {
             turn = 3 - player;
             System.out.println("3 - player: " + (3 - player));
@@ -328,6 +336,7 @@ public class GameData implements GameDataSubject{
             }
             currentMove = -1;
             gameBoardLogic.resetBoard();
+            player = 0;
             System.out.println(inTournament);
             gameResult = message;
             if(!inTournament) {
