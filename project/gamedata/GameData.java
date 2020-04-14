@@ -55,6 +55,8 @@ public class GameData implements GameDataSubject{
     private int aiDifficulty = 2;
     private float timeOut = 10;
 
+    private boolean isInGame = false;
+
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
         communicationChannel.setUsername(username);
@@ -224,13 +226,19 @@ public class GameData implements GameDataSubject{
     public void sitInServerLobby(){
 //        java.util.Timer timer = new java.util.Timer();
 //        timer.schedule(new TimerTask() {
-//
 //            @Override
 //            public void run() {
-//                playerSet = communicationChannel.getPlayerSet();
-//                notifyObserversGameStatus(5);
+//                if(!isInGame){
+//                    playerSet = communicationChannel.getPlayerSet();
+//                    System.out.println("update");
+//                    notifyObserversGameStatus(5);
+//                }
 //            }
 //        }, 1000, 1000);
+
+        tempFix fix = new tempFix(communicationChannel, isInGame);
+        Thread thread = new Thread(fix);
+        thread.start();
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -293,7 +301,7 @@ public class GameData implements GameDataSubject{
                 gameBoardLogic.resetBoard();
                 notifyObserversGameStatus(1);
                 while(inTournament){
-                    playWithOnlineGameLogic(message);
+                    playWithOnlineGameLogic(communicationChannel.readFormattedLine());
                 }
                 notifyObserversGameStatus(2);
             }
@@ -302,11 +310,6 @@ public class GameData implements GameDataSubject{
     }
 
     private boolean playWithOnlineGameLogic(String message){
-        if(communicationChannel.getInputReady() && !inTournament)
-            message = communicationChannel.readFormattedLine();
-        else if(communicationChannel.getInputReady()){
-            message = communicationChannel.readFormattedLine();
-        }
 
         if(message.isBlank() || message.isEmpty()){
             return true;
@@ -315,6 +318,7 @@ public class GameData implements GameDataSubject{
         }
 
         if (message.contains("PLAYER TO START")){
+            isInGame = true;
             currentOpponent = message.substring(message.indexOf("[") + 1, message.lastIndexOf( "]"));
             if(message.contains("OPPONENT")){
                 player = 1;
@@ -322,6 +326,7 @@ public class GameData implements GameDataSubject{
                 player = 2;
             }
         } else if (message.contains("YOUR TURN")) {
+            isInGame = true;
             if(player == 0){
                 player = 2;
             }
@@ -360,6 +365,7 @@ public class GameData implements GameDataSubject{
             else{
                 draws++;
             }
+            isInGame = false;
             currentMove = -1;
             gameBoardLogic.resetBoard();
             player = 0;

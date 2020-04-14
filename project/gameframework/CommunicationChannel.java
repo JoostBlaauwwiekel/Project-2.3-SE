@@ -132,4 +132,6 @@ public interface CommunicationChannel {
      * @param position the position (move) to be passed to the server.
      */
     public void move(int position);
+
+    public void help();
 }
