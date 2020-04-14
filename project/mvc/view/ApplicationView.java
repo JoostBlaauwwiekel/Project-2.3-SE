@@ -1,6 +1,7 @@
 package project.mvc.view;
 
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.ErrorBox;
@@ -82,11 +83,11 @@ public class ApplicationView implements ObserverView {
             Platform.runLater(() -> {
                 if(game.equals(REVERSI)){
                     reversiView.getWindow().setScene(serverOptionsScene);
-                    reversiView.getWindow().setTitle("Configure your settings for an online Reversi game");
+                    reversiView.getWindow().setTitle("Reversi Online");
                 }
                 else if(game.equals(TICTACTOE)){
                     ticTacToeView.getWindow().setScene(serverOptionsScene);
-                    ticTacToeView.getWindow().setTitle("Configure your settings for an online Tic Tac Toe game");
+                    ticTacToeView.getWindow().setTitle("Tic Tac Toe Online");
                 }
                 serverOptionsView.getEventLabel().setText(applicationModel.getGameData().getFormattedGameResult());
                 serverOptionsView.getScoreLabel().setText("Wins: " + applicationModel.getGameData().getWins() + " Losses: " + applicationModel.getGameData().getLosses() + " Draws: " + applicationModel.getGameData().getDraws());
@@ -128,7 +129,8 @@ public class ApplicationView implements ObserverView {
 
     public void initializeApplicationScreens(Stage primaryStage){
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("StartApp screen");
+        primaryStage.setTitle("Universal Game Launcher");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../web/icon.png")));
         mainView = new MainView(primaryStage, applicationController);
 
         primaryStage.setOnCloseRequest(e -> {
@@ -183,12 +185,12 @@ public class ApplicationView implements ObserverView {
     private void setOnActionMainViewButtons(){
         mainView.getButtons().get("Play").setOnAction(e -> {
             mainView.getWindow().setScene(chooseGameScene);
-            mainView.getWindow().setTitle("Choose a game");
+            mainView.getWindow().setTitle("Universal Game Launcher");
         });
 
         mainView.getButtons().get("Options").setOnAction(e -> {
              mainView.getWindow().setScene(optionsScene);
-             mainView.getWindow().setTitle("Options");
+             mainView.getWindow().setTitle("Universal Game Launcher");
         });
 
         mainView.getButtons().get("Exit").setOnAction(e -> mainView.closeApplication(mainView.getWindow()));
@@ -224,7 +226,7 @@ public class ApplicationView implements ObserverView {
 
         chooseGameView.getButtons().get(" Go back").setOnAction(e -> {
             chooseGameView.getWindow().setScene(mainScene);
-            chooseGameView.getWindow().setTitle("StartApp screen");
+            chooseGameView.getWindow().setTitle("Universal Game Launcher");
         });
 
         errorBox.getConfirm().setOnAction(e -> {
@@ -250,7 +252,7 @@ public class ApplicationView implements ObserverView {
                 ticTacToeView.getGameBoard().resetScores();
                 ticTacToeView.setRestartButton(false);
                 chooseGameModeView.getWindow().setScene(ticTacToeScene);
-                chooseGameModeView.getWindow().setTitle(TICTACTOE + "Player vs AI");
+                chooseGameModeView.getWindow().setTitle(TICTACTOE + " singleplayer");
             }
             else{
                 reversiView.setMode("Player vs AI");
@@ -260,7 +262,7 @@ public class ApplicationView implements ObserverView {
                 reversiView.getGameBoard().setButtons();
                 reversiView.setRestartButton(false);
                 chooseGameModeView.getWindow().setScene(reversiScene);
-                chooseGameModeView.getWindow().setTitle(REVERSI + "Player vs AI");
+                chooseGameModeView.getWindow().setTitle(REVERSI + " singleplayer");
             }
         });
 
@@ -272,10 +274,10 @@ public class ApplicationView implements ObserverView {
                 chooseGameModeView.getWindow().setScene(serverOptionsScene);
                 if (chooseGameModeView.getWindow().getTitle().equals(TICTACTOE)) {
                     applicationController.initializeGame(TICTACTOE);
-                    chooseGameModeView.getWindow().setTitle("Configure your settings for an online Tic Tac Toe game");
+                    chooseGameModeView.getWindow().setTitle("Tic Tac Toe Online");
                 } else if (chooseGameModeView.getWindow().getTitle().equals(REVERSI)) {
                     applicationController.initializeGame(REVERSI);
-                    chooseGameModeView.getWindow().setTitle("Configure your settings for an online Reversi game");
+                    chooseGameModeView.getWindow().setTitle("Reversi Online");
                 }
                 applicationController.joinLobby();
             }
@@ -286,7 +288,7 @@ public class ApplicationView implements ObserverView {
 
         chooseGameModeView.getButtons().get("Go back").setOnAction(e -> {
             chooseGameModeView.getWindow().setScene(chooseGameScene);
-            chooseGameModeView.getWindow().setTitle("Choose a game");
+            chooseGameModeView.getWindow().setTitle("Universal Game Launcher");
         });
     }
 
@@ -362,7 +364,7 @@ public class ApplicationView implements ObserverView {
                 applicationController.setInGame(false);
                 applicationController.setInTournament(false);
                 chooseGameModeView.getWindow().setScene(serverOptionsScene);
-                chooseGameModeView.getWindow().setTitle("Configure your settings for an online Tic Tac Toe game");
+                chooseGameModeView.getWindow().setTitle("Tic Tac Toe Online");
             }
             else {
                 ticTacToeView.getWindow().setScene(chooseGameModeScene);
@@ -379,7 +381,7 @@ public class ApplicationView implements ObserverView {
                 applicationController.setInGame(false);
                 applicationController.setInTournament(false);
                 chooseGameModeView.getWindow().setScene(serverOptionsScene);
-                chooseGameModeView.getWindow().setTitle("Configure your settings for an online Reversi game");
+                chooseGameModeView.getWindow().setTitle("Reversi Online");
             }
             else {
                 reversiView.getWindow().setScene(chooseGameModeScene);
