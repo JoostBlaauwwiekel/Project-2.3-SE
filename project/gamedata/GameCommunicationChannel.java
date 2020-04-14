@@ -1,19 +1,21 @@
-package project.gamemodules;
+package project.gamedata;
 
 import project.gameframework.CommunicationChannel;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 public class GameCommunicationChannel implements CommunicationChannel {
 
-    // Declare constants
-    private final static int PORT = 7789;
-//    private String ipAddress = "145.33.225.170";
+    private static final int TIMEOUT = 100000;
+
+    private int port = 7789;
     private String ipAddress = "localhost";
 
     // Declare the networking variables
@@ -26,7 +28,8 @@ public class GameCommunicationChannel implements CommunicationChannel {
     private HashSet<String> gameSet;
     private HashSet<String> playerSet;
 
-    private String username;
+    private String username = "BITM";
+    private boolean acquiringACertainSet = false;
 
     /**
      * The default constructor for the class GameCommunicationChannel.
@@ -49,6 +52,17 @@ public class GameCommunicationChannel implements CommunicationChannel {
         Collections.addAll(availableLists, lists);
     }
 
+    private void setRightUsername(String[] usernames){
+        int i = 0;
+        for(String player : usernames) {
+            if (username.equals(player)) {
+                usernames[i] += " (you)";
+                break;
+            }
+            i++;
+        }
+    }
+
     /**
      * The acquireSet() method will try to fill a Set data structure with the necessary data. First the typeOfList String
      * parameter will be checked for its validity. That is, whether the availableLists list contains the list to be
@@ -59,19 +73,27 @@ public class GameCommunicationChannel implements CommunicationChannel {
      *                   Possible arguments include: 'gamelist' & 'playerlist'. If the argument is not part of the
      *                   availableLists list. Then a RunTimeError will be thrown.
      * @param set The set in which data will be stored.
-     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
+     * @throws IOException if there is a connection problem with the serverF, this method will throw an IOException.
      */
     private void acquireSet(String typeOfList, HashSet<String> set) throws IOException {
+        acquiringACertainSet = true;
         if(availableLists.contains(typeOfList)) {
             output.println("get " + typeOfList);
             readLine();
-            String gameListString = readLine();
-            gameListString = gameListString.substring(gameListString.indexOf("\"") + 1, gameListString.lastIndexOf("\""));
-            String[] games = gameListString.split("\", \"");
-            Collections.addAll(set, games);
+            String listElementString = readLine();
+            acquiringACertainSet = false;
+            if(!listElementString.equals("SVR PLAYERLIST []")) {
+                listElementString = listElementString.substring(listElementString.indexOf("\"") + 1, listElementString.lastIndexOf("\""));
+                String[] listElements = listElementString.split("\", \"");
+                if (typeOfList.equals("playerlist"))
+                    setRightUsername(listElements);
+                Collections.addAll(set, listElements);
+            }
         }
-        else
+        else {
+            acquiringACertainSet = false;
             throw new RuntimeException("Please choose a valid list you would like query!");
+        }
     }
 
     /**
@@ -92,9 +114,17 @@ public class GameCommunicationChannel implements CommunicationChannel {
         else if(line.contains("PLAYERTOMOVE")){
             betweenQuotes = line.split("\"");
             if(betweenQuotes[1].equals(username))
-                return "PLAYER TO START: YOU! " + username + "!";
+                return "PLAYER TO START: YOU! " + username + "! You're up against player: [" + betweenQuotes[5] + "]!";
             else
-                return "PLAYER TO START: OPPONENT " + betweenQuotes[1] + " starts!";
+                return "PLAYER TO START: OPPONENT [" + betweenQuotes[1] + "] starts!";
+        }
+        else if(line.contains("CHALLENGE CANCELLED")){
+            betweenQuotes = line.split("\"");
+            return "CURRENT GAME CHALLENGE CANCELLED, CHALLENGE NUMBER: " + betweenQuotes[1];
+        }
+        else if(line.contains("GAME CHALLENGE")){
+            betweenQuotes = line.split("\"");
+            return "PLAYER {" + betweenQuotes[1] + "} challenged you to a game of [" + betweenQuotes[5] + "] challenge number: *" + betweenQuotes[3] + "*";
         }
         else if (line.contains("LOSS")) {
             String reason = "";
@@ -113,16 +143,22 @@ public class GameCommunicationChannel implements CommunicationChannel {
     /**
      * This method initializes the server configuration and initializes the necessary data structures. Furthermore,
      * this method also fills the initialized data structures with server acquired from the server.
+     *
+     * @return whether a connection has been established successfully.
      */
-    public void startServerAndPrepareLists(){
+    public boolean startServerAndPrepareLists(){
         // Declare all the lists. Initialize the availableLists list.
         availableLists = new ArrayList<>();
         gameSet = new HashSet<>();
         playerSet = new HashSet<>();
-
         try {
-            // Create a socket with address: IP_ADDRESS and with port: PORT
-            socket = new Socket(ipAddress, PORT);
+            // Create an Internet Socket Address with address: ipAddress and with port: port, and the timeout TIMEOUT
+//            socket = new Socket(ipAddress, port);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAddress, port));
+            socket.setTcpNoDelay(true);
+            socket.setKeepAlive(true);
+
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             skipLines(2);
@@ -134,8 +170,14 @@ public class GameCommunicationChannel implements CommunicationChannel {
             acquireSet("playerlist", playerSet);
         }
         catch(IOException e){
-            e.printStackTrace();
+            System.out.println(e);
+            return false;
         }
+        return true;
+    }
+
+    public boolean getAcquiringACertainSet(){
+        return acquiringACertainSet;
     }
 
     /**
@@ -145,7 +187,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
     public String readLine() throws IOException{
-        return input.readLine();
+        if(socket.isConnected()) {
+            return input.readLine();
+        }
+        return "";
     }
 
     /**
@@ -153,10 +198,16 @@ public class GameCommunicationChannel implements CommunicationChannel {
      * method and returns the read line in String format.
      *
      * @return the formatted line from the server.
-     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
-    public String readFormattedLine() throws IOException{
-        return formatServerMessage(input.readLine());
+    public String readFormattedLine() {
+        String line = "";
+        try{
+            line = formatServerMessage(readLine());
+        }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        return line;
     }
 
     /**
@@ -175,9 +226,13 @@ public class GameCommunicationChannel implements CommunicationChannel {
      * the list will be updated. In case some players logged off or new people logged in.
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
-    public HashSet<String> getPlayerSet() throws IOException{
+    public HashSet<String> getPlayerSet() {
         playerSet.clear();
-        acquireSet("playerlist", playerSet);
+        try {
+            acquireSet("playerlist", playerSet);
+        }
+        catch(IOException ioe){
+        }
         return playerSet;
     }
 
@@ -191,11 +246,19 @@ public class GameCommunicationChannel implements CommunicationChannel {
     }
 
     /**
-     * THis method lets you change the username that will be used on the server.
+     * This method lets you change the username that will be used on the server.
      * @param username the username which will be used on the server.
      */
     public void setUsername(String username){
         this.username = username;
+    }
+
+    /**
+     * This method lets you change the port that will be used to connect to the server.
+     * @param port to connect to.
+     */
+    public void setPort(int port){
+        this.port = port;
     }
 
     /**
@@ -208,6 +271,17 @@ public class GameCommunicationChannel implements CommunicationChannel {
         for(int i = 0; i < times; i++){
             readLine();
         }
+    }
+
+    public boolean getInputReady(){
+        boolean inputReady = false;
+        try {
+            inputReady = input.ready();
+        }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        return inputReady;
     }
 
     /**
@@ -280,5 +354,9 @@ public class GameCommunicationChannel implements CommunicationChannel {
      */
     public void move(int position){
         output.println("move " + position);
+    }
+
+    public void help(){
+        output.println("help");
     }
 }

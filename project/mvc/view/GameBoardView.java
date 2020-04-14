@@ -16,19 +16,18 @@ public abstract class GameBoardView extends BorderPane {
     private Stage window;
     private VBox buttons;
     private HBox topBar;
-    private HBox players;
-    private HBox scores;
 
     private HashMap<String, Button> gameButtons = new HashMap<>();
-    private Label turn;
 
     protected GameBoardView(Stage window){
         this.window = window;
         intializeSideBarAndTopBar();
     }
 
+    /**
+     * This method initializes the layout in the window.
+     */
     private void intializeSideBarAndTopBar(){
-
         topBar = new HBox();
         topBar.setPadding(new Insets(0,0,0,0));
         topBar.setStyle("-fx-background-color: #FFFFFF;");
@@ -38,10 +37,18 @@ public abstract class GameBoardView extends BorderPane {
         buttons.setPrefSize(150, 200);
 
         buttons.setStyle("-fx-border-width: 2px;");
-        topBar.getChildren().add(buttons);
+        topBar.getChildren().addAll(buttons);
     }
 
-    protected Label makeLabel(String text, int width, int height, String allignment){
+    /**
+     * This method is used to create Labels with given params.
+     * @param text
+     * @param width
+     * @param height
+     * @param allignment
+     * @return
+     */
+    public static Label makeLabel(String text, int width, int height, String allignment){
         Label label = new Label(text);
         label.setPrefSize(width, height);
         switch(allignment){
@@ -59,49 +66,41 @@ public abstract class GameBoardView extends BorderPane {
         return label;
     }
 
+    /**
+     * This method returns the buttons exit and restart.
+     * @return
+     */
     protected VBox getButtons(){
         return buttons;
     }
 
+    /**
+     * This method returns the topbar.
+     * @return
+     */
     protected HBox getTopBar(){
         return topBar;
     }
 
+    /**
+     * This method returns the window.
+     * @return
+     */
     public Stage getWindow(){
         return window;
     }
 
-    public Label getTurn(){
-        return turn;
-    }
-
-    public HBox getPlayers(){
-        return players;
-    };
-
+    /**
+     * This method is used to return the gameButtons.
+     * @return
+     */
     public HashMap<String, Button> getGameButtons(){
         return gameButtons;
     }
 
     public abstract void setMode(String mode);
 
-    //public void setTurn(String player){
-        //getTurn().setText("Turn: " + player);
-    //}
-    //protected void setPlayers(String player1, String player2){
-      //  Label player1Label = makeLabel(player1, 150, 75, "center");
-        //Label versus = makeLabel("VS", 50, 75, "center");
-        //Label player2Label = makeLabel(player2, 150, 75, "center");
-        //players.getChildren().clear();
-        //players.getChildren().addAll(player1Label, versus, player2Label);
-    //}
-    //protected void setScores(int scorePlayer1, int scorePlayer2){
-       // Label score1 = makeLabel(Integer.toString(scorePlayer1), 150, 75, "center");
-        //Label between = makeLabel("-", 50, 75, "center");
-        //Label score2 = makeLabel(Integer.toString(scorePlayer2), 150, 75, "center");
-        //scores.getChildren().clear();
-        //scores.getChildren().addAll(score1, between, score2);
-    //}
-    
     public abstract GameBoard getGameBoard();
+
+    public abstract void setRestartButton(boolean bool);
 }

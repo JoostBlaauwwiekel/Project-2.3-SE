@@ -77,7 +77,6 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
      * @return          int with the best possible position
      */
     public int getBestMove(GameBoardLogic b, int p) {
-        TicTacToeBoardLogic ticTacToeBoard = (TicTacToeBoardLogic) b;
         int bestMoveValue;
         int bestMove = -1;
         boolean isMax;
@@ -92,10 +91,9 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
 
         TicTacToeGameLogic logic = new TicTacToeGameLogic();
         logic.setBoard(b);
-        System.out.println();
         for(int move : logic.getMoves(p)){
             TicTacToeBoardLogic tempBoard = new TicTacToeBoardLogic();
-            tempBoard.setBoard(ticTacToeBoard.getBoard());
+            tempBoard.setBoard(b.getBoard());
             TicTacToeGameLogic tempLogic = new TicTacToeGameLogic();
             tempLogic.setBoard(tempBoard);
             tempLogic.doMove(move, p);

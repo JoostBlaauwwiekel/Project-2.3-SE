@@ -1,5 +1,7 @@
 package project.gameframework;
 
+import java.util.Arrays;
+
 public abstract class GameBoardLogic {
 
     // This variable stores all states within the gameBoard
@@ -59,9 +61,5 @@ public abstract class GameBoardLogic {
         initBoard();
     }
 
-    /**
-     * This method should return the name of the game.
-     * @return the name of the game.
-     */
     public abstract String getGame();
 }

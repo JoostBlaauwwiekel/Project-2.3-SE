@@ -11,4 +11,34 @@ public interface GameAI {
      */
     public int getBestMove(GameBoardLogic board, int player);
 
+    /**
+     * This method should return the difficulty of our AI.
+     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
+     *
+     * @return the difficulty.
+     */
+    public int getDifficulty();
+
+    /**
+     * This method should be able to change the difficulty of our AI.
+     * This can be 0 = EASY, 1 = MEDIUM or 2 = HARD.
+     *
+     * @param difficulty the difficulty.
+     */
+    public void setDifficulty(int difficulty);
+
+    /**
+     * This method should return to get the maximum time to calculate a move.
+     *
+     * @return maximum time.
+     */
+    public float getMaxTime();
+
+    /**
+     * This method should be able to change the maximum time to calculate a move.
+     *
+     * @param maxTime maximum time.
+     */
+    public void setMaxTime(float maxTime);
+
 }

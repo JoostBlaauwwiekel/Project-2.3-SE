@@ -1,11 +1,8 @@
 package project.gamemodules.tictactoegame;
 
 import project.gameframework.GameLogic;
-import project.gamemodules.tictactoegame.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class TicTacToeGameLogic extends GameLogic {
 

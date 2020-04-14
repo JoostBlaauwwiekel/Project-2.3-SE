@@ -8,8 +8,12 @@ public interface CommunicationChannel {
     /**
      * This method should set up a socket connection with the server. Once the connection has been established, then
      * the necessary lists should be initialized
+     *
+     * @return whether a connection has been established successfully.
      */
-    public void startServerAndPrepareLists();
+    public boolean startServerAndPrepareLists();
+
+    public boolean getAcquiringACertainSet();
 
     /**
      * This method should read a line from the server and returns it in a String format.
@@ -24,9 +28,8 @@ public interface CommunicationChannel {
      * the result in a String format.
      *
      * @return the formatted line from the server.
-     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
-    public String readFormattedLine() throws IOException;
+    public String readFormattedLine();
 
     /**
      * This method should return the game set, containing all games that can be played on the server.
@@ -39,9 +42,8 @@ public interface CommunicationChannel {
      * This method should return the player set, containing all players currently online.
      *
      * @return a HashSet which contains Strings, each item represents currently logged onto the server.
-     * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
-    public HashSet<String> getPlayerSet() throws IOException;
+    public HashSet<String> getPlayerSet();
 
     /**
      * This method should assign the ipAddress passed by the user to the local variable. With this method, the
@@ -59,12 +61,25 @@ public interface CommunicationChannel {
     public void setUsername(String username);
 
     /**
+     * This method lets you change the port that will be used to connect to the server.
+     * @param port to connect to.
+     */
+    public void setPort(int port);
+
+    /**
      * This method should be used to skip the readLine() method, x times. As indicated by the times parameter.
      *
      * @param times the number of times, the readLine() method should be skipped.
      * @throws IOException if there is a connection problem with the server, this method will throw an IOException.
      */
     public void skipLines(int times) throws IOException;
+
+    /**
+     * This method should return whether there is an incoming message or not.
+     *
+     * @return whether there is an incoming message, true or false.
+     */
+    public boolean getInputReady();
 
     /**
      * This method should read all the lines received from the server. Furthermore, it should return the last line
@@ -117,4 +132,6 @@ public interface CommunicationChannel {
      * @param position the position (move) to be passed to the server.
      */
     public void move(int position);
+
+    public void help();
 }

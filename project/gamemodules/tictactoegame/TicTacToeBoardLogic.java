@@ -31,6 +31,6 @@ public class TicTacToeBoardLogic extends GameBoardLogic {
 
     @Override
     public String getGame() {
-        return "TicTacToe";
+        return "Tic Tac Toe";
     }
 }

@@ -17,7 +17,7 @@ public class ChooseGameView extends ScreenView {
     private Scene chooseGameModeViewScene;
     private ChooseGameModeView chooseGameModeView;
 
-    public ChooseGameView(Stage window, ApplicationModel model) {
+    public ChooseGameView(Stage window, ApplicationController controller) {
         super(window);
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
@@ -32,7 +32,7 @@ public class ChooseGameView extends ScreenView {
         Button reversi = new Button("Reversi");
         Button back = new Button(" Go back");
 
-        super.getButtons().put(chooseTTT.getText(), chooseTTT);
+        super.getButtons().put("Tic-tac-toe", chooseTTT);
         super.getButtons().put(reversi.getText(), reversi);
         super.getButtons().put(back.getText(), back);
 
@@ -40,16 +40,18 @@ public class ChooseGameView extends ScreenView {
         reversi.setMinWidth(100);
         back.setMinWidth(100);
 
-        chooseGameModeView = new ChooseGameModeView(window, model);
+        chooseGameModeView = new ChooseGameModeView(window, controller);
         chooseGameModeViewScene = new Scene(chooseGameModeView, 900, 600);
 
         getChildren().addAll(chooseGameTitle, chooseTTT, reversi, back);
     }
 
+    @Override
     public Scene getSceneUnderneath(){
         return chooseGameModeViewScene;
     }
 
+    @Override
     public ScreenView getViewUnderneath() {
         return chooseGameModeView;
     }

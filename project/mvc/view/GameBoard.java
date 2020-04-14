@@ -1,37 +1,20 @@
 package project.mvc.view;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import project.gameframework.GameBoardLogic;
-import project.gameframework.GameLogic;
-import project.gameframework.aistrategies.MinimaxStrategy;
-import project.gamemodules.GameData;
-import project.gamemodules.reversigame.ReversiMinimaxStrategy;
-import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
-import project.mvc.model.ApplicationModel;
+import project.mvc.controller.ApplicationController;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import project.mvc.view.BoardLogic;
-
-public abstract class GameBoard extends FlowPane {
+public abstract class GameBoard {
 
     private int gameBoardWidth;
     private int gameBoardHeight;
     private int gameBoardDimension;
 
-    private double gameButtonWidth;
-    private double gameButtonHeight;
+    private ApplicationController controller;
 
     private int turn;
     private int counter;
@@ -40,155 +23,158 @@ public abstract class GameBoard extends FlowPane {
     private int scorePlayer1;
     private int scorePlayer2;
 
-    private Button[] tiles;
     private HBox players = new HBox();
     private HBox scores = new HBox();
     private VBox gameStats = new VBox();
-    private BoardLogic BoardLogic;
-
-    private GameData gameData;
-    private GridPane gameLayout;
     private HBox gameTopBar;
 
-    private String gameName;
-    private GameBoardLogic gameBoardLogic;
-    private BoardLogic boardLogic;
+    private double gameButtonWidth;
+    private double gameButtonHeight;
+    private GridPane gameLayout;
 
-    private MinimaxStrategy minimaxStrategy;
+    private Button[] tiles;
 
-    public GameBoard(int width, int height, double buttonHeight, double buttonWidth, GameBoardLogic gameBoard, ApplicationModel model, String name, GridPane layout, HBox topbar) {
+    /**
+     * This method makes a GameBoard with the given params.
+     * @param width
+     * @param height
+     * @param buttonHeight
+     * @param buttonWidth
+     * @param layout
+     * @param topBar
+     * @param controller
+     */
+    protected GameBoard(int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+        this.controller = controller;
         gameBoardWidth = width;
         gameBoardHeight = height;
         gameBoardDimension = width * height;
         gameButtonWidth = buttonWidth;
         gameButtonHeight = buttonHeight;
         gameLayout = layout;
-        gameTopBar = topbar;
-        gameName = name;
-        gameData = model.getGameData();
-
-        this.gameBoardLogic = gameBoard;
-
-        if(gameName.equals("Tic-tac-toe")) {
-            this.minimaxStrategy = new TicTacToeMinimaxStrategy();
-        }
-
-        if(gameName.equals("Reversi")) {
-            this.minimaxStrategy = new ReversiMinimaxStrategy();
-        }
-
-        this.boardLogic = new BoardLogic(gameData, gameName, gameBoardWidth, gameBoardHeight, gameBoardDimension, gameButtonHeight, gameButtonWidth, this);
+        gameTopBar = topBar;
+        tiles = new Button[width * height];
 
         turn = 1;
         counter = 0;
-        tiles = new Button[width * height];
-        drawBoard();
 
-        if(gameName.equals("Reversi")) {
-            boardLogic.updateReversiBoard();
-        }
+        setPlayers("Player", "AI");
+        drawBoard();
     }
 
-    public void drawBoard() {
-        setPlayers("Player", "AI");
+    /**
+     * This method draws the board onto the window.
+     */
+    private void drawBoard() {
         setGameStats();
-        int id = 0;
-        System.out.println(gameName);
+        int id;
         for (int row = 0; row < gameBoardHeight; row++) {
             for (int column = 0; column < gameBoardWidth; column++) {
                 id = ((row * gameBoardWidth) + column);
-
                 tiles[id] = new Button("");
                 tiles[id].setMinSize(gameButtonWidth, gameButtonHeight);
                 tiles[id].setId(Integer.toString(id));
-
-                Button btn = tiles[id];
-                btn.setOnAction(e -> {
-                    GameLogic logic = gameData.getGame(gameName);
-                    if(gameName.equals("Tic-tac-toe")) {
-                        turn = 1;
-                        int ID = Integer.parseInt(btn.getId());
-                        if(logic.isValid(ID, turn)) {
-                            setMove(ID, turn, btn);
-                            turn = 2;
-                            setGameStats();
-
-                            if (!boardLogic.gameOver()) {
-                                setAIMove();
-                                turn = 1;
-                                setGameStats();
-                                boardLogic.gameOver();
-                            }
-                        }
-                    } else if(gameName.equals("Reversi")) {
-                        ArrayList moves = logic.getMoves(1);
-
-                        if(moves.size() == 0) {
-                            System.out.println("No moves available");
-                            System.out.println("Let the ai make another move");
-                            setAIMove();
-                            boardLogic.updateReversiBoard();
-                            boardLogic.gameOver();
-                        } else {
-                            int ID = Integer.parseInt(btn.getId());
-                            boardLogic.updateReversiBoard();
-                            setMove(ID, 1, btn);
-                            if (!boardLogic.gameOver()) {
-                                setAIMove();
-                                boardLogic.updateReversiBoard();
-                                boardLogic.gameOver();
-                            }
-                        }
-                    }
-                });
                 gameLayout.add(tiles[id], column, row);
             }
         }
     }
 
-    private void setAIMove() {
-        // first get the gameboard which we can give to the algorithm
-        GameBoardLogic board = gameData.getGame(gameName).getBoard();
-        int move = minimaxStrategy.getBestMove(board, 2);
-        try {
-            setMove(move, 2, tiles[move]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            // ignore
-        }
-        //gameData.getGame(gameName).getBoard().printBoard();
+    /**
+     * This method sets the gameStatus after a round.
+     * Also ups the score of the winner.
+     * @param winner
+     * @param gameStatus
+     * @return
+     */
+    private boolean setGameStatus(String winner, int gameStatus){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("End of round");
+        alert.setHeaderText(null);
+        alert.setContentText(winner);
+        alert.showAndWait();
+
+        setScorePlayer(gameStatus);
+        setGameStats();
+
+        resetBoard();
+        return true;
     }
 
-    private void setMove(int pos, int state, Button btn) {
-        GameBoardLogic board = gameData.getGame(gameName).getBoard();
-
-        if(board.getGame().equals("TicTacToe")) {
-            if(state == 1) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-circle.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            } else if (state == 2) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/ttt-black-times.png"), gameButtonWidth - 20, gameButtonHeight - 20, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            }
-        } else if(board.getGame().equals("Reversi")) {
-            if(state == 1) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/black-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            } else if (state == 2) {
-                Image image = new Image(getClass().getResourceAsStream("../../web/white-circle.png"), gameButtonWidth - 15, gameButtonHeight - 15, false, false);
-                ImageView imageView = new ImageView(image);
-                btn.setGraphic(imageView);
-            }
-        }
-        gameData.getGame(gameName).doMove(pos, state);
-        counter++;
+    /**
+     * This method is used to return the width of the gameButtons.
+     * @return
+     */
+    protected double getGameButtonWidth() {
+        return gameButtonWidth;
     }
 
+    /**
+     * This method is used to return the Height of the gameButtons.
+     * @return
+     */
+    protected double getGameButtonHeight() {
+        return gameButtonHeight;
+    }
+
+    /**
+     * This method is used to return the controller of the application.
+     * @return
+     */
+    protected ApplicationController getController(){
+        return controller;
+    }
+
+    /**
+     * This method checks if the game is over.
+     * @param result
+     * @return
+     */
+    protected boolean gameOver(int result) {
+        if (result == 1) {
+            return setGameStatus("Player 1 won!", 1);
+        }
+        else if (result == 2) {
+            return setGameStatus("Player 2 won!", 2);
+        }
+        else if (result == 3) {
+            return setGameStatus("Draw!", 3);
+        }
+        else if(result == 4){
+            return setGameStatus("Game has reset!", 4);
+        }
+        else
+            return false;
+    }
+
+    /**
+     * This method makes the buttons clickable again after it's been reset or restarted.
+     */
+    public void unSetButtons(){
+        for(Button tile : tiles){
+            tile.setOnAction(e -> {});
+        }
+    }
+
+    /**
+     * This method returns the tiles of the board.
+     * @return
+     */
+    public Button[] getTiles(){ return tiles; }
+
+    public abstract void resetBoard();
+
+    public abstract void setAImove();
+
+    public abstract void setButtons();
+
+    public abstract void setMoveForEitherParty(int turn);
+
+    /**
+     * This method sets the game statistics such as players, turn and scores.
+     */
     public void setGameStats(){
-        setPlayersHBox();
-        setScoresHBox();
+        setPlayersHBox(player1, player2);
+        setScoresHBox(scorePlayer1, scorePlayer2);
         String turnPlayer;
         if(getTurn() == 1){
             turnPlayer = player1;
@@ -196,47 +182,59 @@ public abstract class GameBoard extends FlowPane {
         else{
             turnPlayer = player2;
         }
-        Label turnLabel = makeLabel("Turn: " + turnPlayer, 300, 50, "left");;
+        Label turnLabel = GameBoardView.makeLabel("Turn: " + turnPlayer, 300, 50, "left");;
         gameStats.getChildren().clear();
         gameStats.getChildren().addAll(turnLabel, players, scores);
         gameTopBar.getChildren().removeAll(gameStats);
         gameTopBar.getChildren().add(gameStats);
     }
 
-    private void setScoresHBox(){
-        Label score1 = makeLabel(Integer.toString(scorePlayer1), 150, 75, "center");
-        Label between = makeLabel("-", 50, 75, "center");
-        Label score2 = makeLabel(Integer.toString(scorePlayer2), 150, 75, "center");
+    /**
+     * This method returns who's turn it is to make a move.
+     * @return
+     */
+    public int getTurn(){
+        return turn;
+    }
+
+    /**
+     * This method resets the scores.
+     */
+    public void resetScores(){
+        scorePlayer1 = 0;
+        scorePlayer2 = 0;
+    }
+
+    /**
+     * This method shows the scores of the players on the board.
+     * @param scorePlayerA
+     * @param scorePlayerB
+     */
+    public void setScoresHBox(int scorePlayerA, int scorePlayerB){
+        Label score1 = GameBoardView.makeLabel(Integer.toString(scorePlayerA), 150, 75, "center");
+        Label between = GameBoardView.makeLabel("-", 50, 75, "center");
+        Label score2 = GameBoardView.makeLabel(Integer.toString(scorePlayerB), 150, 75, "center");
         scores.getChildren().clear();
         scores.getChildren().addAll(score1, between, score2);
     }
 
-    private void setPlayersHBox(){
-        Label player1Label = makeLabel(player1, 150, 75, "center");
-        Label versus = makeLabel("VS", 50, 75, "center");
-        Label player2Label = makeLabel(player2, 150, 75, "center");
+    /**
+     * This method sets the players on the board.
+     * @param playerA
+     * @param playerB
+     */
+    public void setPlayersHBox(String playerA, String playerB){
+        Label player1Label = GameBoardView.makeLabel(playerA, 150, 75, "center");
+        Label versus = GameBoardView.makeLabel("VS", 50, 75, "center");
+        Label player2Label = GameBoardView.makeLabel(playerB, 150, 75, "center");
         players.getChildren().clear();
         players.getChildren().addAll(player1Label, versus, player2Label);
     }
 
-    protected Label makeLabel(String text, int width, int height, String allignment){
-        Label label = new Label(text);
-        label.setPrefSize(width, height);
-        switch(allignment){
-            case "center":
-                label.setAlignment(Pos.CENTER);
-                break;
-            case "left":
-                label.setAlignment(Pos.BASELINE_LEFT);
-                break;
-            case "right":
-                label.setAlignment(Pos.BASELINE_RIGHT);
-                break;
-            default:
-        }
-        return label;
-    }
-
+    /**
+     * This method increments the score of an individual player after a win.
+     * @param player
+     */
     public void setScorePlayer(int player){
         if(player == 1){
             scorePlayer1++;
@@ -244,49 +242,6 @@ public abstract class GameBoard extends FlowPane {
         if(player == 2){
             scorePlayer2++;
         }
-    }
-
-    public int getCounter(){
-        return counter;
-    }
-    public int getTurn(){
-        return turn;
-    }
-    public Button[] getTiles(){
-        return tiles;
-    }
-
-    public BoardLogic getBoardLogic(){
-        return boardLogic;
-    }
-
-    public Label getResult(){
-
-        Label result = new Label("TEST");
-        result.setTextFill(Color.WHITE);
-        if(counter == 8){
-            result.setText("Game over!");
-        }
-        return result;
-    }
-    public int getGameBoardWidth() {
-        return gameBoardWidth;
-    }
-
-    public int getGameBoardHeight() {
-        return gameBoardHeight;
-    }
-
-    public int getGameBoardDimension() {
-        return gameBoardDimension;
-    }
-
-    public double getGameButtonWidth() {
-        return gameButtonWidth;
-    }
-
-    public double getGameButtonHeight() {
-        return gameButtonHeight;
     }
 
     public String getPlayer1(){
@@ -297,13 +252,13 @@ public abstract class GameBoard extends FlowPane {
         return player2;
     }
 
+    /**
+     * This method sets the players who play on the gameboard.
+     * @param player1
+     * @param player2
+     */
     public void setPlayers(String player1, String player2){
         this.player1 = player1;
         this.player2 = player2;
     }
 }
-
-
-
-
-

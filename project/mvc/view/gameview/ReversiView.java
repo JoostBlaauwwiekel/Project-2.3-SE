@@ -1,8 +1,6 @@
 package project.mvc.view.gameview;
 
-import project.gamemodules.GameData;
 import project.mvc.controller.ApplicationController;
-import project.mvc.model.ApplicationModel;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
 import javafx.geometry.Pos;
@@ -15,8 +13,9 @@ public class ReversiView extends GameBoardView {
 
     private String mode = "";
     private GameBoard reversiGameBoard;
+    private Button restart;
 
-    public ReversiView(Stage window, int boardWidth, ApplicationModel model) {
+    public ReversiView(Stage window, int boardWidth, ApplicationController controller) {
         super(window);
 
         GridPane centerLayout = new GridPane();
@@ -25,13 +24,14 @@ public class ReversiView extends GameBoardView {
         centerLayout.setMaxWidth(boardWidth);
 
         double tileSize = boardWidth/8;
-        reversiGameBoard = new ReversiBoard(tileSize, tileSize, model, centerLayout, super.getTopBar());
+        reversiGameBoard = new ReversiBoard(tileSize, tileSize, centerLayout, super.getTopBar(), controller);
+
         Button[] gameBoardButtons = reversiGameBoard.getTiles();
         for(int i = 0; i < reversiGameBoard.getTiles().length; i++) {
             gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
         }
 
-        Button restart = new Button("Restart Reversi");
+        restart = new Button("Restart Reversi");
         Button exitGame = new Button("Exit Reversi");
 
         exitGame.setStyle("-fx-background-color: #FF0000; -fx-border-color: #000000;");
@@ -45,6 +45,10 @@ public class ReversiView extends GameBoardView {
 
         setCenter(centerLayout);
         setTop(super.getTopBar());
+    }
+
+    public void setRestartButton(boolean bool){
+        restart.setDisable(bool);
     }
 
     public void setMode(String mode){

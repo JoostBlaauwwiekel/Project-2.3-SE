@@ -1,10 +1,9 @@
 package project.mvc.view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import project.mvc.controller.ApplicationController;
 import project.mvc.view.mainscreen.ConfirmBox;
 
 import java.util.HashMap;
@@ -12,19 +11,43 @@ import java.util.HashMap;
 public abstract class ScreenBorderPaneView extends BorderPane {
 
     private Stage window;
-    private HashMap<String, Button> buttons = new HashMap<>();
-    private HashMap<String, ListView<String>> listViews = new HashMap<>();
-    private HashMap<String, TextField> textFields = new HashMap<String, TextField>();
+    private ApplicationController controller;
+
+    private Label eventLabel;
+    private Label scoreLabel;
+
+    private HashMap<String, Button> buttons;
+    private HashMap<String, ListView<String>> listViews;
+    private HashMap<String, TextField> textFields;
 
     /**
      * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
      *
      * @param window the stage of a particular scene.
      */
-    protected ScreenBorderPaneView(Stage window){
+    public ScreenBorderPaneView(Stage window, ApplicationController controller){
         this.window = window;
+        this.controller = controller;
+        buttons = new HashMap<>();
+        listViews = new HashMap<>();
+        textFields = new HashMap<>();
     }
 
+    protected void setEventLabel(Label eventLabel){
+        this.eventLabel = eventLabel;
+    }
+
+    protected void setScoreLabel(Label scoreLabel){
+        this.scoreLabel = scoreLabel;
+    }
+
+    public Label getEventLabel(){
+        return eventLabel;
+    }
+
+    public Label getScoreLabel(){
+        return scoreLabel;
+    }
 
     /**
      * This method should close the application when called.
@@ -62,6 +85,14 @@ public abstract class ScreenBorderPaneView extends BorderPane {
      */
     public HashMap<String, ListView<String>> getListViews() { return listViews; }
 
+    protected ApplicationController getController(){
+        return controller;
+    }
+
     public HashMap<String, TextField> getTextFields() { return textFields; }
+
+    public Slider getSlider(){
+        return null;
+    }
 
 }
