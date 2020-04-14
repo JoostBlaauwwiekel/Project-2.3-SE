@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Minimax AI class for reversi.
+ */
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 
     // Used for generating random moves.

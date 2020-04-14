@@ -23,8 +23,7 @@ public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
 
     /**
      * This method evaluates the possibilities. A win situation returns
-     * 10 points, a lose situation returns -10 points. Anything else
-     * returns 0 points.
+     * 1, a lose situation returns -1. A draw returns 0.
      *
      * @param b         the board of the game
      * @return          the amount of points after the evaluation

@@ -5,6 +5,9 @@ import project.gameframework.GameBoardLogic;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Worker thread for our reversi minimax algorithm.
+ */
 public class ReversiMinimaxWorker implements Runnable{
 
     // Parameters for minimax algorithm.
