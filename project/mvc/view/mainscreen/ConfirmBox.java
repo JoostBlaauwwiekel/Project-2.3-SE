@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ConfirmBox {
 
@@ -17,6 +18,7 @@ public class ConfirmBox {
     public static boolean display(String title, String message) {
         Stage window = new Stage();
 
+        window.initStyle(StageStyle.UTILITY);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);

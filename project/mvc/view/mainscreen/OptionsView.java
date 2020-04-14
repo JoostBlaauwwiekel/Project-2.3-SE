@@ -89,7 +89,7 @@ public class OptionsView extends ScreenBorderPaneView {
         Button back = new Button("Go back");
         back.setMaxWidth(Double.MAX_VALUE);
 
-        Button change_details = new Button("Change details");
+        Button change_details = new Button("Change settings");
         change_details.setMaxWidth(Double.MAX_VALUE);
 
         super.getButtons().put(change_details.getText(), change_details);

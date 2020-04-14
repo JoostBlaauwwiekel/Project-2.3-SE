@@ -10,18 +10,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ErrorBox {
+public class OkayBox {
 
-    private Button confirm;
-    private Stage window;
+    static boolean answer;
 
-    public ErrorBox(){
-        confirm = new Button("Okay, I understand");
-        confirm.setMinWidth(100);
-    }
-
-    public void display(String title, String message) {
-        window = new Stage();
+    public static boolean display(String title, String message) {
+        Stage window = new Stage();
 
         window.initStyle(StageStyle.UTILITY);
         window.initModality(Modality.APPLICATION_MODAL);
@@ -29,25 +23,25 @@ public class ErrorBox {
         window.setMinWidth(250);
 
         Label titleMessage = new Label(message);
+        Button okay = new Button("Okay");
+
+        okay.setMinWidth(100);
+
+        okay.setOnAction(e -> {
+            window.close();
+        });
 
         VBox layout = new VBox(20);
         layout.setStyle("-fx-background-color: #FFFFFF;");
         layout.setPadding(new Insets(50,50,50,50));
-
-        layout.getChildren().addAll(titleMessage, confirm);
+        layout.getChildren().addAll(titleMessage, new Label(), okay);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
 
         window.showAndWait();
-    }
 
-    public void closeWindow(){
-        window.close();
-    }
-
-    public Button getConfirm(){
-        return confirm;
+        return answer;
     }
 }

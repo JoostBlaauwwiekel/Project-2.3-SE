@@ -8,6 +8,7 @@ import project.mvc.view.mainscreen.ErrorBox;
 import project.mvc.view.mainscreen.MainView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import project.mvc.view.mainscreen.OkayBox;
 
 import java.util.HashMap;
 
@@ -197,7 +198,9 @@ public class ApplicationView implements ObserverView {
     }
 
     private void setOnActionOptionsViewButtons() {
-        optionsView.getButtons().get("Change details").setOnAction(e -> {
+        optionsView.getButtons().get("Change settings").setOnAction(e -> {
+            OkayBox okay = new OkayBox();
+            okay.display("Change settings", "You just changed the settings!");
             int port = parseStringToInteger(optionsView.getTextFields().get("Port").getText());
             float timeOut = parseStringToFloat(optionsView.getTextFields().get("Timeout").getText().strip());
             applicationController.setSettings(optionsView.getTextFields().get("Username").getText().strip(), optionsView.getTextFields().get("IP Address").getText().strip(), port, timeOut);

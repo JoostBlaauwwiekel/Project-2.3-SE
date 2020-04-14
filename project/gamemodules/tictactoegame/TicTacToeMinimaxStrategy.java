@@ -22,7 +22,8 @@ import java.util.Random;
  */
 public class TicTacToeMinimaxStrategy extends MinimaxStrategy {
 
-    private Random random = new Random();
+    // Used for generating random moves.
+    private static Random random = new Random();
 
     /**
      * This method evaluates the the gameboard. A win situation returns
