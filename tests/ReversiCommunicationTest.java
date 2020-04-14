@@ -37,10 +37,8 @@ public class ReversiCommunicationTest {
         boolean inGame = false;
         int counter = 0;
         while (true) {
-            System.out.println("test");
             String message = channel.readFormattedLine();
             System.out.println(message);
-            System.out.println("test");
             if(!inGame && counter % 1000 == 0){
                 playerSet = channel.getPlayerSet();
                 counter = 0;

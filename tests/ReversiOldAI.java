@@ -1,7 +1,9 @@
-package project.gamemodules.reversigame;
+package tests;
 
 import project.gameframework.GameBoardLogic;
 import project.gameframework.aistrategies.MinimaxStrategy;
+import project.gamemodules.reversigame.ReversiBoardLogic;
+import project.gamemodules.reversigame.ReversiGameLogic;
 
 public class ReversiOldAI extends MinimaxStrategy {
     /**

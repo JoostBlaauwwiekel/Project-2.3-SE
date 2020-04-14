@@ -3,7 +3,7 @@ package project.gameframework.tests;
 import project.gamemodules.reversigame.ReversiBoardLogic;
 import project.gamemodules.reversigame.ReversiGameLogic;
 import project.gamemodules.reversigame.ReversiMinimaxStrategy;
-import project.gamemodules.reversigame.ReversiOldAI;
+import tests.ReversiOldAI;
 
 import java.util.ArrayList;
 import java.util.Random;
