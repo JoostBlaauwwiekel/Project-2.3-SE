@@ -133,5 +133,8 @@ public interface CommunicationChannel {
      */
     public void move(int position);
 
-    public void help();
+    /**
+     * This method should ensure that the connection between the server and client does not drop.
+     */
+    public void antiTimeout();
 }

@@ -1,7 +1,8 @@
 package project.gameframework;
 
-import java.util.Arrays;
-
+/**
+ * Abstract class for logic for gameboards.
+ */
 public abstract class GameBoardLogic {
 
     // This variable stores all states within the gameBoard

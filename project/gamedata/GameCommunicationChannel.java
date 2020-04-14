@@ -356,7 +356,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
         output.println("move " + position);
     }
 
-    public void help(){
-        output.println("help");
+    /**
+     * This method sends a useless command, to ensure the connection between client and server does not get dropped.
+     */
+    public void antiTimeout(){
+        output.println("get");
     }
 }

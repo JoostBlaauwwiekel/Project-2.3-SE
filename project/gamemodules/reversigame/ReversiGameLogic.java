@@ -60,21 +60,38 @@ public class ReversiGameLogic extends GameLogic {
     /**
      * This method checks if the game is over and then returns the winner.
      *
-     * @return int representing the winner of the game, 3 means draw, 0 means the game is not over.
-     */
-    @Override
+     * @return int representing the winner of the game, 3 means a draw, 0 means the game is not over.
+        */
+     @Override
     public int gameOver (){
         ReversiBoardLogic board = (ReversiBoardLogic)getBoard();
         if(getMoves(1).size() == 0 && getMoves(2).size() == 0){
-            if(board.getDiscCount(1) > board.getDiscCount(2)){
+            if(getDiscCount(1) > getDiscCount(2)){
                 return 1;
-            } else if(board.getDiscCount(1) < board.getDiscCount(2)){
+            } else if(getDiscCount(1) < getDiscCount(2)){
                 return 2;
             } else {
                 return 3;
             }
         }
         return 0;
+    }
+
+    /**
+     * This method returns the amount of discs on the board with the specified state.
+     *
+     * @param state of the discs we want to count.
+     * @return the amount of discs with specified state.
+     */
+    public int getDiscCount(int state){
+        int count = 0;
+        int[] board = getBoard().getBoard();
+        for (int pos : board) {
+            if (pos == state) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -224,9 +241,9 @@ public class ReversiGameLogic extends GameLogic {
             tempBoard.setBoard(board.getBoard());
             ReversiGameLogic tempLogic = new ReversiGameLogic();
             tempLogic.setBoard(tempBoard);
-            int oldDiscs = tempBoard.getDiscCount(player);
+            int oldDiscs = tempLogic.getDiscCount(player);
             tempLogic.doMove(move, player);
-            int newDiscs = tempBoard.getDiscCount(player) - 1;
+            int newDiscs = tempLogic.getDiscCount(player) - 1;
             result += newDiscs - oldDiscs;
         }
 

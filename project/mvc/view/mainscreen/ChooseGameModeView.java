@@ -24,7 +24,8 @@ public class ChooseGameModeView extends ScreenView {
         setSpacing(10);
         setPadding(new Insets(20,20,20,20));
         setAlignment(Pos.CENTER);
-        setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #f2b353, #c39540)");
+        //setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #f2b353, #c39540)");
+        setStyle("-fx-background-color: #FF9B1A; ");
 
         Label chooseGameTitle = new Label("Choose a mode");
         chooseGameTitle.setTextFill(Color.WHITE);

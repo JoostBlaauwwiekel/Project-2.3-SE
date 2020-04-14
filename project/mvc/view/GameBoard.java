@@ -1,11 +1,13 @@
 package project.mvc.view;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 
 public abstract class GameBoard {
@@ -15,6 +17,7 @@ public abstract class GameBoard {
     private int gameBoardDimension;
 
     private ApplicationController controller;
+    private Stage window;
 
     private int turn;
     private int counter;
@@ -44,7 +47,8 @@ public abstract class GameBoard {
      * @param topBar
      * @param controller
      */
-    protected GameBoard(int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+    protected GameBoard(Stage window, int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+        this.window = window;
         this.controller = controller;
         gameBoardWidth = width;
         gameBoardHeight = height;
@@ -54,6 +58,8 @@ public abstract class GameBoard {
         gameLayout = layout;
         gameTopBar = topBar;
         tiles = new Button[width * height];
+
+        gameLayout.setPrefSize(500, 500);
 
         turn = 1;
         counter = 0;
@@ -91,6 +97,7 @@ public abstract class GameBoard {
         alert.setTitle("End of round");
         alert.setHeaderText(null);
         alert.setContentText(winner);
+        alert.initOwner(window);
         alert.showAndWait();
 
         setScorePlayer(gameStatus);
@@ -131,10 +138,10 @@ public abstract class GameBoard {
      */
     protected boolean gameOver(int result) {
         if (result == 1) {
-            return setGameStatus("Player 1 won!", 1);
+            return setGameStatus(player1 + " won!", 1);
         }
         else if (result == 2) {
-            return setGameStatus("Player 2 won!", 2);
+            return setGameStatus(player2 + " won!", 2);
         }
         else if (result == 3) {
             return setGameStatus("Draw!", 3);
@@ -182,9 +189,12 @@ public abstract class GameBoard {
         else{
             turnPlayer = player2;
         }
-        Label turnLabel = GameBoardView.makeLabel("Turn: " + turnPlayer, 300, 50, "left");;
+        Label turnLabel = GameBoardView.makeLabel("Turn: " + turnPlayer, 300, 50, "left");
+        turnLabel.setPadding(new Insets(0, 0, 0, 20));
+        turnLabel.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
         gameStats.getChildren().clear();
         gameStats.getChildren().addAll(turnLabel, players, scores);
+        gameStats.setStyle("-fx-font-size: 30");
         gameTopBar.getChildren().removeAll(gameStats);
         gameTopBar.getChildren().add(gameStats);
     }

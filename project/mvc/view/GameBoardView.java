@@ -30,11 +30,13 @@ public abstract class GameBoardView extends BorderPane {
     private void intializeSideBarAndTopBar(){
         topBar = new HBox();
         topBar.setPadding(new Insets(0,0,0,0));
-        topBar.setStyle("-fx-background-color: #FFFFFF;");
+        topBar.setStyle("-fx-background-color: #E5E2E2;");
         topBar.setPrefSize(500, 200);
 
         buttons = new VBox();
         buttons.setPrefSize(150, 200);
+        buttons.setPadding(new Insets(20,20,20,20));
+        buttons.setSpacing(20);
 
         buttons.setStyle("-fx-border-width: 2px;");
         topBar.getChildren().addAll(buttons);
@@ -103,4 +105,6 @@ public abstract class GameBoardView extends BorderPane {
     public abstract GameBoard getGameBoard();
 
     public abstract void setRestartButton(boolean bool);
+
+    public abstract void setLeftRightPane(boolean set);
 }

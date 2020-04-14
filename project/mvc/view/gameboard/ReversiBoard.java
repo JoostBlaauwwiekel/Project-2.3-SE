@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 
@@ -24,8 +25,8 @@ public class ReversiBoard extends GameBoard {
      * @param topBar
      * @param controller
      */
-    public ReversiBoard(double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
-        super(8,8, buttonHeight,buttonWidth, layout, topBar, controller);
+    public ReversiBoard(Stage window, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+        super(window,8,8, buttonHeight,buttonWidth, layout, topBar, controller);
         moves = new ArrayList<>();
     }
 
@@ -66,9 +67,9 @@ public class ReversiBoard extends GameBoard {
         Button[] tiles = super.getTiles();
         for(int i = 0; i < tiles.length; i++) {
             if(!moves.contains(i)) {
-                tiles[i].setDisable(true);
+                tiles[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 0.5px;");
             } else {
-                tiles[i].setDisable(false);
+                tiles[i].setStyle("-fx-background-color: #089000; -fx-border-color: #000000; -fx-border-width: 0.5px;");
             }
             setMove(b[i], tiles[i]);
         }

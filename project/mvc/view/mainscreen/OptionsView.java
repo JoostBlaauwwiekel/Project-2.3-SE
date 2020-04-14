@@ -89,10 +89,10 @@ public class OptionsView extends ScreenBorderPaneView {
         Button back = new Button("Go back");
         back.setMaxWidth(Double.MAX_VALUE);
 
-        Button change_details = new Button("Change details");
-        change_details.setMaxWidth(Double.MAX_VALUE);
+        Button changeDetails = new Button("Change settings");
+        changeDetails.setMaxWidth(Double.MAX_VALUE);
 
-        super.getButtons().put(change_details.getText(), change_details);
+        super.getButtons().put(changeDetails.getText(), changeDetails);
         super.getButtons().put(back.getText(), back);
 
         super.getTextFields().put(ipAddress.getId(), ipAddress);
@@ -102,7 +102,7 @@ public class OptionsView extends ScreenBorderPaneView {
 
         header.getChildren().add(title);
         centerLayout.setAlignment(Pos.CENTER);
-        centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, slider, new Label(), change_details, back);
+        centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, slider, new Label(), changeDetails, back);
     }
 
     @Override
