@@ -306,6 +306,8 @@ public class GameData implements GameDataSubject{
 
         if(message.isBlank() || message.isEmpty()){
             return true;
+        } else {
+            System.out.println(message);
         }
 
         if (message.contains("PLAYER TO START")){
@@ -332,6 +334,9 @@ public class GameData implements GameDataSubject{
             notifyObservers();
             System.out.println("We made move : " + move + " and we are player " + player);
         } else if (message.contains("previous move") && !message.contains("YOU")) {
+            if(player == 0){
+                player = 1;
+            }
             System.out.println("Opponents turn");
             turn = 3 - player;
             int opponentHisMove;
