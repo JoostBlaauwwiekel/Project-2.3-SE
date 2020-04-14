@@ -253,7 +253,7 @@ public class GameData implements GameDataSubject{
                         currentMove = -1;
                         notifyObserversGameStatus(1);
                         while(inGame) {
-                            playWithOnlineGameLogic(message);
+                            playWithOnlineGameLogic();
                         }
                         boardInitialized = false;
                         gameMode = "Idle";
@@ -266,7 +266,7 @@ public class GameData implements GameDataSubject{
                         notifyObserversGameStatus(1);
                         System.out.println("here");
                         while(inGame) {
-                            playWithOnlineGameLogic(message);
+                            playWithOnlineGameLogic();
                         }
                         challenges.remove(currentChallengeNr);
                         notifyObserversGameStatus(6);
@@ -288,7 +288,7 @@ public class GameData implements GameDataSubject{
                 gameBoardLogic.resetBoard();
                 notifyObserversGameStatus(1);
                 while(inTournament){
-                    playWithOnlineGameLogic(communicationChannel.readFormattedLine());
+                    playWithOnlineGameLogic();
                 }
                 notifyObserversGameStatus(2);
             }
@@ -296,8 +296,8 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
-    private boolean playWithOnlineGameLogic(String message){
-
+    private boolean playWithOnlineGameLogic(){
+        String message = "";
         if(communicationChannel.getInputReady() && !inTournament)
             message = communicationChannel.readFormattedLine();
         else if(communicationChannel.getInputReady()){
@@ -306,8 +306,6 @@ public class GameData implements GameDataSubject{
 
         if(message.isBlank() || message.isEmpty()){
             return true;
-        } else {
-//            System.out.println(message);
         }
 
         if (message.contains("PLAYER TO START")){

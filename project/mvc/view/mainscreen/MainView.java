@@ -29,7 +29,11 @@ public class MainView extends ScreenView {
 
         Label title = new Label("Project 2.3 SE");
         title.setTextFill(Color.WHITE);
-        title.setFont(new Font("Arial", 30));
+        title.setFont(new Font("Arial", 25));
+
+        Label title2 = new Label("Universal Game Launcher");
+        title2.setTextFill(Color.WHITE);
+        title2.setFont(new Font("Arial", 30));
 
         Button chooseGame = new Button("Play");
         Button options = new Button("Options");
@@ -49,7 +53,7 @@ public class MainView extends ScreenView {
         optionsView = new OptionsView(window, controller);
         optionsScene = new Scene(optionsView, 900, 600);
 
-        getChildren().addAll(title, chooseGame, options, close);
+        getChildren().addAll(title2, title, new Label(), chooseGame, options, close);
     }
 
     @Override
