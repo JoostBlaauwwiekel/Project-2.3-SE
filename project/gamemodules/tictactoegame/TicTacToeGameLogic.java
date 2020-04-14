@@ -4,15 +4,24 @@ import project.gameframework.GameLogic;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains logic for the game Tic Tac Toe.
+ */
 public class TicTacToeGameLogic extends GameLogic {
-
-    private TicTacToeBoardLogic ticTacToeBoardLogic;
-
+    /**
+     * Constructor for ReversiGameLogic that sets a default board.
+     */
     public TicTacToeGameLogic() {
-        this.ticTacToeBoardLogic = new TicTacToeBoardLogic();
-        setBoard(this.ticTacToeBoardLogic);
+        TicTacToeBoardLogic ticTacToeBoardLogic = new TicTacToeBoardLogic();
+        setBoard(ticTacToeBoardLogic);
     }
 
+    /**
+     * Method that returns all available valid moves for a given player.
+     *
+     * @param player integer representing the player that should be checked for.
+     * @return ArrayList containing all valid moves.
+     */
     @Override
     public ArrayList<Integer> getMoves(int player) {
         ArrayList<Integer> result = new ArrayList<>();
@@ -26,11 +35,23 @@ public class TicTacToeGameLogic extends GameLogic {
         return result;
     }
 
+    /**
+     * This method does a move on the gameboard and changes the board accordingly.
+     * The method assumes a move is correct.
+     *
+     * @param pos position of the move.
+     * @param player player that is making the move.
+     */
     @Override
     public void doMove(int pos, int player) {
         getBoard().setBoardPos(pos, player);
     }
 
+    /**
+     * This method checks if the game is over and then returns the winner.
+     *
+     * @return int representing the winner of the game, 3 means a draw, 0 means the game is not over.
+     */
     @Override
     public int gameOver() {
         TicTacToeBoardLogic b = (TicTacToeBoardLogic) getBoard();
@@ -101,6 +122,13 @@ public class TicTacToeGameLogic extends GameLogic {
         return 3;
     }
 
+    /**
+     * This method checks whether a move is valid or not.
+     *
+     * @param move the move that should be checked for.
+     * @param player the player that should be checked for.
+     * @return false if move is invalid, true if move is valid.
+     */
     @Override
     public boolean isValid(int move, int player) {
         return getBoard().getBoardPos(move) == 0;

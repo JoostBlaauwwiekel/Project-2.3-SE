@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Minimax AI class for reversi.
+ * Minimax AI for reversi.
  */
 public class ReversiMinimaxStrategy extends MinimaxStrategy {
 

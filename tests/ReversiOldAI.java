@@ -11,8 +11,9 @@ public class ReversiOldAI extends MinimaxStrategy {
      */
 
     private int evaluate(GameBoardLogic board) {
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
-        return reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+        ReversiGameLogic logic = new ReversiGameLogic();
+        logic.setBoard(board);
+        return logic.getDiscCount(1) - logic.getDiscCount(2);
     }
 
     @Override

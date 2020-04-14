@@ -113,14 +113,13 @@ public class ReversiMinimaxWorker implements Runnable{
      * @return a given value which indicates the score of the board.
      */
     private int evaluate(GameBoardLogic board){
-        ReversiBoardLogic reversiBoard = (ReversiBoardLogic) board;
         ReversiGameLogic logic = new ReversiGameLogic();
         logic.setBoard(board);
 
         // If this is the end of the game return the outcome of the game.
-        int turn = reversiBoard.getDiscCount(1) + reversiBoard.getDiscCount(2);
+        int turn = logic.getDiscCount(1) + logic.getDiscCount(2);
         if(logic.getMoves(1).size() == 0 && logic.getMoves(2).size() == 0 && turn > 50){
-            int result = reversiBoard.getDiscCount(1) - reversiBoard.getDiscCount(2);
+            int result = logic.getDiscCount(1) - logic.getDiscCount(2);
             if(result < 0){
                 result -= 5000;
             } else if(result > 0){
