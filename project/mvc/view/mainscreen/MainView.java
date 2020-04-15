@@ -19,6 +19,12 @@ public class MainView extends ScreenView {
     private Scene optionsScene;
     private ScreenBorderPaneView optionsView;
 
+    /**
+     * The MainView of the application
+     *
+     * @param window        The Stage of the view
+     * @param controller    The controller of the MVC
+     */
     public MainView(Stage window, ApplicationController controller) {
         super(window);
 
@@ -52,15 +58,31 @@ public class MainView extends ScreenView {
         getChildren().addAll(title, chooseGame, options, close);
     }
 
+    /**
+     * Getter for the previous scene
+     * @return the previous scene
+     */
     @Override
     public Scene getSceneUnderneath() { return chooseGameScene; }
 
+    /**
+     * Getter for the previous View
+     * @return the view
+     */
     @Override
     public ScreenView getViewUnderneath() { return chooseGameView; }
 
+    /**
+     * Getter for the next Scene
+     * @return the Scene
+     */
     @Override
     public Scene getSceneOverhead() { return optionsScene; }
 
+    /**
+     * Method that returns the ScreenBorderPaneView
+     * @return  The ScreenBorderPaneView
+     */
     @Override
     public ScreenBorderPaneView getBorderPaneViewUnderneath() {
         return optionsView;

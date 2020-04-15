@@ -19,6 +19,12 @@ public class ChooseGameModeView extends ScreenView {
     private Scene serverOptionsScene;
     private ServerOptionsView serverOptionsView;
 
+    /**
+     * Constructor for the ChooseGameModeView
+     *
+     * @param window        The stage of this view
+     * @param controller    The controller of the MVC
+     */
     public ChooseGameModeView(Stage window, ApplicationController controller) {
         super(window);
         setSpacing(10);
@@ -58,11 +64,19 @@ public class ChooseGameModeView extends ScreenView {
         getChildren().addAll(chooseGameTitle, pva, pvs, back);
     }
 
+    /**
+     * Getter for the previous scene
+     * @return the previous scene
+     */
     @Override
     public Scene getSceneUnderneath(){
         return serverOptionsScene;
     }
 
+    /**
+     * Getter for the ServeroptionsView
+     * @return the view
+     */
     @Override
     public ServerOptionsView getBorderPaneViewUnderneath() {
         return serverOptionsView;

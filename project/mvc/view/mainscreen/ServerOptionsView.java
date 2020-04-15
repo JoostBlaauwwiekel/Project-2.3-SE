@@ -22,6 +22,12 @@ public class ServerOptionsView extends ScreenBorderPaneView {
     public ListView<String> playerList;
     public ListView<String> challengeList;
 
+    /**
+     * The view for the server options
+     *
+     * @param window        The stage of the view
+     * @param controller    The controller of the MVC
+     */
     public ServerOptionsView(Stage window, ApplicationController controller) {
         super(window, controller);
         setPadding(new Insets(20,20,20,20));
@@ -105,8 +111,16 @@ public class ServerOptionsView extends ScreenBorderPaneView {
         super.getListViews().put("ChallengeList", challengeList);
     }
 
+    /**
+     * Getter for the online players
+     * @return The list of online players
+     */
     public ListView<String> getPlayerListView() { return playerList; }
 
+    /**
+     * Getter for the challenges
+     * @return The list with challenges
+     */
     public ListView<String> getChallengeList() { return challengeList; }
 
 }

@@ -14,11 +14,20 @@ public class ErrorBox {
     private Button confirm;
     private Stage window;
 
+    /**
+     * Constructor, it shows a error message when the application
+     * failed to join a server
+     */
     public ErrorBox(){
         confirm = new Button("Okay, I understand");
         confirm.setMinWidth(100);
     }
 
+    /**
+     * Displays the message
+     * @param title     The title of the Message
+     * @param message   The message itself
+     */
     public void display(String title, String message) {
         window = new Stage();
 
@@ -41,10 +50,17 @@ public class ErrorBox {
         window.showAndWait();
     }
 
+    /**
+     * Method to close the windows
+     */
     public void closeWindow(){
         window.close();
     }
 
+    /**
+     * Method that returns the confirm button
+     * @return  The button
+     */
     public Button getConfirm(){
         return confirm;
     }

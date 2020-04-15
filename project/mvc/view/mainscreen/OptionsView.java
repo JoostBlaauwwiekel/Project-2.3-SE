@@ -105,6 +105,10 @@ public class OptionsView extends ScreenBorderPaneView {
         centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, slider, new Label(), change_details, back);
     }
 
+    /**
+     * Getter for the slider used for the ai difficulty
+     * @return The Slider
+     */
     @Override
     public Slider getSlider(){
         return slider;

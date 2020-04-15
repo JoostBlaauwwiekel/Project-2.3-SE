@@ -14,6 +14,13 @@ public class ConfirmBox {
 
     static boolean answer;
 
+    /**
+     * ConfirmBox that asks the user if he/she really wants to exit the application
+     *
+     * @param title     The title of the ConfirmBox
+     * @param message   The message of the ConfirmBox
+     * @return          The answer of the user
+     */
     public static boolean display(String title, String message) {
         Stage window = new Stage();
 
