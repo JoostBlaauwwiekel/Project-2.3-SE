@@ -2,21 +2,30 @@ package project.gamemodules.tictactoegame;
 
 import project.gameframework.GameBoardLogic;
 
+/**
+ * This class implements the game board logic for the game Tic Tac Toe.
+ */
 public class TicTacToeBoardLogic extends GameBoardLogic {
 
+    /**
+     * This is the default constructor for the TicTacToeBoardLogic class.
+     */
     public TicTacToeBoardLogic(){
         initBoard();
     }
 
+    /**
+     * This method initialises the default gameBoard for tic tac toe.
+     */
     @Override
     public void initBoard() {
         int[] defaultBoard = new int[9];
-        for(int i =0; i < defaultBoard.length; i++){
-            defaultBoard[0] = 0;
-        }
         setBoard(defaultBoard);
     }
 
+    /**
+     * This method prints a visual representation of the board. This is used to for debugging purposes.
+     */
     @Override
     public void printBoard() {
         int[] board = getBoard();
@@ -29,6 +38,11 @@ public class TicTacToeBoardLogic extends GameBoardLogic {
         System.out.println("-------------");
     }
 
+    /**
+     * This method returns the name of the game.
+     *
+     * @return the name of the game.
+     */
     @Override
     public String getGame() {
         return "Tic Tac Toe";

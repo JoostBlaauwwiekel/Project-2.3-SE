@@ -56,8 +56,7 @@ public abstract class ScreenBorderPaneView extends BorderPane {
      */
     protected void closeApplication(Stage window) {
         boolean answer = ConfirmBox.display("Are you sure?", "Are you sure you want to close the application?");
-        if(answer)
-            window.close();
+        if(answer) window.close();
     }
 
     /**

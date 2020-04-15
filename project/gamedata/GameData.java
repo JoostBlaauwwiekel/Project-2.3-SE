@@ -19,7 +19,6 @@ public class GameData implements GameDataSubject{
 
     private ArrayList<Observer> observers;
     private HashMap<Integer, String> challenges;
-    private HashSet<String> playerSet;
 
     private CommunicationChannel communicationChannel;
     private GameAI gameAI;
@@ -55,12 +54,13 @@ public class GameData implements GameDataSubject{
     private int aiDifficulty = 2;
     private float timeOut = 10;
 
+    private boolean isInGame = false;
+
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
         communicationChannel.setUsername(username);
         observers = new ArrayList<>();
         challenges = new HashMap<>();
-        playerSet = new HashSet<>();
         gameMode = "idle";
         gameResult = "";
         inGame = false;
@@ -222,15 +222,9 @@ public class GameData implements GameDataSubject{
     }
 
     public void sitInServerLobby(){
-//        java.util.Timer timer = new java.util.Timer();
-//        timer.schedule(new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                playerSet = communicationChannel.getPlayerSet();
-//                notifyObserversGameStatus(5);
-//            }
-//        }, 1000, 1000);
+//        AntiTimeout antiTimeout = new AntiTimeout(communicationChannel, isInGame);
+//        Thread thread = new Thread(antiTimeout);
+//        thread.start();
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -257,7 +251,7 @@ public class GameData implements GameDataSubject{
                         currentMove = -1;
                         notifyObserversGameStatus(1);
                         while(inGame) {
-                            playWithOnlineGameLogic(message);
+                            playWithOnlineGameLogic();
                         }
                         boardInitialized = false;
                         gameMode = "Idle";
@@ -270,7 +264,7 @@ public class GameData implements GameDataSubject{
                         notifyObserversGameStatus(1);
                         System.out.println("here");
                         while(inGame) {
-                            playWithOnlineGameLogic(message);
+                            playWithOnlineGameLogic();
                         }
                         challenges.remove(currentChallengeNr);
                         notifyObserversGameStatus(6);
@@ -289,11 +283,10 @@ public class GameData implements GameDataSubject{
         Thread t = new Thread(new Runnable(){
             @Override
             public void run(){
-                String message = "";
                 gameBoardLogic.resetBoard();
                 notifyObserversGameStatus(1);
                 while(inTournament){
-                    playWithOnlineGameLogic(message);
+                    playWithOnlineGameLogic();
                 }
                 notifyObserversGameStatus(2);
             }
@@ -301,7 +294,8 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
-    private boolean playWithOnlineGameLogic(String message){
+    private boolean playWithOnlineGameLogic(){
+        String message = "";
         if(communicationChannel.getInputReady() && !inTournament)
             message = communicationChannel.readFormattedLine();
         else if(communicationChannel.getInputReady()){
@@ -310,11 +304,13 @@ public class GameData implements GameDataSubject{
 
         if(message.isBlank() || message.isEmpty()){
             return true;
-        } else {
+        }
+        else {
             System.out.println(message);
         }
 
         if (message.contains("PLAYER TO START")){
+            isInGame = true;
             currentOpponent = message.substring(message.indexOf("[") + 1, message.lastIndexOf( "]"));
             if(message.contains("OPPONENT")){
                 player = 1;
@@ -322,6 +318,10 @@ public class GameData implements GameDataSubject{
                 player = 2;
             }
         } else if (message.contains("YOUR TURN")) {
+            System.out.println("Our turn");
+            isInGame = true;
+            // For some reason the server sometimes doesn't send the message which player starts the game this only
+            // seems to happen when our player is the one that starts, so we can set the player to 2 if that happens.
             if(player == 0){
                 player = 2;
             }
@@ -331,10 +331,13 @@ public class GameData implements GameDataSubject{
             gameLogic.doMove(move, player);
             currentMove = move;
             notifyObservers();
-            System.out.println("We made mode : " + move + " and are player " + player);
+            System.out.println("We made move : " + move + " and we are player " + player);
         } else if (message.contains("previous move") && !message.contains("YOU")) {
+            if(player == 0){
+                player = 1;
+            }
+            System.out.println("Opponents turn");
             turn = 3 - player;
-            System.out.println("3 - player: " + (3 - player));
             int opponentHisMove;
             String s;
             try {
@@ -346,7 +349,6 @@ public class GameData implements GameDataSubject{
                 opponentHisMove = Integer.parseInt(s);
             }
             currentMove = opponentHisMove;
-            System.out.print("");
             System.out.println("Opponent's move: " + opponentHisMove);
             gameLogic.doMove(opponentHisMove, 3 - player);
             notifyObservers();
@@ -360,10 +362,10 @@ public class GameData implements GameDataSubject{
             else{
                 draws++;
             }
+            isInGame = false;
             currentMove = -1;
             gameBoardLogic.resetBoard();
             player = 0;
-            System.out.println(inTournament);
             gameResult = message;
             if(!inTournament) {
                 inGame = false;
@@ -434,7 +436,7 @@ public class GameData implements GameDataSubject{
     }
 
     public HashSet<String> getPlayerSet(){
-        return playerSet;
+        return communicationChannel.getPlayerSet();
     }
 
 }

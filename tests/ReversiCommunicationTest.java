@@ -9,11 +9,14 @@ import project.gamemodules.reversigame.ReversiMinimaxStrategy;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class ReversiCommunicationTest {
 
     public static void main(String[] args) throws IOException {
+        HashSet<String> playerSet;
+
         CommunicationChannel channel = new GameCommunicationChannel();
         channel.setUsername("bitm2");
 
@@ -31,10 +34,25 @@ public class ReversiCommunicationTest {
 //        channel.challenge("computer", "Reversi");
 
         int player = 0;
+        boolean inGame = false;
+        int counter = 0;
         while (true) {
+            System.out.println("test");
             String message = channel.readFormattedLine();
-//            System.out.println(message);
+            System.out.println(message);
+            System.out.println("test");
+            if(!inGame && counter % 1000 == 0){
+                playerSet = channel.getPlayerSet();
+                counter = 0;
+            }
+            counter++;
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (message.contains("PLAYER TO START")){
+                inGame = true;
                 if(message.contains("OPPONENT")){
                     player = 1;
                 } else {
@@ -65,6 +83,7 @@ public class ReversiCommunicationTest {
                 logic.doMove(opponentHisMove, 3 - player);
                 board.printBoard();
             } else if (message.contains("LOSE") || message.contains("WIN") || message.contains("DRAW")) {
+                inGame = false;
                 System.out.println(message);
                 board.resetBoard();
             }

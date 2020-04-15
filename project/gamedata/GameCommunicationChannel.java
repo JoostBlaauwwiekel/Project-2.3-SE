@@ -153,9 +153,10 @@ public class GameCommunicationChannel implements CommunicationChannel {
         playerSet = new HashSet<>();
         try {
             // Create an Internet Socket Address with address: ipAddress and with port: port, and the timeout TIMEOUT
-            socket = new Socket(ipAddress, port);
-//            socket = new Socket();
-//            socket.connect(new InetSocketAddress(ipAddress, port));
+//            socket = new Socket(ipAddress, port);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAddress, port));
+            socket.setTcpNoDelay(true);
             socket.setKeepAlive(true);
 
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -169,6 +170,7 @@ public class GameCommunicationChannel implements CommunicationChannel {
             acquireSet("playerlist", playerSet);
         }
         catch(IOException e){
+            System.out.println(e);
             return false;
         }
         return true;
@@ -352,5 +354,12 @@ public class GameCommunicationChannel implements CommunicationChannel {
      */
     public void move(int position){
         output.println("move " + position);
+    }
+
+    /**
+     * This method sends a useless command, to ensure the connection between client and server does not get dropped.
+     */
+    public void antiTimeout(){
+        output.println("get");
     }
 }

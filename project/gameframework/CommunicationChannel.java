@@ -132,4 +132,9 @@ public interface CommunicationChannel {
      * @param position the position (move) to be passed to the server.
      */
     public void move(int position);
+
+    /**
+     * This method should ensure that the connection between the server and client does not drop.
+     */
+    public void antiTimeout();
 }

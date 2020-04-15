@@ -39,11 +39,11 @@ public abstract class ScreenView extends VBox {
     }
 
     protected void showErrorWindow(ErrorBox errorBox){
-        errorBox.display("Connection error", "Cannot connect to server. Make sure:\n" +
+        errorBox.display("Connection error",
                 "A) that the server is online\n" +
                 "B) that you have a valid internet connection\n" +
                 "C) that you have entered the correct ip address and the correct port number, in the options menu\n" +
-                "D) that there isn't a tournament currently being held\n" +
+                "D) that there isn't an ongoing tournament being hosted\n" +
                 "E) that the server is able to accept more clients");
     }
 
