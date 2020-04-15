@@ -41,7 +41,6 @@ public abstract class MinimaxStrategy implements GameAI {
             System.err.println("Not a valid difficulty : " + difficulty);
         } else {
             this.difficulty = difficulty;
-            System.out.println("Difficulty is now set to : " + difficulty);
         }
     }
 

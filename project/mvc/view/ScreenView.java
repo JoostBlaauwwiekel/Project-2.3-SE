@@ -9,6 +9,9 @@ import project.mvc.view.mainscreen.ErrorBox;
 
 import java.util.HashMap;
 
+/**
+ * This is the abstract class ScreenView which provides a structure all class which extend ScreenView should follow.
+ */
 public abstract class ScreenView extends VBox {
 
     private Stage window;
@@ -112,5 +115,10 @@ public abstract class ScreenView extends VBox {
      */
     public ScreenBorderPaneView getBorderPaneViewUnderneath() { return null; }
 
+    /**
+     * This method should be overridden in the subclasses. Returns null if there is no scene overhead.
+     *
+     * @return null or the scene overhead.
+     */
     public Scene getSceneOverhead(){return null;}
 }

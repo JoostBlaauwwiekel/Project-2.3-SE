@@ -12,6 +12,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * This is the class ErrorBox, it could be used to show an error box whenever an error has occurred.
+ */
 public class ErrorBox {
 
     private Button confirm;
@@ -28,6 +31,7 @@ public class ErrorBox {
 
     /**
      * Displays the message
+     *
      * @param title     The title of the Message
      * @param message   The message itself
      */
@@ -67,6 +71,7 @@ public class ErrorBox {
 
     /**
      * Method that returns the confirm button
+     *
      * @return  The button
      */
     public Button getConfirm(){

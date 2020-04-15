@@ -8,6 +8,9 @@ import project.mvc.view.mainscreen.ConfirmBox;
 
 import java.util.HashMap;
 
+/**
+ * This is the abstract class for options views.
+ */
 public abstract class ScreenBorderPaneView extends BorderPane {
 
     private Stage window;
@@ -84,12 +87,28 @@ public abstract class ScreenBorderPaneView extends BorderPane {
      */
     public HashMap<String, ListView<String>> getListViews() { return listViews; }
 
+    /**
+     * This method returns the MVC controller.
+     *
+     * @return controller.
+     */
     protected ApplicationController getController(){
         return controller;
     }
 
+    /**
+     * This method returns all the text fields in a hashmap.
+     *
+     * @return all text fields in a hash map, accessible by the textFields name.
+     */
     public HashMap<String, TextField> getTextFields() { return textFields; }
 
+    /**
+     * This method should be overriden in de subclasses. If not then a slider doesn't exist in the subclass and null
+     * will be returned.
+     *
+     * @return either the slider or null.
+     */
     public Slider getSlider(){
         return null;
     }

@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * This is the class ConfirmBox, this class could be used to show a confirmation pop up screen.
+ */
 public class ConfirmBox {
 
     static boolean answer;

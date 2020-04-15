@@ -10,10 +10,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import project.mvc.view.gameboard.TicTacToeBoard;
 
-import java.awt.*;
+import java.awt.GraphicsEnvironment;
 
 import static javafx.scene.paint.Color.BLACK;
 
+/**
+ * This is the class for the Tic Tac Toe view.
+ */
 public class TicTacToeView extends GameBoardView {
 
     private String mode = "";
@@ -23,6 +26,13 @@ public class TicTacToeView extends GameBoardView {
     private VBox left;
     private VBox right;
 
+    /**
+     * This is the default constructor for the Tic Tac Toe view.
+     *
+     * @param window the current window/ stage.
+     * @param boardWidth the board width.
+     * @param controller the current controller.
+     */
     public TicTacToeView(Stage window, int boardWidth, ApplicationController controller) {
         super(window);
         int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
@@ -81,18 +91,39 @@ public class TicTacToeView extends GameBoardView {
         setTop(super.getTopBar());
     }
 
+    /**
+     * This method sets the restart button. It enables or disables it.
+     *
+     * @param bool true or false. Enable the button or disable the button.
+     */
     public void setRestartButton(boolean bool){
         restart.setDisable(bool);
     }
 
+    /**
+     * This method sets the current mode of the game.
+     *
+     * @param mode current mode of the game.
+     */
     public void setMode(String mode){
         this.mode = mode;
     }
 
+    /**
+     * This method returns the current game board.
+     *
+     * @return the current game board.
+     */
     public GameBoard getGameBoard(){
         return ticTacToeBoard;
     }
 
+    /**
+     * This method enables or disables the right and left pane. This method is called when full screen mode
+     * is activited. When full screen mode is activated the left and right pane will show up.
+     *
+     * @param set true or false. Set or unset the right and left pane.
+     */
     public void setLeftRightPane(boolean set){
         if(set){
             setLeft(left);

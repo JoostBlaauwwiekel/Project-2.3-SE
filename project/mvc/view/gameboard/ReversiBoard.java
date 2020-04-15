@@ -12,18 +12,22 @@ import project.mvc.view.GameBoard;
 
 import java.util.ArrayList;
 
+/**
+ * This is the ReversiBoard class which contains the reversi UI board.
+ */
 public class ReversiBoard extends GameBoard {
 
     private int turn = 1;
     private ArrayList<Integer> moves;
 
     /**
-     * This constructor creates a reversiboard with the given params.
-     * @param buttonHeight
-     * @param buttonWidth
-     * @param layout
-     * @param topBar
-     * @param controller
+     * This constructor creates a reversiboard with the given parameters.
+     *
+     * @param buttonHeight the height of the buttons.
+     * @param buttonWidth tjhe width of the buttons
+     * @param layout the layout of the board.
+     * @param topBar the top bar of the reversi view.
+     * @param controller the corresponding MVC controller.
      */
     public ReversiBoard(Stage window, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
         super(window,8,8, buttonHeight,buttonWidth, layout, topBar, controller);
@@ -60,7 +64,8 @@ public class ReversiBoard extends GameBoard {
 
     /**
      * This method is used to update the reversiboard.
-     * @param moves
+     *
+     * @param moves all the possible and valid moves.
      */
     private void updateReversiBoard(ArrayList<Integer> moves){
         int[] b = super.getController().getBoard();
@@ -77,8 +82,9 @@ public class ReversiBoard extends GameBoard {
 
     /**
      * This method is used to set a move on the given tile by the given player.
-     * @param state
-     * @param btn
+     *
+     * @param state the state of the game.
+     * @param btn the current button.
      */
     private void setMove(int state, Button btn) {
         if (state == 2) {
@@ -107,13 +113,18 @@ public class ReversiBoard extends GameBoard {
     }
 
     /**
-     * This method is used to set an AI move.
+     * This method is used update the board offline.
      */
-    public void setAImove(){
+    public void updateOfflineBoard(){
         updateReversiGame();
     }
 
-    public void setMoveForEitherParty(int turn){
+    /**
+     * This method is used to update the board when playing an online game.
+     *
+     * @param turn the current turn.
+     */
+    public void updateBoard(int turn){
         moves = super.getController().getMoves(turn);
         updateReversiBoard(moves);
     }

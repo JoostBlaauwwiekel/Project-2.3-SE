@@ -1,6 +1,5 @@
 package project.mvc.controller;
 
-import project.gameframework.GameAI;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.ApplicationView;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package project.mvc.view.mainscreen;
 
 import project.mvc.controller.ApplicationController;
-import project.mvc.view.ScreenBorderPaneView;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,16 +13,19 @@ import javafx.stage.Stage;
 import project.mvc.view.gameview.ReversiView;
 import project.mvc.view.gameview.TicTacToeView;
 
+/**
+ * This is the class for the Choose Game Mode View.
+ */
 public class ChooseGameModeView extends ScreenView {
 
     private Scene serverOptionsScene;
     private ServerOptionsView serverOptionsView;
 
     /**
-     * Constructor for the ChooseGameModeView
+     * This is the default constructor for the choose game mode view.
      *
-     * @param window        The stage of this view
-     * @param controller    The controller of the MVC
+     * @param window the current window.
+     * @param controller the MVC controller.
      */
     public ChooseGameModeView(Stage window, ApplicationController controller) {
         super(window);
@@ -67,15 +69,16 @@ public class ChooseGameModeView extends ScreenView {
 
     /**
      * Getter for the previous scene
+     *
      * @return the previous scene
      */
     @Override
     public Scene getSceneUnderneath(){
         return serverOptionsScene;
     }
-
     /**
      * Getter for the ServeroptionsView
+     *
      * @return the view
      */
     @Override

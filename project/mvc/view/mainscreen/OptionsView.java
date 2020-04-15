@@ -3,7 +3,6 @@ package project.mvc.view.mainscreen;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.InputEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -12,6 +11,9 @@ import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenBorderPaneView;
 
+/**
+ * This is the class OptionsView, here most options of the application can be set.
+ */
 public class OptionsView extends ScreenBorderPaneView {
 
     private Slider slider;
@@ -107,6 +109,7 @@ public class OptionsView extends ScreenBorderPaneView {
 
     /**
      * Getter for the slider used for the ai difficulty
+     *
      * @return The Slider
      */
     @Override

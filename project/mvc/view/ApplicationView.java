@@ -1,6 +1,8 @@
 package project.mvc.view;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,14 +15,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import project.mvc.view.mainscreen.OkayBox;
 
-
 import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 
 /**
- * In the ApplicationView class all views be accessible. The primaryStage is set up and the necessary set-on-action
+ * In the ApplicationView class all views are accessible. The primaryStage is set up and the necessary set-on-action
  * commands will be set.
- *
  */
 public class ApplicationView implements ObserverView {
 
@@ -54,12 +54,22 @@ public class ApplicationView implements ObserverView {
 
     private ErrorBox errorBox;
 
+    /**
+     * The default constructor for the ApplicationView class.
+     * @param applicationController
+     * @param applicationModel
+     */
     public ApplicationView(ApplicationController applicationController, ApplicationModel applicationModel){
         this.applicationController = applicationController;
         this.applicationModel = applicationModel;
         games = new HashMap<>();
     }
 
+    /**
+     * This method is called once the subject notifies each and every observer.
+     * Here the observer (this class) is notified that the game state has been changed and that new game data is
+     * available in the ApplicationModel class.
+     */
     public void update(){
         int currentMove = applicationModel.getCurrentMove();
         String game = applicationModel.getCurrentGame();
@@ -121,18 +131,28 @@ public class ApplicationView implements ObserverView {
             disableBoardPlayability(game);
         }
         else if (applicationModel.isOffline()) {
-            games.get(game).getGameBoard().setAImove();
+            games.get(game).getGameBoard().updateOfflineBoard();
         } else {
             if(currentMove != -1) {
-                games.get(game).getGameBoard().setMoveForEitherParty(turn);
+                games.get(game).getGameBoard().updateBoard(turn);
             }
         }
     }
 
+    /**
+     * This method returns a child of ScreenBorderPaneView, in this case the serverOptionsView.
+     * @return serverOptionsView.
+     */
     public ScreenBorderPaneView getServerOptionsView(){
         return serverOptionsView;
     }
 
+    /**
+     * This method initializes the application screen and initializes all the views and scenes necessary in order for
+     * the application to work.
+     *
+     * @param stage the current window.
+     */
     public void initializeApplicationScreens(Stage stage){
         this.primaryStage = stage;
         primaryStage.setTitle("Universal Game Launcher");
@@ -154,13 +174,25 @@ public class ApplicationView implements ObserverView {
         });
 
         primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-            if (KeyCode.ESCAPE == event.getCode() && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight() > 600 && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth() > 900) {
-                primaryStage.sizeToScene();
+            if (KeyCode.F11 == event.getCode()){
+                primaryStage.setFullScreen(true);
                 if (primaryStage.getTitle().contains(TICTACTOE)){
-                    ticTacToeView.setLeftRightPane(false);
+                    ticTacToeView.setLeftRightPane(true);
                 }
             }
         });
+
+        primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.ESCAPE == event.getCode() && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight() > 1000 && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth() > 1000) {
+                primaryStage.sizeToScene();
+                if (primaryStage.getTitle().contains(TICTACTOE)){
+                    ticTacToeView.setLeftRightPane(false);
+                    primaryStage.sizeToScene();
+                }
+            }
+        });
+
+        primaryStage.setResizable(false);
 
         //Image image = new Image(getClass().getResourceAsStream("../../web/icon.png"));
         //primaryStage.getIcons().add(image);
@@ -201,15 +233,21 @@ public class ApplicationView implements ObserverView {
         primaryStage.show();
     }
 
+    /**
+     * This method contains each set on View buttons method. It is a grouping of functions.
+     */
     private void setOnActionAllButtons(){
         setMainVButtons();
         setOptionsVButtons();
-        setChooseVButtons();
+        setChooseGameVButtons();
         setGameModeVButtons();
         setServerOptionsVButtons();
         setGameVButtons();
     }
 
+    /**
+     * This method sets all Main View buttons.
+     */
     private void setMainVButtons(){
         mainView.getButtons().get("Play").setOnAction(e -> {
             mainView.getWindow().setScene(chooseGameScene);
@@ -224,6 +262,10 @@ public class ApplicationView implements ObserverView {
         mainView.getButtons().get("Exit").setOnAction(e -> mainView.closeApplication(mainView.getWindow()));
     }
 
+    /**
+     * This method sets all Options View buttons. Through the options screen a variety of settings can be adjusted in
+     * order to configure the application to the user's own will.
+     */
     private void setOptionsVButtons() {
         optionsView.getButtons().get("Change settings").setOnAction(e -> {
             int port = parseStringToInteger(optionsView.getTextFields().get("Port").getText());
@@ -243,7 +285,10 @@ public class ApplicationView implements ObserverView {
         });
     }
 
-    private void setChooseVButtons(){
+    /**
+     * This method sets all Choose Game View buttons.
+     */
+    private void setChooseGameVButtons(){
         chooseGameView.getButtons().get(TICTACTOE).setOnAction(e -> {
             chooseGameView.getWindow().setScene(chooseGameModeScene);
             chooseGameView.getWindow().setTitle(TICTACTOE);
@@ -271,6 +316,9 @@ public class ApplicationView implements ObserverView {
         });
     }
 
+    /**
+     * This method sets all Game Mode View buttons.
+     */
     private void setGameModeVButtons(){
         chooseGameModeView.getButtons().get("Player vs AI").setOnAction(e -> {
             applicationController.setOffline(true);
@@ -322,6 +370,10 @@ public class ApplicationView implements ObserverView {
         });
     }
 
+    /**
+     * This method sets all actions for the Server Options View buttons. Most interactions with the server are through
+     * these buttons.
+     */
     private void setServerOptionsVButtons(){
         serverOptionsView.getButtons().get("Go back").setOnAction(e -> {
             serverOptionsView.getWindow().setScene(chooseGameModeScene);
@@ -391,6 +443,11 @@ public class ApplicationView implements ObserverView {
         });
     }
 
+    /**
+     * This method sets all actions for the Game View buttons, the Game View contains the game information and the
+     * corresponding game board where either a player can play a game against an the AI or the player can use their
+     * own AI to challenge/ play against other player's AI.
+     */
     private void setGameVButtons(){
         ticTacToeView.getGameButtons().get("Exit " + TICTACTOE).setOnAction(e -> {
             ticTacToeView.getGameBoard().resetBoard();
@@ -424,6 +481,10 @@ public class ApplicationView implements ObserverView {
         });
     }
 
+    /**
+     * This method resets the current board graphically.
+     * @param game the corresponding game.
+     */
     private void resetCurrentBoard(String game){
         Platform.runLater(() -> {
             if(game.equals(TICTACTOE)){
@@ -435,6 +496,11 @@ public class ApplicationView implements ObserverView {
         });
     }
 
+    /**
+     * This method is meant to facilitate the online games. It disables the board, ergo no buttons can be pushed and
+     * it sets the board initialized for an online game to true.
+     * @param game the corresponding game.
+     */
     private void disableBoardPlayability(String game){
         games.get(game).getGameBoard().unSetButtons();
         games.get(game).setRestartButton(true);
@@ -442,6 +508,11 @@ public class ApplicationView implements ObserverView {
 
     }
 
+    /**
+     * This is a method to parse a String to an integer.
+     * @param text the text to be parsed.
+     * @return if successful the integer, else 0.
+     */
     private int parseStringToInteger(String text){
         int temp;
         try {
@@ -453,6 +524,12 @@ public class ApplicationView implements ObserverView {
         return temp;
     }
 
+    /**
+     * This is a method to parse a String to float.
+     *
+     * @param text the text to be parsed.
+     * @return if successful the integer, else 0.
+     */
     private float parseStringToFloat(String text){
         float temp;
         try{

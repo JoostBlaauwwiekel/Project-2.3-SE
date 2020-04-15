@@ -1,7 +1,6 @@
 package project.mvc.view.mainscreen;
 
 import project.mvc.controller.ApplicationController;
-import project.mvc.model.ApplicationModel;
 import project.mvc.view.ScreenView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,16 +11,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * This is the class for the Choose Game View view.
+ */
 public class ChooseGameView extends ScreenView {
 
     private Scene chooseGameModeViewScene;
     private ChooseGameModeView chooseGameModeView;
 
     /**
-     * Constructor for the ChooseGameView
+     * This is constructor for the Choose Game View view.
      *
-     * @param window        The Stage of this view
-     * @param controller    The controller of the MVC
+     * @param window the current window.
+     * @param controller the MVC controller.
      */
     public ChooseGameView(Stage window, ApplicationController controller) {
         super(window);

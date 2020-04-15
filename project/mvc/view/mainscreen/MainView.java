@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import project.mvc.view.ScreenBorderPaneView;
 import project.mvc.view.ScreenView;
 
+/**
+ * This is the MainView class, it serves as the start up screen.
+ */
 public class MainView extends ScreenView {
 
     private Scene chooseGameScene;
@@ -64,6 +67,7 @@ public class MainView extends ScreenView {
 
     /**
      * Getter for the previous scene
+     *
      * @return the previous scene
      */
     @Override
@@ -71,6 +75,7 @@ public class MainView extends ScreenView {
 
     /**
      * Getter for the previous View
+     *
      * @return the view
      */
     @Override
@@ -78,6 +83,7 @@ public class MainView extends ScreenView {
 
     /**
      * Getter for the next Scene
+     *
      * @return the Scene
      */
     @Override
@@ -85,6 +91,7 @@ public class MainView extends ScreenView {
 
     /**
      * Method that returns the ScreenBorderPaneView
+     *
      * @return  The ScreenBorderPaneView
      */
     @Override

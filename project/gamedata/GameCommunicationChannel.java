@@ -8,12 +8,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 public class GameCommunicationChannel implements CommunicationChannel {
-
-    private static final int TIMEOUT = 100000;
 
     private int port = 7789;
     private String ipAddress = "localhost";
