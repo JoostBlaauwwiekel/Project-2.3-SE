@@ -13,13 +13,15 @@ import project.gamemodules.tictactoegame.TicTacToeMinimaxStrategy;
 
 import java.util.*;
 
+/**
+ * This class contains all the necessary data in order to play and facilitate offline and online games.
+ */
 public class GameData implements GameDataSubject{
 
     private String username = "BITM";
 
     private ArrayList<Observer> observers;
     private HashMap<Integer, String> challenges;
-    private HashSet<String> playerSet;
 
     private CommunicationChannel communicationChannel;
     private GameAI gameAI;
@@ -59,12 +61,14 @@ public class GameData implements GameDataSubject{
 
     private String message = "";
 
+    /**
+     * This is the default constructor for the GameData class.
+     */
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
         communicationChannel.setUsername(username);
         observers = new ArrayList<>();
         challenges = new HashMap<>();
-        playerSet = new HashSet<>();
         gameMode = "idle";
         gameResult = "";
         inGame = false;
@@ -72,119 +76,281 @@ public class GameData implements GameDataSubject{
         currentOpponent = "the opponent";
     }
 
+    /**
+     * This method registers a new observer.
+     * @param o the incoming observer.
+     */
     public void registerObserver(Observer o){
         observers.add(o);
     }
 
+    /**
+     * This method removes an observer which is currently subscribed to this subject.
+     * @param o the observer which needs to be removed.
+     */
     public void removeObserver(Observer o){
         observers.remove(o);
     }
 
+    /**
+     * This method should notifies all observers whenever a change has occurred.
+     */
     public void notifyObservers(){
         for(Observer observer : observers){
             observer.update(currentMove, turn, currentChallenger, challengeNr, gameStatus);
         }
     }
 
-    public void setUsernameIpAddressAndPort(String username, String ipAddress, int portnumber){
+    /**
+     * This method sets the username, ip address and port of a communication channel. If the username and ip address do
+     * not equal an empty string and if the port number is greater than 0 then all values will be updated and set in
+     * the corresponding communication channel.
+     *
+     * @param username the username to be set.
+     * @param ipAddress the ip address to be set.
+     * @param portNumber the port number to be set.
+     */
+    public void setUsernameIpAddressAndPort(String username, String ipAddress, int portNumber){
         if(!username.equals(""))
             this.username = username;
             communicationChannel.setUsername(username);
         if(!ipAddress.equals(""))
             communicationChannel.setIpAddress(ipAddress);
-        if(portnumber > 0)
-            communicationChannel.setPort(portnumber);
+        if(portNumber > 0)
+            communicationChannel.setPort(portNumber);
     }
 
+    /**
+     * This method lets you set the difficulty of the AI.
+     *
+     * @param aiDifficulty the corresponding difficulty.
+     */
     public void setAiDifficulty(int aiDifficulty){
         this.aiDifficulty = aiDifficulty;
     }
 
+    /**
+     * This method lets you set the AI time out.
+     *
+     * @param timeOut the corresponding time out.
+     */
     public void setTimeOut(float timeOut){
         this.timeOut = timeOut;
     }
 
+    /**
+     * This method will try to establish a connection with the server and fill the necessary lists with data acquired
+     * from the server.
+     *
+     * @return true if the connection has been established successfully, false if the connection couldn't be established.
+     */
     public boolean registerToServer(){
         return communicationChannel.startServerAndPrepareLists();
     }
 
+    /**
+     * This method lets you set the offline variable. This variable indicates whether the game is being/ the game to be
+     * played is played/ going to be played online or offline.
+     *
+     * @param bool whether the game is offline or online
+     */
     public void setOffline(boolean bool){
         this.offline = bool;
     }
 
+    /**
+     * This method lets you set the inGame variable, this variable indicates whether a game is being played or not.
+     *
+     * @param inGame whether the game is being played or not.
+     */
     public void setInGame(boolean inGame){
         this.inGame = inGame;
     }
 
+    /**
+     * This method lets you set the inLobby variable, this variable indicates whether the player is currently in a
+     * lobby or not.
+     *
+     * @param inLobby whether the player is in a lobby or not.
+     */
     public void setInLobby(boolean inLobby){
         this.inLobby = inLobby;
     }
 
+    /**
+     * This method lets you set the boardInitialized variable, which indicates whether the board has been initialized.
+     *
+     * @param boardInitialized whether the board has been initialized.
+     */
     public void setBoardInitialized(boolean boardInitialized){
         this.boardInitialized = boardInitialized;
     }
 
+    /**
+     * This method lets you set the gameMode variable, which is the game of the game currently being played or the game
+     * which is going to be played. (A.k.a the game that is loaded into this class)
+     *
+     * @param gameMode
+     */
     public void setGameMode(String gameMode){
         this.gameMode = gameMode;
     }
 
+    /**
+     * This method indicates whether the game is a tournament or not.
+     * @param inTournament whether the game is in a tournament/ in the tournament lobby.
+     */
     public void setInTournament(boolean inTournament){
         this.inTournament = inTournament;
     }
 
+    /**
+     * This methd lets you set the current challenge number.
+     * @param currentChallengeNr the current challenge number.
+     */
     public void setCurrentChallengeNr(int currentChallengeNr){
         this.currentChallengeNr = currentChallengeNr;
     }
 
-    public void logoutFromServer(){
-        communicationChannel.logout();
-    }
-
-    public boolean getOffline(){
-        return offline;
-    }
-
-    public String getCurrentGame(){
-        return currentGame;
-    }
-
-    public String getUsername(){
-        return username;
-    }
-
-    public int getWins(){
-        return wins;
-    }
-
-    public int getLosses(){
-        return losses;
-    }
-
-    public int getDraws(){
-        return draws;
-    }
-
-    public boolean getInTournament(){
-        return inTournament;
-    }
-
+    /**
+     * This method lets you set the game AI.
+     *
+     * @param gameAI the corresponding game AI.
+     */
     private void setGameAI(GameAI gameAI){
         this.gameAI = gameAI;
     }
 
+    /**
+     * This method lets you set the game logic.
+     *
+     * @param gameLogic the corresponding game logic.
+     */
     private void setGameLogic(GameLogic gameLogic){
         this.gameLogic = gameLogic;
     }
 
-    public String getGameMode(){
-        return gameMode;
-    }
-
+    /**
+     * This method lets you set the game board logic of the game that is going to be played.
+     *
+     * @param gameBoardLogic the game board logic of the corresponding game.
+     */
     private void setGameBoardLogic(GameBoardLogic gameBoardLogic){
         this.gameBoardLogic = gameBoardLogic;
         gameLogic.setBoard(gameBoardLogic);
     }
 
+    /**
+     * This method lets log out from the server.
+     */
+    public void logoutFromServer(){
+        communicationChannel.logout();
+    }
+
+    /**
+     * This method returns the whether the game is played offline or online.
+     *
+     * @return true if offline, false if online
+     */
+    public boolean getOffline(){
+        return offline;
+    }
+
+    /**
+     * This method lets you get the current game.
+     *
+     * @return the current game.
+     */
+    public String getCurrentGame(){
+        return currentGame;
+    }
+
+    /**
+     * This method returns the username, with which the player logins.
+     *
+     * @return the username.
+     */
+    public String getUsername(){
+        return username;
+    }
+
+    /**
+     * This method returns the number of wins.
+     *
+     * @return the number of wins.
+     */
+    public int getWins(){
+        return wins;
+    }
+
+    /**
+     * This method lets you return the number of losses.
+     *
+     * @return the number of losses.
+     */
+    public int getLosses(){
+        return losses;
+    }
+
+    /**
+     * This method lets you return the number of draws.
+     *
+     * @return the number of draws.
+     */
+    public int getDraws(){
+        return draws;
+    }
+
+    /**
+     * This method returns whether the game is currently in a tournament.
+     *
+     * @return whether the game is in a tournament or not.
+     */
+    public boolean getInTournament(){
+        return inTournament;
+    }
+
+    /**
+     * This method returns the current game mode.
+     *
+     * @return the current game mode.
+     */
+    public String getGameMode(){
+        return gameMode;
+    }
+
+    /**
+     * This method returns the current game logic of the game being played/ that is going to be played.
+     *
+     * @return the corresponding game logic.
+     */
+    public GameLogic getGameLogic(){
+        return gameLogic;
+    }
+
+    /**
+     * This method returns whether the board is initialized or not.
+     *
+     * @return whether the board is initialized or not.
+     */
+    public boolean getBoardInitialized(){
+        return boardInitialized;
+    }
+
+    /**
+     * This method returns the current set of players whom are online on the server.
+     *
+     * @return the player which contains all players currently online.
+     */
+    public HashSet<String> getPlayerSet(){
+        return communicationChannel.getPlayerSet();
+    }
+
+    /**
+     * This method formats the game result.
+     *
+     * @return a win, lose, or draw formatted message.
+     */
     public String getFormattedGameResult(){
         if (gameResult.contains("WIN")){
             return "You just won a game of " + currentGame + " against " + currentOpponent + "!";
@@ -200,32 +366,36 @@ public class GameData implements GameDataSubject{
         }
     }
 
+    /**
+     * This method lets you challenge a player.
+     *
+     * @param player the play the user wants to challenge.
+     */
     public void challengePlayer(String player){
         communicationChannel.challenge(player, currentGame);
     }
 
+    /**
+     * This method lets you subscribe to the game that is currently loaded.
+     */
     public void subscribeToGame(){
         communicationChannel.subscribe(currentGame);
     }
 
-    public GameLogic getGameLogic(){
-        return gameLogic;
-    }
-
-    public GameAI getGameAI(){
-        return gameAI;
-    }
-
-    public boolean getBoardInitialized(){
-        return boardInitialized;
-    }
-
+    /**
+     * This method lets you notify the observers with a status.
+     *
+     * @param status one of the status defined in the documentation.
+     */
     private void notifyObserversGameStatus(int status){
         gameStatus = status;
         notifyObservers();
         gameStatus = 0;
     }
 
+    /**
+     * This method is called once you connect with the server.
+     */
     public void sitInServerLobby(){
         AntiTimeout antiTimeout = new AntiTimeout(communicationChannel, isInGame);
         Thread thread = new Thread(antiTimeout);
@@ -293,6 +463,9 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
+    /**
+     * This method lets you start an online game.
+     */
     public void startOnlineGame() {
         Thread t = new Thread(new Runnable(){
             @Override
@@ -313,6 +486,11 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
+    /**
+     * This method is the method used for playing online games.
+     *
+     * @return true when a turn has been completed.
+     */
     private synchronized boolean playWithOnlineGameLogic(){
         if(communicationChannel.getInputReady() && !inTournament)
             message = communicationChannel.readFormattedLine();
@@ -396,6 +574,11 @@ public class GameData implements GameDataSubject{
         return true;
     }
 
+    /**
+     * This method initializes and loads a game into this class.
+     *
+     * @param gameName the game to be loaded.
+     */
     public void initializeGame(String gameName){
         this.currentGame = gameName;
         if(currentGame.equals("Tic-tac-toe")){
@@ -408,6 +591,13 @@ public class GameData implements GameDataSubject{
         gameAI.setDifficulty(aiDifficulty);
     }
 
+    /**
+     * This method is used to play an offline game.
+     *
+     * @param move the current player move.
+     * @param turn the current turn.
+     * @return true if the player move is correct, false if the move is invalid.
+     */
     public boolean playOfflineGame(int move, int turn){
         if(gameLogic.isValid(move, turn) && gameLogic.gameOver() == 0){
             if(turn == 1){
@@ -424,6 +614,11 @@ public class GameData implements GameDataSubject{
         }
     }
 
+    /**
+     * This method gets the best move from the AI.
+     *
+     * @return true if either the player has set the last move or when the current move is valid.
+     */
     private boolean getAndDoBestAIMove(){
         int pos = gameAI.getBestMove(gameBoardLogic, 2);
         if(pos < 0){
@@ -435,6 +630,9 @@ public class GameData implements GameDataSubject{
         return true;
     }
 
+    /**
+     * This method initializes and loads Reversi into this class.
+     */
     private void initializeReversi(){
         currentGame = "Reversi";
         setGameLogic(new ReversiGameLogic());
@@ -444,6 +642,9 @@ public class GameData implements GameDataSubject{
         notifyObservers();
     }
 
+    /**
+     * This method initializes and loads Tic Tac Toe into this class.
+     */
     private void initializeTicTacToe(){
         currentGame = "Tic-tac-toe";
         setGameLogic(new TicTacToeGameLogic());
@@ -451,9 +652,5 @@ public class GameData implements GameDataSubject{
         setGameAI(new TicTacToeMinimaxStrategy());
         currentMove = -1;
         notifyObservers();
-    }
-
-    public HashSet<String> getPlayerSet(){
-        return communicationChannel.getPlayerSet();
     }
 }

@@ -84,8 +84,9 @@ public class ReversiBoard extends GameBoard {
 
     /**
      * This method is used to set a move on the given tile by the given player.
-     * @param state
-     * @param btn
+     *
+     * @param state the state of the game.
+     * @param btn the current button.
      */
     private void setMove(int state, Button btn) {
         if (state == 2) {
@@ -114,13 +115,18 @@ public class ReversiBoard extends GameBoard {
     }
 
     /**
-     * This method is used to set an AI move.
+     * This method is used update the board offline.
      */
-    public void setAImove(){
+    public void updateOfflineBoard(){
         updateReversiGame();
     }
 
-    public void setMoveForEitherParty(int turn){
+    /**
+     * This method is used to update the board when playing an online game.
+     *
+     * @param turn the current turn.
+     */
+    public void updateBoard(int turn){
         moves = super.getController().getMoves(turn);
         updateReversiBoard(moves);
     }

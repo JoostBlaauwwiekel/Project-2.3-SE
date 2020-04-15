@@ -119,10 +119,10 @@ public class ApplicationView implements ObserverView {
             disableBoardPlayability(game);
         }
         else if (applicationModel.isOffline()) {
-            games.get(game).getGameBoard().setAImove();
+            games.get(game).getGameBoard().updateOfflineBoard();
         } else {
             if(currentMove != -1) {
-                games.get(game).getGameBoard().setMoveForEitherParty(turn);
+                games.get(game).getGameBoard().updateBoard(turn);
             }
         }
     }

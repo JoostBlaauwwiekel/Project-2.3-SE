@@ -10,17 +10,22 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import project.mvc.view.gameboard.ReversiBoard;
 
+/**
+ * This is the class for the Reversi View.
+ */
 public class ReversiView extends GameBoardView {
 
     private String mode = "";
     private GameBoard reversiGameBoard;
     private Button restart;
     private boolean enabled;
+
     /**
-     * This method makes a ReversiView with the given params.
-     * @param window
-     * @param boardWidth
-     * @param controller
+     * This is the default constructor for the ReversiView class.
+     *
+     * @param window the current window/ stage.
+     * @param boardWidth the width of the gameboard.
+     * @param controller the corresponding MVC controller.
      */
     public ReversiView(Stage window, int boardWidth, ApplicationController controller) {
         super(window);
@@ -57,8 +62,9 @@ public class ReversiView extends GameBoardView {
     }
 
     /**
-     * This method sets whether or not the button is clickable accordingly to the given param.
-     * @param bool
+     * This method sets the restart button.
+     *
+     * @param bool true or false. Enable or disable the button.
      */
     public void setRestartButton(boolean bool){
         restart.setDisable(bool);
@@ -66,7 +72,8 @@ public class ReversiView extends GameBoardView {
 
     /**
      * This method sets the mode.
-     * @param mode
+     *
+     * @param mode mode gamemode.
      */
     public void setMode(String mode){
         this.mode = mode;
@@ -74,7 +81,8 @@ public class ReversiView extends GameBoardView {
 
     /**
      * This method returns the reversigameboard.
-     * @return
+     *
+     * @return the reversi game board.
      */
     public GameBoard getGameBoard(){
         return reversiGameBoard;

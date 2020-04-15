@@ -11,18 +11,22 @@ import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 
+/**
+ * This is the Tic Tac Toe board class which contains the Tic Tac Toe UI board.
+ */
 public class TicTacToeBoard extends GameBoard {
 
     private int turn;
     private int counter;
 
     /**
-     * This constructor creates a tictactoeboard with the given params.
-     * @param buttonHeight
-     * @param buttonWidth
-     * @param layout
-     * @param topBar
-     * @param controller
+     * This constructor creates a tictactoeboard with the given parameters.
+     *
+     * @param buttonHeight the height of the buttons.
+     * @param buttonWidth tjhe width of the buttons
+     * @param layout the layout of the board.
+     * @param topBar the top bar of the tic tac toe view.
+     * @param controller the corresponding MVC controller.
      */
     public TicTacToeBoard(Stage window, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller) {
         super(window, 3, 3, buttonHeight, buttonWidth, layout, topBar, controller);
@@ -83,13 +87,18 @@ public class TicTacToeBoard extends GameBoard {
     }
 
     /**
-     * This method is used to make an AI move.
+     * This method is used update the board offline.
      */
-    public void setAImove(){
+    public void updateOfflineBoard(){
         updateTicTacToeBoard();
     }
 
-    public void setMoveForEitherParty(int turn){
+    /**
+     * This method is used to update the board when playing an online game.
+     *
+     * @param turn the current turn.
+     */
+    public void updateBoard(int turn){
         this.turn = turn;
         updateTicTacToeBoard();
     }

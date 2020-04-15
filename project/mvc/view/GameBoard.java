@@ -169,11 +169,19 @@ public abstract class GameBoard {
 
     public abstract void resetBoard();
 
-    public abstract void setAImove();
+    /**
+     * This method is used update the board offline.
+     */
+    public abstract void updateOfflineBoard();
 
     public abstract void setButtons();
 
-    public abstract void setMoveForEitherParty(int turn);
+    /**
+     * This method is used to update the board when playing an online game.
+     *
+     * @param turn the current turn.
+     */
+    public abstract void updateBoard(int turn);
 
     /**
      * This method sets the game statistics such as players, turn and scores.
