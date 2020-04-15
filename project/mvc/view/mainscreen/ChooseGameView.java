@@ -12,11 +12,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * This is the class for the Choose Game View view.
+ */
 public class ChooseGameView extends ScreenView {
 
     private Scene chooseGameModeViewScene;
     private ChooseGameModeView chooseGameModeView;
 
+    /**
+     * This is constructor for the Choose Game View view.
+     *
+     * @param window the current window.
+     * @param controller the MVC controller.
+     */
     public ChooseGameView(Stage window, ApplicationController controller) {
         super(window);
         setSpacing(10);
@@ -46,11 +55,19 @@ public class ChooseGameView extends ScreenView {
         getChildren().addAll(chooseGameTitle, chooseTTT, reversi, back);
     }
 
+    /**
+     * Getter for the previous scene
+     * @return the previous scene
+     */
     @Override
     public Scene getSceneUnderneath(){
         return chooseGameModeViewScene;
     }
 
+    /**
+     * Getter for the ServeroptionsView
+     * @return the view
+     */
     @Override
     public ScreenView getViewUnderneath() {
         return chooseGameModeView;

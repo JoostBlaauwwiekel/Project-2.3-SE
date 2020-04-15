@@ -13,15 +13,20 @@ import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenBorderPaneView;
 
+/**
+ * The ServerOptionsView serves as the main lobby of the online games. Here the user can interact with the user.
+ */
 public class ServerOptionsView extends ScreenBorderPaneView {
-    /**
-     * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
-     *
-     * @param window the stage of a particular scene.
-     */
+
     public ListView<String> playerList;
     public ListView<String> challengeList;
 
+    /**
+     * This is the constructor for the ScreenView class, the primary stage of a scene is given as a parameter.
+     *
+     * @param window        The stage of the view
+     * @param controller    The controller of the MVC
+     */
     public ServerOptionsView(Stage window, ApplicationController controller) {
         super(window, controller);
         setPadding(new Insets(20,20,20,20));
@@ -107,8 +112,16 @@ public class ServerOptionsView extends ScreenBorderPaneView {
         super.getListViews().put("ChallengeList", challengeList);
     }
 
+    /**
+     * Getter for the online players
+     * @return The list of online players
+     */
     public ListView<String> getPlayerListView() { return playerList; }
 
+    /**
+     * Getter for the challenges
+     * @return The list with challenges
+     */
     public ListView<String> getChallengeList() { return challengeList; }
 
 }

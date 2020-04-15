@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.ScreenBorderPaneView;
 
+/**
+ * This is the class OptionsView, here most options of the application can be set.
+ */
 public class OptionsView extends ScreenBorderPaneView {
 
     private Slider slider;
@@ -105,6 +108,11 @@ public class OptionsView extends ScreenBorderPaneView {
         centerLayout.getChildren().addAll(ipAddressLabel, ipAddress, portLabel, port, usernameLabel, username, aiTimeoutLabel, aiTimeout, aiDifficultyLevelLabel, aiDifficultyExplained, slider, new Label(), change_details, back);
     }
 
+    /**
+     * Getter for the slider used for the ai difficulty
+     *
+     * @return The Slider
+     */
     @Override
     public Slider getSlider(){
         return slider;

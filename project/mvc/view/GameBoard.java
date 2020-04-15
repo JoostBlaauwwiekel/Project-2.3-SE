@@ -10,6 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 
+/**
+ * This is the abstract class GameBoard which defines the main structure of game boards.
+ */
 public abstract class GameBoard {
 
     private int gameBoardWidth;
@@ -39,14 +42,15 @@ public abstract class GameBoard {
     private Stage window;
 
     /**
-     * This method makes a GameBoard with the given params.
-     * @param width
-     * @param height
-     * @param buttonHeight
-     * @param buttonWidth
-     * @param layout
-     * @param topBar
-     * @param controller
+     * This method makes a GameBoard with the given parameters.
+     *
+     * @param width the width of the board.
+     * @param height the height of the board.
+     * @param buttonHeight the height of the buttons
+     * @param buttonWidth the width of the buttons.
+     * @param layout the layout of the board.
+     * @param topBar the corresponding board view's top bar.
+     * @param controller  the MVC controller.
      */
     protected GameBoard(Stage window, int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
         this.window = window;
@@ -87,9 +91,10 @@ public abstract class GameBoard {
     /**
      * This method sets the gameStatus after a round.
      * Also ups the score of the winner.
-     * @param winner
-     * @param gameStatus
-     * @return
+     *
+     * @param winner the winner.
+     * @param gameStatus the current game status. To set the players' scores.
+     * @return true because the game has ended.
      */
     private boolean setGameStatus(String winner, int gameStatus){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -108,7 +113,8 @@ public abstract class GameBoard {
 
     /**
      * This method is used to return the width of the gameButtons.
-     * @return
+     *
+     * @return the game button width.
      */
     protected double getGameButtonWidth() {
         return gameButtonWidth;
@@ -116,7 +122,8 @@ public abstract class GameBoard {
 
     /**
      * This method is used to return the Height of the gameButtons.
-     * @return
+     *
+     * @return the game button height.
      */
     protected double getGameButtonHeight() {
         return gameButtonHeight;
@@ -124,7 +131,8 @@ public abstract class GameBoard {
 
     /**
      * This method is used to return the controller of the application.
-     * @return
+     *
+     * @return the MVC controller.
      */
     protected ApplicationController getController(){
         return controller;
@@ -132,8 +140,9 @@ public abstract class GameBoard {
 
     /**
      * This method checks if the game is over.
-     * @param result
-     * @return
+     *
+     * @param result the current result of the game.
+     * @return false if the game isn't over yet, true if the game has been completed/
      */
     protected boolean gameOver(int result) {
         if (result == 1) {
@@ -153,7 +162,7 @@ public abstract class GameBoard {
     }
 
     /**
-     * This method makes the buttons clickable again after it's been reset or restarted.
+     * This method makes the buttons not clickable after it's been reset or restarted.
      */
     public void unSetButtons(){
         for(Button tile : tiles){
@@ -163,17 +172,23 @@ public abstract class GameBoard {
 
     /**
      * This method returns the tiles of the board.
-     * @return
+     * @return the tiles.
      */
     public Button[] getTiles(){ return tiles; }
 
+    /**
+     * This method should reset the UI board.
+     */
     public abstract void resetBoard();
 
     /**
-     * This method is used update the board offline.
+     * This method should update the board when a game is being played offline.
      */
     public abstract void updateOfflineBoard();
 
+    /**
+     * This method should enable all buttons on the board. All moves that can be clicked.
+     */
     public abstract void setButtons();
 
     /**
@@ -208,7 +223,8 @@ public abstract class GameBoard {
 
     /**
      * This method returns who's turn it is to make a move.
-     * @return
+     *
+     * @return the turn.
      */
     public int getTurn(){
         return turn;
@@ -224,8 +240,9 @@ public abstract class GameBoard {
 
     /**
      * This method shows the scores of the players on the board.
-     * @param scorePlayerA
-     * @param scorePlayerB
+     *
+     * @param scorePlayerA the score of the corresponding player.
+     * @param scorePlayerB the score of the other corresponding player.
      */
     public void setScoresHBox(int scorePlayerA, int scorePlayerB){
         Label score1 = GameBoardView.makeLabel(Integer.toString(scorePlayerA), 150, 75, "center");
@@ -237,8 +254,9 @@ public abstract class GameBoard {
 
     /**
      * This method sets the players on the board.
-     * @param playerA
-     * @param playerB
+     *
+     * @param playerA the corresponding player.
+     * @param playerB the other corresponding player.
      */
     public void setPlayersHBox(String playerA, String playerB){
         Label player1Label = GameBoardView.makeLabel(playerA, 150, 75, "center");
@@ -250,7 +268,8 @@ public abstract class GameBoard {
 
     /**
      * This method increments the score of an individual player after a win.
-     * @param player
+     *
+     * @param player the corresponding player.
      */
     public void setScorePlayer(int player){
         if(player == 1){
@@ -261,18 +280,11 @@ public abstract class GameBoard {
         }
     }
 
-    public String getPlayer1(){
-        return player1;
-    }
-
-    public String getPlayer2(){
-        return player2;
-    }
-
     /**
      * This method sets the players who play on the gameboard.
-     * @param player1
-     * @param player2
+     *
+     * @param player1 the current player1.
+     * @param player2 the current player2.
      */
     public void setPlayers(String player1, String player2){
         this.player1 = player1;

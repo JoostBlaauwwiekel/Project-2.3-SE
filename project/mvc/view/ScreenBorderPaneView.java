@@ -8,6 +8,9 @@ import project.mvc.view.mainscreen.ConfirmBox;
 
 import java.util.HashMap;
 
+/**
+ * This is the abstract class for options views.
+ */
 public abstract class ScreenBorderPaneView extends BorderPane {
 
     private Stage window;

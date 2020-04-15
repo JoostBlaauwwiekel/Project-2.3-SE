@@ -10,10 +10,22 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * This is the OkayBox class, this class could be used to show an okay message whenever an action or whenever settings
+ * have been changed.
+ */
 public class OkayBox {
 
     static boolean answer;
 
+    /**
+     * This is the constructor for the OkayBox class.
+     *
+     * @param title the title of the pop up box.
+     * @param message the message of the pop up box.
+     *
+     * @return the answer.
+     */
     public static boolean display(String title, String message) {
         Stage window = new Stage();
 

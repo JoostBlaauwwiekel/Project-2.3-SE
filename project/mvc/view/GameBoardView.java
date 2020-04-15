@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
+/**
+ * This is the abstract class for all game board views.
+ */
 public abstract class GameBoardView extends BorderPane {
 
     private Stage window;
@@ -44,16 +47,17 @@ public abstract class GameBoardView extends BorderPane {
 
     /**
      * This method is used to create Labels with given params.
-     * @param text
-     * @param width
-     * @param height
-     * @param allignment
-     * @return
+     *
+     * @param text the text to be set.
+     * @param width the width of the label.
+     * @param height the height of the label.
+     * @param alignment the alignment necessary to set the alignment.
+     * @return the created label.
      */
-    public static Label makeLabel(String text, int width, int height, String allignment){
+    public static Label makeLabel(String text, int width, int height, String alignment){
         Label label = new Label(text);
         label.setPrefSize(width, height);
-        switch(allignment){
+        switch(alignment){
             case "center":
                 label.setAlignment(Pos.CENTER);
                 break;
@@ -70,7 +74,8 @@ public abstract class GameBoardView extends BorderPane {
 
     /**
      * This method returns the buttons exit and restart.
-     * @return
+     *
+     * @return the current VBox where the buttons are positioned.
      */
     protected VBox getButtons(){
         return buttons;
@@ -78,7 +83,8 @@ public abstract class GameBoardView extends BorderPane {
 
     /**
      * This method returns the topbar.
-     * @return
+     *
+     * @return the current topbar HBox.
      */
     protected HBox getTopBar(){
         return topBar;
@@ -93,17 +99,32 @@ public abstract class GameBoardView extends BorderPane {
     }
 
     /**
-     * This method is used to return the gameButtons.
-     * @return
+     * This method returns the window.
+     * @return the current stage: window.
      */
     public HashMap<String, Button> getGameButtons(){
         return gameButtons;
     }
 
+    /**
+     * This method is used to return the gameButtons.
+     *
+     * @return the game buttons hashmap.
+     */
     public abstract void setMode(String mode);
 
+    /**
+     * This method should return the corresponding game board.
+     *
+     * @return the corresponding game board.
+     */
     public abstract GameBoard getGameBoard();
 
+    /**
+     * This method should disable or enable the restart button.
+     *
+     * @param bool true for enabling and false for disabling.
+     */
     public abstract void setRestartButton(boolean bool);
 
     /**
