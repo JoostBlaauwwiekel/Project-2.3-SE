@@ -1,5 +1,6 @@
 package project.mvc.view.gameview;
 
+import javafx.geometry.Insets;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 import project.mvc.view.GameBoardView;
@@ -14,6 +15,7 @@ public class ReversiView extends GameBoardView {
     private String mode = "";
     private GameBoard reversiGameBoard;
     private Button restart;
+    private boolean enabled;
     /**
      * This method makes a ReversiView with the given params.
      * @param window
@@ -26,13 +28,14 @@ public class ReversiView extends GameBoardView {
         GridPane centerLayout = new GridPane();
         centerLayout.setAlignment(Pos.CENTER);
         centerLayout.setStyle("-fx-background-color: #E5E2E2;");
-        centerLayout.setMaxWidth(boardWidth);
+        centerLayout.setMaxWidth(Double.MAX_VALUE);
 
         double tileSize = boardWidth/8;
-        reversiGameBoard = new ReversiBoard(tileSize, tileSize, centerLayout, super.getTopBar(), controller);
+        reversiGameBoard = new ReversiBoard(window, tileSize, tileSize, centerLayout, super.getTopBar(), controller);
 
         Button[] gameBoardButtons = reversiGameBoard.getTiles();
         for(int i = 0; i < reversiGameBoard.getTiles().length; i++) {
+            gameBoardButtons[i].setPadding(new Insets(1,1,1,1));
             gameBoardButtons[i].setStyle("-fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 1px;");
         }
 
@@ -49,6 +52,7 @@ public class ReversiView extends GameBoardView {
         super.getButtons().getChildren().addAll(restart, exitGame);
 
         setCenter(centerLayout);
+        super.getTopBar().setAlignment(Pos.CENTER);
         setTop(super.getTopBar());
     }
 
@@ -74,5 +78,15 @@ public class ReversiView extends GameBoardView {
      */
     public GameBoard getGameBoard(){
         return reversiGameBoard;
+    }
+
+    /**
+     * This method sets enabled. This was supposed to be the same implementation as tic tac toe
+     * full screen but due to time constraints that couldn't have been finished.
+     *
+     * @param set whether the side VBoxes should be enabled or not. Regarding full screen.
+     */
+    public void setLeftRightPane(boolean set){
+        this.enabled = set;
     }
 }

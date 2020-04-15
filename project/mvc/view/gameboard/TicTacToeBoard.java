@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 
@@ -23,8 +24,8 @@ public class TicTacToeBoard extends GameBoard {
      * @param topBar
      * @param controller
      */
-    public TicTacToeBoard(double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller) {
-        super(3, 3, buttonHeight, buttonWidth, layout, topBar, controller);
+    public TicTacToeBoard(Stage window, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller) {
+        super(window, 3, 3, buttonHeight, buttonWidth, layout, topBar, controller);
     }
 
     /**

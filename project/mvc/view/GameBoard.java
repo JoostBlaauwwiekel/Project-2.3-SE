@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 
 public abstract class GameBoard {
@@ -35,6 +36,8 @@ public abstract class GameBoard {
 
     private Button[] tiles;
 
+    private Stage window;
+
     /**
      * This method makes a GameBoard with the given params.
      * @param width
@@ -45,7 +48,8 @@ public abstract class GameBoard {
      * @param topBar
      * @param controller
      */
-    protected GameBoard(int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+    protected GameBoard(Stage window, int width, int height, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+        this.window = window;
         this.controller = controller;
         gameBoardWidth = width;
         gameBoardHeight = height;
@@ -92,6 +96,7 @@ public abstract class GameBoard {
         alert.setTitle("End of round");
         alert.setHeaderText(null);
         alert.setContentText(winner);
+        alert.initOwner(window);
         alert.showAndWait();
 
         setScorePlayer(gameStatus);

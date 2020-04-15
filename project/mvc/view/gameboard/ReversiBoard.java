@@ -6,26 +6,31 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import project.mvc.controller.ApplicationController;
 import project.mvc.view.GameBoard;
 
 import java.util.ArrayList;
 
+/**
+ * This is the ReversiBoard class which contains the reversi UI board.
+ */
 public class ReversiBoard extends GameBoard {
 
     private int turn = 1;
     private ArrayList<Integer> moves;
 
     /**
-     * This constructor creates a reversiboard with the given params.
-     * @param buttonHeight
-     * @param buttonWidth
-     * @param layout
-     * @param topBar
-     * @param controller
+     * This constructor creates a reversiboard with the given parameters.
+     *
+     * @param buttonHeight the height of the buttons.
+     * @param buttonWidth tjhe width of the buttons
+     * @param layout the layout of the board.
+     * @param topBar the top bar of the reversi view.
+     * @param controller the corresponding MVC controller.
      */
-    public ReversiBoard(double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
-        super(8,8, buttonHeight,buttonWidth, layout, topBar, controller);
+    public ReversiBoard(Stage window, double buttonHeight, double buttonWidth, GridPane layout, HBox topBar, ApplicationController controller){
+        super(window, 8,8, buttonHeight,buttonWidth, layout, topBar, controller);
         moves = new ArrayList<>();
     }
 
@@ -59,7 +64,8 @@ public class ReversiBoard extends GameBoard {
 
     /**
      * This method is used to update the reversiboard.
-     * @param moves
+     *
+     * @param moves all the possible and valid moves.
      */
     private void updateReversiBoard(ArrayList<Integer> moves){
         int[] b = super.getController().getBoard();
@@ -67,8 +73,10 @@ public class ReversiBoard extends GameBoard {
         for(int i = 0; i < tiles.length; i++) {
             if(!moves.contains(i)) {
                 tiles[i].setDisable(true);
+                tiles[i].setStyle("-fx-opacity: 1.0; -fx-background-color: #1B5B1C; -fx-border-color: #000000; -fx-border-width: 0.5px;");
             } else {
                 tiles[i].setDisable(false);
+                tiles[i].setStyle("-fx-background-color: #089000; -fx-border-color: #000000; -fx-border-width: 0.5px;");
             }
             setMove(b[i], tiles[i]);
         }

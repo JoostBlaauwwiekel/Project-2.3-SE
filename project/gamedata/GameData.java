@@ -57,6 +57,8 @@ public class GameData implements GameDataSubject{
 
     private boolean isInGame = false;
 
+    private String message = "";
+
     public GameData(){
         communicationChannel = new GameCommunicationChannel();
         communicationChannel.setUsername(username);
@@ -67,6 +69,7 @@ public class GameData implements GameDataSubject{
         gameResult = "";
         inGame = false;
         gameStatus = 0;
+        currentOpponent = "the opponent";
     }
 
     public void registerObserver(Observer o){
@@ -224,14 +227,13 @@ public class GameData implements GameDataSubject{
     }
 
     public void sitInServerLobby(){
-//        AntiTimeout antiTimeout = new AntiTimeout(communicationChannel, isInGame);
-//        Thread thread = new Thread(antiTimeout);
-//        thread.start();
+        AntiTimeout antiTimeout = new AntiTimeout(communicationChannel, isInGame);
+        Thread thread = new Thread(antiTimeout);
+        thread.start();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String message = "";
                 gameMode = "idle";
                 while (inLobby) {
                     if(communicationChannel.getInputReady() && !communicationChannel.getAcquiringACertainSet() && !inGame && !inTournament) {
@@ -253,6 +255,11 @@ public class GameData implements GameDataSubject{
                         currentMove = -1;
                         notifyObserversGameStatus(1);
                         while(inGame) {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             playWithOnlineGameLogic();
                         }
                         boardInitialized = false;
@@ -266,6 +273,11 @@ public class GameData implements GameDataSubject{
                         notifyObserversGameStatus(1);
                         System.out.println("here");
                         while(inGame) {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             playWithOnlineGameLogic();
                         }
                         challenges.remove(currentChallengeNr);
@@ -288,6 +300,11 @@ public class GameData implements GameDataSubject{
                 gameBoardLogic.resetBoard();
                 notifyObserversGameStatus(1);
                 while(inTournament){
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     playWithOnlineGameLogic();
                 }
                 notifyObserversGameStatus(2);
@@ -296,8 +313,7 @@ public class GameData implements GameDataSubject{
         t.start();
     }
 
-    private boolean playWithOnlineGameLogic(){
-        String message = "";
+    private synchronized boolean playWithOnlineGameLogic(){
         if(communicationChannel.getInputReady() && !inTournament)
             message = communicationChannel.readFormattedLine();
         else if(communicationChannel.getInputReady()){
@@ -313,6 +329,7 @@ public class GameData implements GameDataSubject{
         if (message.contains("PLAYER TO START")){
             isInGame = true;
             currentOpponent = message.substring(message.indexOf("[") + 1, message.lastIndexOf( "]"));
+            System.out.println(currentOpponent);
             if(message.contains("OPPONENT")){
                 player = 1;
             } else {
@@ -437,7 +454,6 @@ public class GameData implements GameDataSubject{
     }
 
     public HashSet<String> getPlayerSet(){
-        return playerSet;
+        return communicationChannel.getPlayerSet();
     }
-
 }

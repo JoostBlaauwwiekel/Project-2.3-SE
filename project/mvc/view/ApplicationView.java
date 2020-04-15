@@ -2,6 +2,8 @@ package project.mvc.view;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import project.mvc.controller.ApplicationController;
 import project.mvc.model.ApplicationModel;
 import project.mvc.view.mainscreen.ErrorBox;
@@ -10,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import project.mvc.view.mainscreen.OkayBox;
 
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -134,6 +137,36 @@ public class ApplicationView implements ObserverView {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../web/icon.png")));
         mainView = new MainView(primaryStage, applicationController);
 
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                primaryStage.setFullScreen(true);
+                if (primaryStage.getTitle().contains(TICTACTOE)){
+                    ticTacToeView.setLeftRightPane(true);
+                }
+            }
+        });
+
+        primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.F11 == event.getCode()){
+                primaryStage.setFullScreen(true);
+                if (primaryStage.getTitle().contains(TICTACTOE)){
+                    ticTacToeView.setLeftRightPane(true);
+                }
+            }
+        });
+
+        primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.ESCAPE == event.getCode() && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getHeight() > 1000 && GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getWidth() > 1000) {
+                primaryStage.sizeToScene();
+                if (primaryStage.getTitle().contains(TICTACTOE)){
+                    ticTacToeView.setLeftRightPane(false);
+                    primaryStage.sizeToScene();
+                }
+            }
+        });
+
+        primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             mainView.closeApplication(primaryStage);
@@ -307,6 +340,10 @@ public class ApplicationView implements ObserverView {
             else if(serverOptionsView.getWindow().getTitle().contains(REVERSI)) {
                 serverOptionsView.getWindow().setTitle(REVERSI);
             }
+        });
+
+        serverOptionsView.getButtons().get("Refresh list").setOnAction(e -> {
+            applicationController.fillPlayerSet();
         });
 
         serverOptionsView.getButtons().get("Challenge!").setOnAction(e -> applicationController.challengePlayer(serverOptionsView.getListViews().get("PlayerList").getSelectionModel().getSelectedItem()));

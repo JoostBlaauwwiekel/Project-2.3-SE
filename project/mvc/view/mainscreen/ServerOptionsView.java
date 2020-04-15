@@ -88,18 +88,20 @@ public class ServerOptionsView extends ScreenBorderPaneView {
         Button acceptChallengeButton = new Button("Accept challenge");
         Button subscribeButton = new Button("Subscribe");
         Button back = new Button("Go back");
+        Button refreshList = new Button("Refresh list");
 
         super.getButtons().put(joinTournamentLobby.getText(), joinTournamentLobby);
         super.getButtons().put(challengeButton.getText(), challengeButton);
         super.getButtons().put(acceptChallengeButton.getText(), acceptChallengeButton);
         super.getButtons().put(subscribeButton.getText(), subscribeButton);
         super.getButtons().put(back.getText(), back);
+        super.getButtons().put(refreshList.getText(), refreshList);
 
         super.getButtons().forEach((k,v) -> v.setMinWidth(150));
 
         leftMenu.getChildren().addAll(playerListLabel, playerList, challengeButton);
         rightMenu.getChildren().addAll(challengeListLabel, challengeList, acceptChallengeButton);
-        centerMenu.getChildren().addAll(eventText, actualAction, joinTournamentLobby, subscribeButton, back);
+        centerMenu.getChildren().addAll(eventText, actualAction, joinTournamentLobby, refreshList, subscribeButton, back);
 
         super.getListViews().put("PlayerList", playerList);
         super.getListViews().put("ChallengeList", challengeList);

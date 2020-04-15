@@ -105,4 +105,12 @@ public abstract class GameBoardView extends BorderPane {
     public abstract GameBoard getGameBoard();
 
     public abstract void setRestartButton(boolean bool);
+
+    /**
+     * This method should enable or disable the left and right pane depending on whether the current window
+     * is in full screen or not.
+     *
+     * @param set true or false. Enable or disable.
+     */
+    public abstract void setLeftRightPane(boolean set);
 }
