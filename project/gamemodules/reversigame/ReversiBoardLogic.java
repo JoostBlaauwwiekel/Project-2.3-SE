@@ -60,21 +60,4 @@ public class ReversiBoardLogic extends GameBoardLogic {
     public String getGame() {
         return "Reversi";
     }
-
-    /**
-     * This method returns the amount of discs on the board with the specified state.
-     *
-     * @param state of the discs we want to count.
-     * @return the amount of discs with specified state.
-     */
-    public int getDiscCount(int state){
-        int count = 0;
-        int[] board = getBoard();
-        for(int i =0; i < board.length; i++){
-            if(board[i] == state){
-                count++;
-            }
-        }
-        return count;
-    }
 }

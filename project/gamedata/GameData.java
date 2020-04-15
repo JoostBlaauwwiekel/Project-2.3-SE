@@ -496,8 +496,6 @@ public class GameData implements GameDataSubject{
         } else if (message.contains("YOUR TURN")) {
             System.out.println("Our turn");
             isInGame = true;
-            // For some reason the server sometimes doesn't send the message which player starts the game this only
-            // seems to happen when our player is the one that starts, so we can set the player to 2 if that happens.
             if(player == 0){
                 player = 2;
             }

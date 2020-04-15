@@ -155,6 +155,8 @@ public class ApplicationView implements ObserverView {
      */
     public void initializeApplicationScreens(Stage stage){
         this.primaryStage = stage;
+
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../web/icon.png")));
         primaryStage.setTitle("Universal Game Launcher");
         mainView = new MainView(primaryStage, applicationController);
 
@@ -340,7 +342,7 @@ public class ApplicationView implements ObserverView {
                 reversiView.getGameBoard().setButtons();
                 reversiView.setRestartButton(false);
                 chooseGameModeView.getWindow().setScene(reversiScene);
-                chooseGameModeView.getWindow().setTitle(REVERSI + "single player");
+                chooseGameModeView.getWindow().setTitle(REVERSI + " single player");
             }
         });
 

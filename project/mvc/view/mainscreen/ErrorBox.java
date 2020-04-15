@@ -37,6 +37,7 @@ public class ErrorBox {
      */
     public void display(String title, String message) {
         window = new Stage();
+
         window.initStyle(StageStyle.UTILITY);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
